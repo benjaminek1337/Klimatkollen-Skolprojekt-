@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Controllers
 {
-    [Authorize (Roles = "Admin")]
+    [Authorize (Roles = "Admin,Superadmin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -211,6 +211,93 @@ namespace Klimatkollen.Controllers
                 }
             }
             return RedirectToAction("EditRole", new { Id = id });
+        }
+
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var model = userManager.Users;
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
+                return RedirectToAction("ListUsers", id);
+            }
+            var claims = await userManager.GetClaimsAsync(user);
+            var roles = await userManager.GetRolesAsync(user);
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Claims = claims.Select(e => e.Value).ToList(),
+                Roles = roles
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Systemroll ID: {model.Id} kan inte hittas.";
+                return RedirectToAction("ListUsers", model.Id);
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.PhoneNumber = model.PhoneNumber;
+
+                var result = await userManager.UpdateAsync(user);
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
+
+            
+        }
+
+        public async Task<IActionResult> DeleteUser (string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
+                return View("ListRoles");
+            }
+            else
+            {
+                await userManager.DeleteAsync(user);
+                var result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+
+                }
+            }
+
+            return RedirectToAction("ListUsers");
         }
 
     }
