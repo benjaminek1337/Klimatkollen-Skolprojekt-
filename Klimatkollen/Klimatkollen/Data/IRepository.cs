@@ -8,5 +8,7 @@ namespace Klimatkollen.Data
     public interface IRepository
     {
         List<string> GetObservationCategories();
+
+        void AddObservation();
     }
 }

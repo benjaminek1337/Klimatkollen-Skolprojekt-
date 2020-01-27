@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Data;
+using Klimatkollen.Models;
 
 namespace Klimatkollen.Controllers
 {
@@ -18,8 +19,19 @@ namespace Klimatkollen.Controllers
         public IActionResult Index()
         {
             var observationCategories = db.GetObservationCategories();
+            db.AddObservation();
 
-            return View(observationCategories);
+
+            return View();
+        }
+
+        [HttpPost]
+        //[AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddObservation(Observation model)
+        {
+            
+            return View(model);
         }
     }
 }
