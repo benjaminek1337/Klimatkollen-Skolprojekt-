@@ -17,7 +17,7 @@ namespace Klimatkollen.Controllers
         {
             db = repository;
         }
-        public IActionResult Index()
+        public IActionResult ReportObservation_step2()
         {
             var observationCategories = db.GetObservationCategories();
             db.AddObservation();
