@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ namespace Klimatkollen.Controllers
         // GET: Person/Create
         public ActionResult Create()
         {
+            
             return View();
         }
 
@@ -34,8 +36,12 @@ namespace Klimatkollen.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
+                //testar
+                Person p = new Person();
+                p.Email = collection["Email"];
+                p.UserName = collection["UserName"];
+                p.FirstName = collection["FirstName"];
+                p.Lastname = collection["Lastname"];
                 return RedirectToAction(nameof(Index));
             }
             catch
