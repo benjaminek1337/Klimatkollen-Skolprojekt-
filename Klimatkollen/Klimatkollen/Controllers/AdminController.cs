@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -133,6 +134,82 @@ namespace Klimatkollen.Controllers
             }
 
             return RedirectToAction("ListRoles");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUserRole(string id)
+        {
+            ViewBag.roleId = id;
+            var role = await roleManager.FindByIdAsync(id);
+            ViewBag.roleName = role.Name;
+
+            if(role == null)
+            {
+                ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
+                return RedirectToAction("EditRole", id);
+            }
+            var model = new List<UserRoleViewModel>();
+            foreach (var user in userManager.Users)
+            {
+                var userRole = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+                if(await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRole.IsSelected = true;
+                }
+                else
+                {
+                    userRole.IsSelected = false;
+                }
+                model.Add(userRole);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserRole(List<UserRoleViewModel> model, string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
+                return RedirectToAction("EditRole", id);
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                var user = await userManager.FindByIdAsync(model[i].UserId);
+                IdentityResult result = null;
+                if (model[i].IsSelected &! await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if(!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                if(result.Succeeded)
+                {
+                    if (i < (model.Count - 1))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return RedirectToAction("EditRole", new { Id = id });
+                    }
+                }
+            }
+            return RedirectToAction("EditRole", new { Id = id });
         }
 
     }

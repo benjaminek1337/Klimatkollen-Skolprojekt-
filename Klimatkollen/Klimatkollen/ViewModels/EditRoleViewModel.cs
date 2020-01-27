@@ -15,7 +15,7 @@ namespace Klimatkollen.ViewModels
         }
 
         public string Id { get; set; }
-        [Required(ErrorMessage = "Systemrollen måste ha ett namn")]
+        [Required(ErrorMessage = "Systemrollen måste ha en titel")]
         [Display(Name = "Systemroll")]
         public string RoleName { get; set; }
         public List<string> Users { get; set; }

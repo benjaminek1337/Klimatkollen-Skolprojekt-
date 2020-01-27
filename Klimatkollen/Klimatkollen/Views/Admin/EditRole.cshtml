@@ -39,7 +39,7 @@
                 {
                     foreach (var user in Model.Users)
                     {
-                        <h4 class="card-title">@user</h4>
+                        <p>@user</p>
                     }
                 }
                 else
@@ -48,6 +48,7 @@
                 }
             </div>
             <div class="card-footer">
+                <a asp-action="EditUserRole" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-primary">Lägg till eller ta bort användare</a>
 
             </div>
         </div>
