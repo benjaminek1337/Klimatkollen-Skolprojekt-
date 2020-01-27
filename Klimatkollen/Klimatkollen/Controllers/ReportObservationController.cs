@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Klimatkollen.Controllers
 {
@@ -24,6 +25,20 @@ namespace Klimatkollen.Controllers
 
             return View();
         }
+        public IActionResult ReportObservationStep1()
+        {
+            //Temp för att lista kategorier
+            List<String> cats = new List<string>() {"Animal", "Environment", "Other"};
+            ViewBag.Categories = cats;
+
+            return View();
+        }
+        public IActionResult GoToStepTwo(Observation model)
+        {
+            //Testar att skicka vidare objekt till en annan sida. Objektet ska skickas vidare
+            return View();
+        }
+        
 
         [HttpPost]
         //[AllowAnonymous]
@@ -34,4 +49,13 @@ namespace Klimatkollen.Controllers
             return View(model);
         }
     }
+
+    //public IActionResult Index()
+    //{
+    //    var observationCategories = db.GetObservationCategories();
+    //    db.AddObservation();
+
+
+    //    return View();
+    //}
 }

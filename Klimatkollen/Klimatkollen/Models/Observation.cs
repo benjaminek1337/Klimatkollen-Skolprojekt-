@@ -15,5 +15,6 @@ namespace Klimatkollen.Models
         public String Latitude { get; set; }
         public String Comment { get; set; }
         public MeasurementCategory measurementCategory { get; set; }
+        public String Category { get; set; }
     }
 }
