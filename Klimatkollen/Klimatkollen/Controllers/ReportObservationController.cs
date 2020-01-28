@@ -30,7 +30,7 @@ namespace Klimatkollen.Controllers
             //var observationCategories = db.GetObservationCategories();
             //db.AddObservation();
 
-
+            //TODO: En check som skickar tillbaka samma sida om kategori inte är vald
             return View(model);
         }
         public IActionResult ReportObservationStep1()
@@ -41,12 +41,12 @@ namespace Klimatkollen.Controllers
 
             return View();
         }
-        public IActionResult GoToStepTwo(Observation model)
-        {
-            //Testar att skicka vidare objekt till en annan sida. Objektet ska skickas vidare
-            //Metoden ska döpas om så den redirectar till korrekt sida
-            return View();
-        }
+        //public IActionResult GoToStepTwo(Observation model)
+        //{
+        //    //Testar att skicka vidare objekt till en annan sida. Objektet ska skickas vidare
+        //    //Metoden ska döpas om så den redirectar till korrekt sida
+        //    return View();
+        //}
         
 
         [HttpPost]
