@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+@{
+    ViewBag.Title = "Registrerade användare";
+}
+
+<h1>Registrerade användare</h1>
+<hr />
+
+<input type="search" id="searchBar" onkeyup="Search()" class="form-control" placeholder="Sök användare..." />
+<br />
+
+<ul style="list-style-type:none" id="userList">
+    @foreach (var user in Model)
+    {
+        <li>
+            <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id" style="color:black ">
+                <b>E-postadress:</b> @user.Email <br /> <b>Användarnamn:</b> @user.UserName <br /> <b>AnvändarID:</b> @user.Id <br />
+            </a><hr />
+        </li>
+
+
+    }
+</ul>
+
+<script>
+    function Search() {
+
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('searchBar');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("userList");
+        li = ul.getElementsByTagName('li');
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+</script>

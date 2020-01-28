@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Klimatkollen.Controllers
 {
@@ -15,6 +16,7 @@ namespace Klimatkollen.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
