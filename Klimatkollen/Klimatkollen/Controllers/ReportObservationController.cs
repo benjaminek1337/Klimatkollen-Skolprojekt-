@@ -19,42 +19,36 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult Index()
         {
-            var observationCategories = db.GetObservationCategories();
-            db.AddObservation();
-
+            //var observationCategories = db.GetObservationCategories();
+            //db.AddObservation();
 
             return View();
         }
         public IActionResult ReportObservation_step2(Observation model)
         {
-            //var observationCategories = db.GetObservationCategories();
-            //db.AddObservation();
-
-            //TODO: En check som skickar tillbaka samma sida om kategori inte är vald
+            if (model.CategoryTemp == null)
+            {
+                //Stannar på samma sida om ingen kategori är vald
+                return RedirectToAction("ReportObservationStep1");
+            }
+            //Kod för att spara observation i databasen
             return View(model);
         }
         public IActionResult ReportObservationStep1()
         {
-            //Temp för att lista kategorier
+            //Temp för att lista kategorier i vyn
             List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
             ViewBag.Categories = cats;
 
             return View();
         }
-        //public IActionResult GoToStepTwo(Observation model)
-        //{
-        //    //Testar att skicka vidare objekt till en annan sida. Objektet ska skickas vidare
-        //    //Metoden ska döpas om så den redirectar till korrekt sida
-        //    return View();
-        //}
-        
 
+        
         [HttpPost]
         //[AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(Observation model)
-        {
-            
+        {           
             return View(model);
         }
     }
