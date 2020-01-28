@@ -17,7 +17,7 @@ namespace Klimatkollen.Controllers
         {
             db = repository;
         }
-        public IActionResult ReportObservation_step2()
+        public IActionResult Index()
         {
             var observationCategories = db.GetObservationCategories();
             db.AddObservation();
@@ -25,10 +25,18 @@ namespace Klimatkollen.Controllers
 
             return View();
         }
+        public IActionResult ReportObservation_step2(Observation model)
+        {
+            //var observationCategories = db.GetObservationCategories();
+            //db.AddObservation();
+
+
+            return View(model);
+        }
         public IActionResult ReportObservationStep1()
         {
             //Temp för att lista kategorier
-            List<String> cats = new List<string>() {"Animal", "Environment", "Other"};
+            List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
             ViewBag.Categories = cats;
 
             return View();
@@ -36,6 +44,7 @@ namespace Klimatkollen.Controllers
         public IActionResult GoToStepTwo(Observation model)
         {
             //Testar att skicka vidare objekt till en annan sida. Objektet ska skickas vidare
+            //Metoden ska döpas om så den redirectar till korrekt sida
             return View();
         }
         
@@ -50,12 +59,5 @@ namespace Klimatkollen.Controllers
         }
     }
 
-    //public IActionResult Index()
-    //{
-    //    var observationCategories = db.GetObservationCategories();
-    //    db.AddObservation();
 
-
-    //    return View();
-    //}
 }
