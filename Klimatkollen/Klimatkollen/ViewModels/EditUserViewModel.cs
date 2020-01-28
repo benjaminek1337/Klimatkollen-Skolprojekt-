@@ -10,7 +10,6 @@ namespace Klimatkollen.ViewModels
     {
         public EditUserViewModel()
         {
-            Claims = new List<string>();
             Roles = new List<string>();
         }
 
@@ -24,7 +23,6 @@ namespace Klimatkollen.ViewModels
         public string Email { get; set; }
         [Display(Name = "Telefonnummer")]
         public string PhoneNumber { get; set; }
-        public List<string> Claims { get; set; }
         public IList<string> Roles { get; set; }
     }
 }

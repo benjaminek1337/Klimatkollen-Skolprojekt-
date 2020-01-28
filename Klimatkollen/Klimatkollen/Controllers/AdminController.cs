@@ -230,7 +230,6 @@ namespace Klimatkollen.Controllers
                 ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
                 return RedirectToAction("ListUsers", id);
             }
-            var claims = await userManager.GetClaimsAsync(user);
             var roles = await userManager.GetRolesAsync(user);
             var model = new EditUserViewModel
             {
@@ -238,7 +237,6 @@ namespace Klimatkollen.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
-                Claims = claims.Select(e => e.Value).ToList(),
                 Roles = roles
             };
 
@@ -298,6 +296,82 @@ namespace Klimatkollen.Controllers
             }
 
             return RedirectToAction("ListUsers");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditRolesForUser(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            ViewBag.userName = user.UserName;
+            ViewBag.userId = user.Id;
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Användare ID: {id} kan inte hittas.";
+                return RedirectToAction("EditUser", id);
+            }
+            var model = new List<UserRoleViewModel>();
+            foreach (var role in roleManager.Roles)
+            {
+                var roleUser = new UserRoleViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    roleUser.IsSelected = true;
+                }
+                else
+                {
+                    roleUser.IsSelected = false;
+                }
+                model.Add(roleUser);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRolesForUser(List<UserRoleViewModel> model, string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"Användare ID: {id} kan inte hittas.";
+                return RedirectToAction("EditUser", id);
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                var role = await roleManager.FindByIdAsync(model[i].RoleId);
+                IdentityResult result = null;
+                if (model[i].IsSelected & !await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (result.Succeeded)
+                {
+                    if (i < (model.Count - 1))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return RedirectToAction("EditUser", new { Id = id });
+                    }
+                }
+            }
+            return RedirectToAction("EditUser", new { Id = id });
         }
 
     }
