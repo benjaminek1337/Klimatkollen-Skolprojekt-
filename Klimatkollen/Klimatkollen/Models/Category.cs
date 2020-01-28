@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Models
 {
-    public class Person
+    public class Category
     {
         public int Id { get; set; }
-        public String UserName { get; set; }
-        public String Email { get; set; }
+        public String Unit { get; set; }
+        public Category Categories { get; set; }
     }
 }
