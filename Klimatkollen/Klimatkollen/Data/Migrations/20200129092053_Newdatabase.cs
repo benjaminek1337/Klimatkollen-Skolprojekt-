@@ -2,7 +2,7 @@
 
 namespace Klimatkollen.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class Newdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

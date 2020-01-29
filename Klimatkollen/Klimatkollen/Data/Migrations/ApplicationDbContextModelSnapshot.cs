@@ -59,6 +59,8 @@ namespace Klimatkollen.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CategoryTemp");
+
                     b.Property<string>("Comment");
 
                     b.Property<DateTime>("Date");
@@ -87,6 +89,12 @@ namespace Klimatkollen.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("IdentityId");
+
+                    b.Property<string>("Lastname");
 
                     b.Property<string>("UserName");
 
