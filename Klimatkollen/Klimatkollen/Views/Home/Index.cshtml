@@ -2,14 +2,43 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+@*class="text-center">*@
+<h1 class="display-4">Välkommen till klimatkollen!</h1>
+<div class="slider">
+    <ul class="slides">
+        <li class="slide"><img src="~/pictures/fox.jpg" alt="" /></li> @*image by David Markfrom Pixabay*@
+        <li class="slide"><img src="~/pictures/forest.jpg" alt="" /></li> @*image by Jonathan Petersson Pixabay*@
+        <li class="slide"><img src="~/pictures/sky.jpg" alt="" /></li> @*image by Rudy and Peter Skitterians Pixabay*@
+    </ul>
 </div>
 
-<a href="@Url.Action("Index", "ReportObservation")">
+<div>
+    @*class="text-center"*@
+
+    <h2> Lorem ipsum</h2>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ex sit amet ipsum bibendum dignissim. Pellentesque varius aliquam libero id tempor. Ut quis lacus ultricies libero maximus blandit congue nec nisl. Integer vitae vehicula nunc, ut iaculis metus. Phasellus nulla turpis, hendrerit sed finibus a, hendrerit at elit. Donec tempus mauris sit amet sapien vestibulum consectetur. Proin nec odio viverra, suscipit nulla et, venenatis ipsum. Cras placerat tortor a sapien dapibus, ut ullamcorper risus consequat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed imperdiet fermentum faucibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+    </p>
+    <h2> Nullam Accumsan</h2>
+    <p>
+        Nullam accumsan convallis dui eget auctor. Phasellus posuere dignissim consectetur. Donec fermentum, erat quis tempus accumsan, ipsum nulla commodo nisi, quis congue urna eros sit amet dui. Etiam quis elit tristique, ultrices mi nec, sodales leo. Etiam leo tortor, aliquet vulputate luctus in, pharetra in est. Mauris id elit vitae risus dapibus volutpat. Fusce eget neque vel dolor rhoncus iaculis. Cras enim lacus, lobortis vel gravida nec, efficitur at turpis.
+    </p>
+    <h2> Vestibulum sem massa</h2>
+    <p>
+        Vestibulum sem massa, suscipit vitae efficitur et, semper mollis velit. Nullam dignissim nibh dolor, nec sollicitudin erat porta sed. Nam vitae molestie leo. Maecenas id efficitur tortor. Quisque dolor justo, suscipit varius ex nec, ultrices posuere justo. Praesent scelerisque felis vitae elit scelerisque, sit amet faucibus est suscipit. Maecenas eu tellus ac erat feugiat elementum. Quisque sagittis aliquam sem, posuere imperdiet tortor interdum id. Maecenas fringilla magna ac vehicula malesuada. Aliquam imperdiet imperdiet tellus et gravida. Aliquam tempor molestie est eu tincidunt.
+    </p>
+</div>
+
+<a href="@Url.Action("ReportObservation_step2", "ReportObservation")">
     Lägg till observation
 </a>
+
+<a href="@Url.Action("ReportObservationStep1", "ReportObservation")">
+    Lägg till observation
+</a>
+
+
 
 
 
