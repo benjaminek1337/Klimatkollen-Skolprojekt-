@@ -31,7 +31,8 @@ namespace Klimatkollen.Controllers
                 //Stannar på samma sida om ingen kategori är vald
                 return RedirectToAction("ReportObservationStep1");
             }
-            //Kod för att spara observation i databasen
+            ////Kod för att spara observation i databasen
+
             return View(model);
         }
         public IActionResult ReportObservationStep1()

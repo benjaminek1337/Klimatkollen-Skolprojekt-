@@ -61,7 +61,7 @@ body {
     border: #4CAF50;
     border-width: 5px;
     color: black;
-    padding: 30px 50px;
+    padding: 80px 100px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -82,3 +82,13 @@ body {
         background-color: #3d8b40;
         border-color: #3d8b40;
     }
+
+@media (max-width: 900px) {
+    .buttonTemp {
+        min-width: 250px;
+        max-width: 300px;
+        display: block;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+}
