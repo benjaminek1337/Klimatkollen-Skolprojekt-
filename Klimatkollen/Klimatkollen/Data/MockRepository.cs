@@ -20,6 +20,6 @@ namespace Klimatkollen.Data
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person  };
         }
 
-        public void
+        
     }
 }
