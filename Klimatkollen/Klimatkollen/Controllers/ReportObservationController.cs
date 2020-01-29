@@ -15,12 +15,16 @@ namespace Klimatkollen.Controllers
         public ReportObservationController(IRepository repository)
         {
             db = repository;
+            
+           
         }
         public IActionResult Index()
         {
             var observationCategories = db.GetObservationCategories();
             db.AddObservation();
-
+            var floats = db.GenerateRandomFloats(100);
+            var jsonString =db.SerializeJsonFromFloats(floats);
+            db.WriteJsonToFile(jsonString, "C:\\temperatures.json");
 
             return View();
         }
@@ -30,7 +34,13 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(Observation model)
         {
-            
+            //var aspUsername = User.Identity.Name;
+            model.Comment = "Mycket vind idag";
+            model.Date = DateTime.Now;
+            model.measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
+            model.person = new Person() { Email = "test", UserName = "Ekiobon" };
+            db.AddObjectToDb(model);
+
             return View(model);
         }
     }
