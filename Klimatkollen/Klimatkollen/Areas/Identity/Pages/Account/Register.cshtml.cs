@@ -22,7 +22,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext _dbContext;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -30,14 +30,14 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext db)
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _db = db;
+            _dbContext = dbContext;
         }
 
         [BindProperty]
@@ -89,24 +89,15 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
 
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                   
-                    if (await _roleManager.FindByNameAsync("Klimatobservatör") != null)
-                    { 
-                        var role = await _roleManager.FindByNameAsync("Klimatobservatör");
-                        await _userManager.AddToRoleAsync(user, role.Name);
-                    }
-                    else
-                    {
-                        var role = await _roleManager.CreateAsync(new IdentityRole("Klimatobservatör"));
-                        var userRole = await _roleManager.FindByNameAsync("Klimatobservatör");
-                        await _userManager.AddToRoleAsync(user, userRole.Name);
-                    }
+                    var role = await _roleManager.FindByNameAsync("Klimatobservatör");
+                    await _userManager.AddToRoleAsync(user, role.Name);
+                    //CreatePerson(user);
                     Person person = new Person
                     {
+                        Id = user.Id,
                         Email = user.Email
-                    }; _db.Persons.Add(person);
-                    _db.SaveChanges();
+                    }; _dbContext.Persons.Add(person);
+                    _dbContext.SaveChanges();
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     return LocalRedirect(returnUrl);
                 }
@@ -119,5 +110,8 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+
     }
 }
