@@ -94,6 +94,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                     //CreatePerson(user);
                     Person person = new Person
                     {
+                        Id = user.Id,
                         Email = user.Email
                     }; _dbContext.Persons.Add(person);
                     _dbContext.SaveChanges();
