@@ -37,8 +37,8 @@ namespace Klimatkollen.Controllers
             //var aspUsername = User.Identity.Name;
             model.Comment = "Mycket vind idag";
             model.Date = DateTime.Now;
-            model.measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
-            model.person = new Person() { Email = "test", UserName = "Ekiobon" };
+            model.Measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
+            model.Person = new Person() { Email = "test", UserName = "Ekiobon" };
             db.AddObjectToDb(model);
 
             return View(model);
