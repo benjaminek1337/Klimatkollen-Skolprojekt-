@@ -12,11 +12,16 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
+
+
         public List<string> GetObservationCategories() 
         {
             return new List<String>() { "Animal", "Environment", "Other" };
         }
-            
-            
+
+        List<float> IRepository.GenerateRandomFloats(int amount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

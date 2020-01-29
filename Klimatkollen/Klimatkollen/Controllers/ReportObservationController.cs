@@ -26,6 +26,8 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult ReportObservation_step2(Observation model)
         {
+            
+
             if (model.MainCategory == null)
             {
                 //Stannar på samma sida om ingen kategori är vald
@@ -37,6 +39,10 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult ReportObservationStep1()
         {
+            db.GenerateRandomFloats(10);
+
+
+
             //Temp för att lista kategorier i vyn
             List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
             ViewBag.Categories = cats;
@@ -49,7 +55,7 @@ namespace Klimatkollen.Controllers
         //[AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(Observation model)
-        {           
+        {   
             return View(model);
         }
     }

@@ -10,5 +10,6 @@ namespace Klimatkollen.Data
         List<string> GetObservationCategories();
 
         void AddObservation();
+        List<float> GenerateRandomFloats(int amount);
     }
 }
