@@ -26,7 +26,7 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult ReportObservation_step2(Observation model)
         {
-            if (model.CategoryTemp == null)
+            if (model.MainCategory == null)
             {
                 //Stannar på samma sida om ingen kategori är vald
                 return RedirectToAction("ReportObservationStep1");

@@ -10,6 +10,7 @@ namespace Klimatkollen.Models
     public class Person
     {
         public int Id { get; set; }
+        public String IdentityId { get; set; }
         public String UserName { get; set; }
         public String Email { get; set; }
         public string FirstName { get; set; }

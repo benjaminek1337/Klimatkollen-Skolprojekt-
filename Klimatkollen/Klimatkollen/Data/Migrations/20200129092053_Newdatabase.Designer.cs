@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200128095627_ModelUpdate")]
-    partial class ModelUpdate
+    [Migration("20200129092053_Newdatabase")]
+    partial class Newdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,8 @@ namespace Klimatkollen.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CategoryTemp");
+
                     b.Property<string>("Comment");
 
                     b.Property<DateTime>("Date");
@@ -89,6 +91,10 @@ namespace Klimatkollen.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Lastname");
 
                     b.Property<string>("UserName");
 
