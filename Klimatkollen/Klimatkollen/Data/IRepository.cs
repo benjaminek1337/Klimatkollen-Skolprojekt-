@@ -18,5 +18,7 @@ namespace Klimatkollen.Data
         void WriteJsonToFile(String jsonString, String filePath);
 
         void AddObjectToDb(object objectToAdd);
+
+        //void GetMainCategoriesFromDb(object objectToAdd);
     }
 }
