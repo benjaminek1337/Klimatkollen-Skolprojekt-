@@ -77,6 +77,13 @@ namespace Klimatkollen.Data
             dbContext.SaveChanges();
         }
 
-        
+        public List<MainCategory> GetMainCategoriesFromDb()
+        {
+            var persons = dbContext.Persons.ToList();
+
+
+            int i = 2;
+            return dbContext.MainCategories.ToList();
+        }
     }
 }
