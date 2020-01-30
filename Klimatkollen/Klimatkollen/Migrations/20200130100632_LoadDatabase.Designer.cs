@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200130100406_migrationaftermerge")]
-    partial class migrationaftermerge
+    [Migration("20200130100632_LoadDatabase")]
+    partial class LoadDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
