@@ -15,9 +15,7 @@ namespace Klimatkollen.Controllers
         
         public ReportObservationController(IRepository repository)
         {
-            db = repository;
-            
-           
+            db = repository;          
         }
         public IActionResult Index()
         {
@@ -26,21 +24,26 @@ namespace Klimatkollen.Controllers
 
             return View();
         }
-        public IActionResult ReportObservation_step2(Observation model)
+        public IActionResult ReportObservation_step2(MainCategory mainCat)
         {
-            if (model.MainCategory == null)
+            if (mainCat.CategoryName == null)
             {
                 //Stannar på samma sida om ingen kategori är vald
                 return RedirectToAction("ReportObservationStep1");
             }
-            ////Kod för att spara observation i databasen
-            var observationCategories = db.GetObservationCategories();
-            db.AddObservation();
+            
             //var floats = db.GenerateRandomFloats(100);
             //var jsonString =db.SerializeJsonFromFloats(floats);
             //db.WriteJsonToFile(jsonString, "C:\\temperatures.json");
 
-            return View(model);
+            Observation observation = new Observation()
+            {
+                MainCategory = mainCat
+                //TODO: Id måste sättas också
+            };
+
+
+            return View(observation);
         }
         public IActionResult ReportObservationStep1()
         {
@@ -57,13 +60,13 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(Observation model)
         {
-            //var aspUsername = User.Identity.Name;
+            //testKod för att spara observation i db
             model.Comment = "Mycket vind idag";
             model.Date = DateTime.Now;
             model.Measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
             model.Person = new Person() { Email = "test", UserName = "Ekiobon" };
             db.AddObjectToDb(model);
-
+           
             return View(model);
         }
     }
