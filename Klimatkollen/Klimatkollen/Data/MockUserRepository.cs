@@ -25,6 +25,7 @@ namespace Klimatkollen.Data
 
         public Person GetPerson(string id)
         {
+
             Person person = new Person
             {
                 Email = "mrPincett@live.se",

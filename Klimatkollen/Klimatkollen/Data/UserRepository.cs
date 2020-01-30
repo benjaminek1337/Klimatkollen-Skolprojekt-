@@ -20,6 +20,16 @@ namespace Klimatkollen.Data
             return person;
         }
 
+        public List<Person> GetPeople()
+        {
+            var people = new List<Person>();
+            foreach (var person in context.Persons)
+            {
+                people.Add(person);
+            }
+            return people;
+        }
+
         public Person EditPerson(Person model)
         {
             var person = GetPerson(model.IdentityId);

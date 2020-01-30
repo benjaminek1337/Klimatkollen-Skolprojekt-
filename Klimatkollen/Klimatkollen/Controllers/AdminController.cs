@@ -219,6 +219,7 @@ namespace Klimatkollen.Controllers
         [HttpGet]
         public IActionResult ListUsers()
         {
+            ViewBag.People = db.GetPeople();
             var model = userManager.Users;
             return View(model);
         }
@@ -263,7 +264,7 @@ namespace Klimatkollen.Controllers
             else
             {
                 user.Email = model.Email;
-                user.UserName = model.UserName;
+                user.UserName = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
                 person.FirstName = model.FirstName;
                 person.Lastname = model.Lastname;

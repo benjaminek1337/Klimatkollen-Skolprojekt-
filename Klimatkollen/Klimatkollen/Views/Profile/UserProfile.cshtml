@@ -1,6 +1,6 @@
 ﻿@model Klimatkollen.Models.Person
 
-@{ 
+@{
     ViewBag.Title = "Profil";
 }
 
@@ -9,25 +9,47 @@
 
 <div id="displayUserInfo">
     <p>
-        Förnamn: @Model.FirstName <br />
-        Efternamn: @Model.Lastname <br />
-        E-postadress: @Model.Email <br />
+        Förnamn: @Model.FirstName
+        <br />
+        Efternamn: @Model.Lastname
+        <br />
+        E-postadress: @Model.Email
+        <br />
     </p>
     <button class="btn btn-primary" id="launchEdit">Ändra information</button>
 </div>
 
-<div id="editUserInfo">
+<div id="editUserInfo" style="visibility:hidden">
     <form method="post">
         <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
         <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-        <label class="col-form-label" asp-for="@Model.FirstName"></label>
+        <label class="col-form-label">Förnamn</label>
         <input class="form-control" type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
-        <label class="col-form-label" asp-for="@Model.Lastname"></label>
+        <label class="col-form-label">Efternamn</label>
         <input class="form-control" type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
-        <label class="col-form-label" asp-for="@Model.Email"></label>
+        <label class="col-form-label">E-postadress</label>
         <input class="form-control" type="text" asp-for="@Model.Email" value="@Model.Email" />
 
         <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
         <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
     </form>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#launchEdit").click(function () {
+            $("#displayUserInfo").hide();
+            $("editUserInfo").show();
+        })
+    })
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#abortEdit").click(function () {
+            $("#displayUserInfo").show();
+            $("editUserInfo").hide();
+        })
+    })
+</script>
