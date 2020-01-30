@@ -36,6 +36,7 @@ namespace Klimatkollen
             });
 
             services.AddTransient<IRepository, MockRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

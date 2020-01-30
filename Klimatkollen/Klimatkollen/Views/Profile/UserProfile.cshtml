@@ -1,0 +1,30 @@
+﻿@model Klimatkollen.Models.Person
+
+@{ 
+    ViewBag.Title = "Profil";
+}
+
+<h1>@Model.FirstName's profil</h1>
+<hr />
+
+<div id="displayUserInfo">
+    <p>
+        Förnamn: @Model.FirstName <br />
+        Efternamn: @Model.Lastname <br />
+        E-postadress: @Model.Email <br />
+        Användarnamn: @Model.UserName
+    </p>
+    <button class="btn btn-primary" id="launchEdit">Ändra information</button>
+</div>
+
+<div id="editUserInfo">
+    <form method="post">
+        <input type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+        <input type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
+        <input type="text" asp-for="@Model.Email" value="@Model.Email" />
+        <input type="text" asp-for="@Model.UserName" value="@Model.UserName" />
+
+        <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
+        <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
+    </form>
+</div>

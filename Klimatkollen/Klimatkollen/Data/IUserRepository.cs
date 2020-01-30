@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Klimatkollen.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Klimatkollen.Data
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
-        private readonly ApplicationDbContext context;
-        public IUserRepository(ApplicationDbContext context)
-        {
-            this context = context;
-        }
+        Person GetPerson(string id);
+        Person EditPerson(Person model);
     }
 }
