@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class freshSeedtesttwo : Migration
+    public partial class LoadDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,6 +87,7 @@ namespace Klimatkollen.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdentityId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
@@ -210,7 +211,7 @@ namespace Klimatkollen.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Value = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,7 +221,7 @@ namespace Klimatkollen.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,6 +259,44 @@ namespace Klimatkollen.Migrations
                         principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CategoriesId", "Type", "Unit" },
+                values: new object[,]
+                {
+                    { 2, null, "VindStyrka", "m/s" },
+                    { 3, null, "Vindriktning", "grader" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MainCategory",
+                columns: new[] { "Id", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "Miljö" },
+                    { 2, "Djur" },
+                    { 3, "Annat" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Measurements",
+                columns: new[] { "Id", "CategoryId", "Value" },
+                values: new object[,]
+                {
+                    { 1, null, "14" },
+                    { 2, null, "134" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Persons",
+                columns: new[] { "Id", "Email", "FirstName", "IdentityId", "Lastname", "UserName" },
+                values: new object[,]
+                {
+                    { 1, "Uia@gmail.com", null, null, null, null },
+                    { 2, "Udalliaa@gmail.com", null, null, null, null },
+                    { 3, "Lisantia@gmail.com", null, null, null, null }
                 });
 
             migrationBuilder.CreateIndex(

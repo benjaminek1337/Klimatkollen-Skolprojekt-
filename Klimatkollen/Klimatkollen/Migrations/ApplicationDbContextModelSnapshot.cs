@@ -152,6 +152,8 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<string>("IdentityId");
+
                     b.Property<string>("Lastname");
 
                     b.Property<string>("UserName");
