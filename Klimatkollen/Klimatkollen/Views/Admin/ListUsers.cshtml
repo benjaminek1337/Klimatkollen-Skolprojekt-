@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 @{
+    var people = ViewBag.People;
     ViewBag.Title = "Registrerade användare";
 }
 
@@ -15,6 +16,13 @@
         <li>
             <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id" style="color:black ">
                 <b>E-postadress:</b> @user.Email <br /> <b>Användarnamn:</b> @user.UserName <br /> <b>AnvändarID:</b> @user.Id <br />
+                @foreach (var person in people)
+                {
+                    if(person.IdentityId == user.Id)
+                    {
+                        <text><b>Namn:</b> @person.FirstName @person.Lastname </text>
+                    }
+                }
             </a><hr />
         </li>
 

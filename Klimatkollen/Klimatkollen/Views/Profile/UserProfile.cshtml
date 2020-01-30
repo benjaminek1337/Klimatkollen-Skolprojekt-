@@ -19,7 +19,7 @@
     <button class="btn btn-primary" id="launchEdit">Ändra information</button>
 </div>
 
-<div id="editUserInfo" style="visibility:hidden">
+<div id="editUserInfo" style="display:none">
     <form method="post">
         <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
         <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
@@ -30,16 +30,17 @@
         <label class="col-form-label">E-postadress</label>
         <input class="form-control" type="text" asp-for="@Model.Email" value="@Model.Email" />
 
+
         <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
-        <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
     </form>
+    <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
 </div>
 
 <script>
     $(document).ready(function () {
         $("#launchEdit").click(function () {
             $("#displayUserInfo").hide();
-            $("editUserInfo").show();
+            $("#editUserInfo").show();
         })
     })
 
@@ -49,7 +50,7 @@
     $(document).ready(function () {
         $("#abortEdit").click(function () {
             $("#displayUserInfo").show();
-            $("editUserInfo").hide();
+            $("#editUserInfo").hide();
         })
     })
 </script>

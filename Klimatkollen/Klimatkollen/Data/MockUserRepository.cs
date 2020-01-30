@@ -23,6 +23,11 @@ namespace Klimatkollen.Data
             return person;
         }
 
+        public List<Person> GetPeople()
+        {
+            throw new NotImplementedException();
+        }
+
         public Person GetPerson(string id)
         {
 

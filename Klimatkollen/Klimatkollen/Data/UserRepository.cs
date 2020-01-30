@@ -1,8 +1,6 @@
 ﻿using Klimatkollen.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Klimatkollen.Data
 {
@@ -33,9 +31,10 @@ namespace Klimatkollen.Data
         public Person EditPerson(Person model)
         {
             var person = GetPerson(model.IdentityId);
-                person.FirstName = model.FirstName;
-                person.Lastname = model.Lastname;
-                person.Email = model.Email;
+            person.FirstName = model.FirstName;
+            person.Lastname = model.Lastname;
+            person.Email = model.Email;
+            person.UserName = model.Email;
             context.Update(person);
             context.SaveChanges();
             return person;
