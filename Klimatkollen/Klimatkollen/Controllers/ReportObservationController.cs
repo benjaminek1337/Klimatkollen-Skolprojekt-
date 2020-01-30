@@ -35,6 +35,7 @@ namespace Klimatkollen.Controllers
             }
             ////Kod för att spara observation i databasen
             var observationCategories = db.GetObservationCategories();
+            var mainCategories = db.GetMainCategoriesFromDb();
             db.AddObservation();
             //var floats = db.GenerateRandomFloats(100);
             //var jsonString =db.SerializeJsonFromFloats(floats);
