@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Klimatkollen.Data.Migrations
+namespace Klimatkollen.Migrations
 {
-    public partial class initial : Migration
+    public partial class freshSeedtesthree : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
