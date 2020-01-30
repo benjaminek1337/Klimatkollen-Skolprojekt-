@@ -26,10 +26,16 @@ namespace Klimatkollen.Data
                 person.FirstName = model.FirstName;
                 person.Lastname = model.Lastname;
                 person.Email = model.Email;
-                person.UserName = model.UserName;
-            context.Persons.Add(person);
+            context.Update(person);
             context.SaveChanges();
             return person;
+        }
+
+        public void DeletePerson(Person model)
+        {
+            var person = GetPerson(model.IdentityId);
+            context.Remove(person);
+            context.SaveChanges();
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Klimatkollen.Data
 {
     public class MockUserRepository : IUserRepository
     {
+        public void DeletePerson(Person model)
+        {
+            throw new NotImplementedException();
+        }
+
         public Person EditPerson(Person model)
         {
             var person = GetPerson(model.IdentityId);

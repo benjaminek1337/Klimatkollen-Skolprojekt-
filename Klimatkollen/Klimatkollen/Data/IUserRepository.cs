@@ -10,5 +10,6 @@ namespace Klimatkollen.Data
     {
         Person GetPerson(string id);
         Person EditPerson(Person model);
+        void DeletePerson(Person model);
     }
 }

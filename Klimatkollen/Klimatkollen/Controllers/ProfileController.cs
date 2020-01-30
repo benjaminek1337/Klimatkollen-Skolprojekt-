@@ -18,7 +18,6 @@ namespace Klimatkollen.Controllers
         {
             this.userManager = userManager;
             this.db = db;
-            
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
@@ -27,21 +26,34 @@ namespace Klimatkollen.Controllers
         public async Task<IActionResult> UserProfile(Person person)
         {
 
-            IdentityUser user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             person = db.GetPerson(userId);
             if (person == null)
             {  
                 return RedirectToAction("Home", "Index");
             }
+            if(person.FirstName == null || person.Lastname == null)
+            {
+                return RedirectToAction("RegisterUserInfo");
+            }
 
+            return View(person);
+        }
+        
+        public async Task<IActionResult> RegisterUserInfo(Person person)
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            person = db.GetPerson(userId);
+            person.Email = user.Email;
             return View(person);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditUserProfile(Person person)
         {
-            IdentityUser user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
             if(user == null)
             {
                 ViewBag.ErrorMessage = $"Användare kan inte hittas.";
@@ -49,14 +61,12 @@ namespace Klimatkollen.Controllers
             }
             else
             {
+                person.IdentityId = user.Id;
                 db.EditPerson(person);
                 if (person.Email != user.Email)
                 {
-                    await userManager.SetEmailAsync(user, person.Email);                    
-                }
-                else if (person.UserName != user.UserName)
-                {
-                    await userManager.SetUserNameAsync(user, person.UserName);
+                    await userManager.SetEmailAsync(user, person.Email);
+                    await userManager.SetUserNameAsync(user, person.Email);
                 }
                 return RedirectToAction("UserProfile");
             }

@@ -23,6 +23,10 @@ namespace Klimatkollen.ViewModels
         public string Email { get; set; }
         [Display(Name = "Telefonnummer")]
         public string PhoneNumber { get; set; }
+        [Display(Name = "Förnamn")]
+        public string FirstName { get; set; }
+        [Display (Name = "Efternamn")]
+        public string Lastname { get; set; }
         public IList<string> Roles { get; set; }
     }
 }

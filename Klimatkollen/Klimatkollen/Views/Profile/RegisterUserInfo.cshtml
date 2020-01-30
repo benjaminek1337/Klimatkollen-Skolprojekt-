@@ -1,33 +1,21 @@
 ﻿@model Klimatkollen.Models.Person
 
-@{ 
-    ViewBag.Title = "Profil";
+@{
+    ViewBag.Title = "Fyll i användarinformation";
 }
 
-<h1>@Model.FirstName's profil</h1>
+<h1>Fyll i användarinformation</h1>
 <hr />
-
-<div id="displayUserInfo">
-    <p>
-        Förnamn: @Model.FirstName <br />
-        Efternamn: @Model.Lastname <br />
-        E-postadress: @Model.Email <br />
-    </p>
-    <button class="btn btn-primary" id="launchEdit">Ändra information</button>
-</div>
-
 <div id="editUserInfo">
     <form method="post">
         <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
         <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+        <input type="hidden" asp-for="@Model.Email" value="@Model.Email"/>
         <label class="col-form-label" asp-for="@Model.FirstName"></label>
         <input class="form-control" type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
         <label class="col-form-label" asp-for="@Model.Lastname"></label>
         <input class="form-control" type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
-        <label class="col-form-label" asp-for="@Model.Email"></label>
-        <input class="form-control" type="text" asp-for="@Model.Email" value="@Model.Email" />
 
         <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
-        <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
     </form>
 </div>
