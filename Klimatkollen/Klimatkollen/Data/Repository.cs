@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Klimatkollen.Models;
 
 namespace Klimatkollen.Data
 {
@@ -38,6 +39,11 @@ namespace Klimatkollen.Data
         }
 
         public void AddObjectToDb(object objectToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MainCategory> GetMainCategoriesFromDb()
         {
             throw new NotImplementedException();
         }

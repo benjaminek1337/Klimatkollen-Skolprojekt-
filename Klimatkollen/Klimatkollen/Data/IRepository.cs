@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Klimatkollen.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,6 @@ namespace Klimatkollen.Data
 
         void AddObjectToDb(object objectToAdd);
 
-        //void GetMainCategoriesFromDb(object objectToAdd);
+        List<MainCategory> GetMainCategoriesFromDb();
     }
 }
