@@ -10,7 +10,7 @@ namespace Klimatkollen.Models
     {
         public int Id { get; set; }
         public String Value { get; set; }
-        [Required]
+        //[Required]
         public Category Category { get; set; }
     }
 }

@@ -13,7 +13,9 @@ namespace Klimatkollen.Models
         public String IdentityId { get; set; }
         public String UserName { get; set; }
         public String Email { get; set; }
-        public string FirstName { get; set; }
-        public string Lastname { get; set; }
+        public String FirstName { get; set; }
+        public String Lastname { get; set; }
     }
+
+    
 }

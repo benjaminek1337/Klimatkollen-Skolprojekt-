@@ -10,5 +10,15 @@ namespace Klimatkollen.Data
         List<string> GetObservationCategories();
 
         void AddObservation();
+
+        List<float> GenerateRandomFloats(int amountToGenerate);
+
+        String SerializeJsonFromFloats(List<float> floats);
+
+        void WriteJsonToFile(String jsonString, String filePath);
+
+        void AddObjectToDb(object objectToAdd);
+
+        //void GetMainCategoriesFromDb(object objectToAdd);
     }
 }
