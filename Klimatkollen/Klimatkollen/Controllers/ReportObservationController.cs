@@ -16,6 +16,8 @@ namespace Klimatkollen.Controllers
         public ReportObservationController(IRepository repository)
         {
             db = repository;
+            
+           
         }
         public IActionResult Index()
         {
@@ -32,6 +34,11 @@ namespace Klimatkollen.Controllers
                 return RedirectToAction("ReportObservationStep1");
             }
             ////Kod för att spara observation i databasen
+            var observationCategories = db.GetObservationCategories();
+            db.AddObservation();
+            var floats = db.GenerateRandomFloats(100);
+            var jsonString =db.SerializeJsonFromFloats(floats);
+            db.WriteJsonToFile(jsonString, "C:\\temperatures.json");
 
             return View(model);
         }
@@ -49,7 +56,14 @@ namespace Klimatkollen.Controllers
         //[AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(Observation model)
-        {           
+        {
+            //var aspUsername = User.Identity.Name;
+            model.Comment = "Mycket vind idag";
+            model.Date = DateTime.Now;
+            model.Measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
+            model.Person = new Person() { Email = "test", UserName = "Ekiobon" };
+            db.AddObjectToDb(model);
+
             return View(model);
         }
     }

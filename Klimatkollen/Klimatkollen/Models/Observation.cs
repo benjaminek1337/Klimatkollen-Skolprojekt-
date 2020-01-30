@@ -17,6 +17,6 @@ namespace Klimatkollen.Models
         public String Comment { get; set; }
         [Required]
         public Measurement Measurement { get; set; }
-        public string MainCategory { get; set; }
+        public MainCategory MainCategory { get; set; }
     }
 }
