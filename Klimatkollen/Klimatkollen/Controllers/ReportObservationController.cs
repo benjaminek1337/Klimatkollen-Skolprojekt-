@@ -29,23 +29,19 @@ namespace Klimatkollen.Controllers
  
         public IActionResult ReportObservationStep1()
         {
-            //Temp för att lista kategorier i vyn
+            //TODO: Ska hämtas från DB
             List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
             ViewBag.Categories = cats;
 
-
-            //Här hanteras MainCategory
             return View();
         }
         public IActionResult ReportObservationStep2(MainCategory mainCat)
         {
             if (mainCat.CategoryName == null)
             {
-                //Stannar på samma sida om ingen kategori är vald
+                //Stannar på samma sida om ingen kategori är vald. Ska inte gå men man vet aldrig
                 return RedirectToAction("ReportObservationStep1");
-            }
-
-           
+            }         
 
             ObservationViewModel ob = new ObservationViewModel()
             {
@@ -54,7 +50,8 @@ namespace Klimatkollen.Controllers
             };
             List<String> category;
             switch (mainCat.CategoryName)
-            {
+            {             
+                //TODO: Värden ska hämtas från DB
                 case "Djur":
                     category = new List<string>() { "Vildsvin", "Groda", "Ripa" };
                     ViewBag.list = category;
@@ -77,10 +74,7 @@ namespace Klimatkollen.Controllers
 
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
-            //Hårdkodar lite data för vyn för att slippa fylla i hela tiden
-            //DateTime date = new DateTime();
-            //date = DateTime.Today;
-
+            //Hårdkodar lite data i objetet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation() {
                 Date = DateTime.Today,
                 Latitude = "12.112.3113",
@@ -89,10 +83,8 @@ namespace Klimatkollen.Controllers
             };
             model.observation = o;
 
-
             return View(model);
         }
-
 
 
         [HttpPost]
@@ -100,33 +92,26 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddObservation(ObservationViewModel model)
         {
-            Measurement tempMeasurement = new Measurement()
+            Measurement m = new Measurement()
             {
                 Category = model.category
             };
-            //testKod för att spara observation i db
-            Observation finalOb = new Observation()
+            //Konverterar ViewModel till ett objekt av Observation
+            Observation finalObservation = new Observation()
             {
                 Comment = model.observation.Comment,
                 Date = model.observation.Date,
                 Longitude = model.observation.Longitude,
                 Latitude = model.observation.Latitude,
                 MainCategory = model.mainCategory,
-                Measurement = tempMeasurement
+                Measurement = m
             };
-            //model.Comment = "Mycket vind idag";
-            //model.Date = DateTime.Now;
-            //model.Measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };
-            //model.Person = new Person() { Email = "test", UserName = "Ekiobon" };
-
-
-            //db.AddObjectToDb(finalOb);
-           
+            
+            //db.AddObjectToDb(finalOb);          
             return View();
         }
         public IActionResult ReportObservationCompleted()
-        {
-          
+        {          
             return View();
         }
     }

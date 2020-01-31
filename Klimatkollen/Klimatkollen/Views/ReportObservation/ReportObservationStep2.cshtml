@@ -3,65 +3,69 @@
     ViewData["Title"] = "ReportObservationView";
 }
 
-<h1>Steg 2 - Välj underkategori för @Model.mainCategory.CategoryName</h1>
+<h1>Steg 2 - Välj underkategori @*för @Model.mainCategory.CategoryName*@</h1>
 
 <div id="catDiv">
     @foreach (var item in ViewBag.list)
     {
-        <button class="buttonTemp" value=@item>@item</button>
+        <button class="buttonTemp" onclick="SetValue(this)" value=@item>@item</button>
     }
 </div>
 
 @using (Html.BeginForm("ReportObservationStep3", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
 {
     @Html.AntiForgeryToken()
-    <hr />
+   
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
 <div class="form-group">
-
-
-
-    <div class="col-md-10" style="visibility: hidden">
-        @Html.EditorFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control btnResult" } })
+    <br />
+    <div class="col-md-8">
+        <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
     </div>
     <div class="col-md-10" style="visibility: hidden">
-        @Html.EditorFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.EditorFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBox" } })
     </div>
 
+    <div>
+        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <hr />
 </div>
 }
 
 @*Flytta nedan till annan fil*@
 <script>
     // Funktion för att sätta aktiv class på den klickade knappen
-    var header = document.getElementById("catDiv");
-    var btns = header.getElementsByClassName("buttonTemp");
-    for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            var current = document.getElementsByClassName("active");
-            if (current.length > 0) {
-                current[0].className = current[0].className.replace(" active", "");
-            }
-            this.className += " active";
-            SetValue();
-            Submitform();
-        });
-    }
+    //var header = document.getElementById("catDiv");
+    //var btns = header.getElementsByClassName("buttonTemp");
+    //for (var i = 0; i < btns.length; i++) {
+    //    btns[i].addEventListener("click", function () {
+    //        var current = document.getElementsByClassName("active");
+    //        if (current.length > 0) {
+    //            current[0].className = current[0].className.replace(" active", "");
+    //        }
+    //        this.className += " active";
+    //        SetValue();
+    //        Submitform();
+    //    });
+    //}
 
 </script>
 
 <script>
-
     //Sätter värdet på den klickade knappen till en textbox för objektets "category"
-    function SetValue() {
-        var x = document.getElementsByClassName("active");
-        var z = document.getElementsByClassName("btnResult");
+    function SetValue(y) {
+        //OLD:
+        //var x = document.getElementsByClassName("active");
+        //var z = document.getElementsByClassName("btnResult");
+        //z[0].value = x[0].value;
 
-        z[0].value = x[0].value;
+        var q = document.getElementById("resultBox");
+        q.value = y.value;
+        Submitform();
     }
-</script>
-<script>
     //Submittar formuläret
     function Submitform()
     {
