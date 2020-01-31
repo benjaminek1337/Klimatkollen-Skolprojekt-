@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Klimatkollen.Models.Observation>
+
+<h3>Mina observationer</h3>
+
+<ul>
+    @foreach (var observation in Model)
+    {
+        <li>
+            <a href="#" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">
+                <text>
+                    Observation: @observation.MainCategory.CategoryName  <br />
+                    Typ: @observation.Measurement.Value<br />Kommentar: @observation.Comment <br />
+
+                </text>
+            </a>
+        </li>
+    }
+</ul>

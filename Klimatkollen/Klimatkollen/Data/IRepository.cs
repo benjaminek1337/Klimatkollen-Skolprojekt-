@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Klimatkollen.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace Klimatkollen.Data
         void WriteJsonToFile(String jsonString, String filePath);
 
         void AddObjectToDb(object objectToAdd);
+
+        List<Observation> GetObservations();
+        Observation GetObservation(int id);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
     }

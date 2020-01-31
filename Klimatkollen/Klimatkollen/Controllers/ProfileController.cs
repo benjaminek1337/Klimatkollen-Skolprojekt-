@@ -25,7 +25,6 @@ namespace Klimatkollen.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfile(Person person)
         {
-
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             person = db.GetPerson(userId);
@@ -73,20 +72,11 @@ namespace Klimatkollen.Controllers
             
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeUserPassword(string oldPassword, string newPassword)
+        public IActionResult EditUserObservation(int id)
         {
-            var user = await GetCurrentUserAsync();
-            if(user == null)
-            {
-                ViewBag.ErrorMessage = $"Användare kan inte hittas.";
-                return RedirectToAction("Home", "Index");
-            }
-            else
-            {
-                await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-            }
-            return RedirectToAction("UserProfile");
+            //Skapa vymodell för observation
+            return View();
         }
+
     }
 }

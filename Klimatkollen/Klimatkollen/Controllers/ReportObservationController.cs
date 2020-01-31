@@ -6,19 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace Klimatkollen.Controllers
 {
     public class ReportObservationController : Controller
     {
+        private readonly IUserRepository userRepo;
         private readonly IRepository db;
+        private readonly UserManager<IdentityUser> userManager;
         
-        public ReportObservationController(IRepository repository)
+        public ReportObservationController(IRepository repository, IUserRepository userRepo, UserManager<IdentityUser> userManager)
         {
             db = repository;
-            
-           
+            this.userRepo = userRepo;
+            this.userManager = userManager; 
         }
+
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+
         public IActionResult Index()
         {
             //var observationCategories = db.GetObservationCategories();
@@ -26,6 +32,15 @@ namespace Klimatkollen.Controllers
 
             return View();
         }
+
+        public async Task<Person> GetCurrentUser()
+        {
+            var identity = await GetCurrentUserAsync();
+            var user = userRepo.GetPerson(identity.Id);
+            Person person = user;
+            return person;
+        }
+
         public IActionResult ReportObservation_step2(Observation model)
         {
             if (model.MainCategory == null)
@@ -58,6 +73,15 @@ namespace Klimatkollen.Controllers
         public IActionResult AddObservation(Observation model)
         {
             //var aspUsername = User.Identity.Name;
+            //var user = GetCurrentUserAsync();
+            //string userId = user?.Id;
+            //Person person = userRepo.GetPerson(userId);
+
+            //model.Person = person;
+
+            //Kommenterat ut pga dessa metoder för att ta fram person funkar inte för att av någon jävla anledning
+            //så blir user.Id en INT!!!!!!!! DET SKA VA EN STRING, FUNKAR I PROFILECONTROLLER HELVETTE
+
             model.Comment = "Mycket vind idag";
             model.Date = DateTime.Now;
             model.Measurement = new Measurement() { Category = new Category() { Unit = "Vind" }, Value = "14" };

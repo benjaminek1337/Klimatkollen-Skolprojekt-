@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Klimatkollen.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +41,21 @@ namespace Klimatkollen.Data
         public void AddObjectToDb(object objectToAdd)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Observation> GetObservations()
+        {
+            var observations = new List<Observation>();
+            foreach (var observation in dbContext.Observations)
+            {
+                observations.Add(observation);
+            }
+            return observations;
+        }
+
+        public Observation GetObservation(int id)
+        {
+            return dbContext.Observations.FirstOrDefault(o => o.Id.Equals(id));
         }
     }
 }
