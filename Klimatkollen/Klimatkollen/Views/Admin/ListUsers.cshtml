@@ -15,7 +15,7 @@
     {
         <li>
             <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id" style="color:black ">
-                <b>E-postadress:</b> @user.Email <br /> <b>Användarnamn:</b> @user.UserName <br /> <b>AnvändarID:</b> @user.Id <br />
+                <b>E-postadress:</b> @user.Email <br /> <b>AnvändarID:</b> @user.Id <br />
                 @foreach (var person in people)
                 {
                     if(person.IdentityId == user.Id)

@@ -53,14 +53,14 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Lösenordet måste vara minst 8 tecken långt", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Lösenord")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Bekräfta lösenord")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Lösenorden stämmer inte överens")]
             public string ConfirmPassword { get; set; }
         }
 

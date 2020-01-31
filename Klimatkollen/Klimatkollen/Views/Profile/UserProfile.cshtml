@@ -1,5 +1,6 @@
 ﻿@model Klimatkollen.Models.Person
 
+
 @{
     ViewBag.Title = "Profil";
 }
@@ -24,33 +25,39 @@
         <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
         <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
         <label class="col-form-label">Förnamn</label>
-        <input class="form-control" type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
         <label class="col-form-label">Efternamn</label>
-        <input class="form-control" type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
+        <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
         <label class="col-form-label">E-postadress</label>
-        <input class="form-control" type="text" asp-for="@Model.Email" value="@Model.Email" />
-
-
+        <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required  asp-for="@Model.Email" value="@Model.Email" />
+        <div asp-validation-summary="All" class="text-danger"></div>
         <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
     </form>
-    <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
+        
+            <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
+    <a class="btn btn-primary" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a>
+
+
+</div>
+
+<div id="myObservations">
+    <h1>LÄGGA TILL OBSERVATIONER HÄR INNE</h1>
 </div>
 
 <script>
     $(document).ready(function () {
         $("#launchEdit").click(function () {
-            $("#displayUserInfo").hide();
-            $("#editUserInfo").show();
+            $("#displayUserInfo").hide(200);
+            $("#editUserInfo").show(200);
         })
     })
-
 </script>
 
 <script>
     $(document).ready(function () {
         $("#abortEdit").click(function () {
-            $("#displayUserInfo").show();
-            $("#editUserInfo").hide();
+            $("#displayUserInfo").show(200);
+            $("#editUserInfo").hide(200);
         })
     })
 </script>

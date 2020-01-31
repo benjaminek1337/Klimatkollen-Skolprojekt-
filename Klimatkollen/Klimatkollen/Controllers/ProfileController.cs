@@ -72,5 +72,21 @@ namespace Klimatkollen.Controllers
             }
             
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserPassword(string oldPassword, string newPassword)
+        {
+            var user = await GetCurrentUserAsync();
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"Användare kan inte hittas.";
+                return RedirectToAction("Home", "Index");
+            }
+            else
+            {
+                await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            }
+            return RedirectToAction("UserProfile");
+        }
     }
 }
