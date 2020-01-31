@@ -1,4 +1,5 @@
-﻿using Klimatkollen.ViewModels;
+﻿using Klimatkollen.Data;
+using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,18 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Controllers
 {
-    [Authorize (Roles = "Admin,Superadmin")]
+    //[Authorize (Roles = "Admin,Superadmin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IUserRepository db;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IUserRepository db)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.db = db;
         }
 
 
@@ -216,6 +219,7 @@ namespace Klimatkollen.Controllers
         [HttpGet]
         public IActionResult ListUsers()
         {
+            ViewBag.People = db.GetPeople();
             var model = userManager.Users;
             return View(model);
         }
@@ -224,6 +228,7 @@ namespace Klimatkollen.Controllers
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
+            var person = db.GetPerson(id);
 
             if(user == null)
             {
@@ -237,7 +242,9 @@ namespace Klimatkollen.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
-                Roles = roles
+                Roles = roles,
+                FirstName = person.FirstName,
+                Lastname = person.Lastname
             };
 
             return View(model);
@@ -247,6 +254,7 @@ namespace Klimatkollen.Controllers
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
+            var person = db.GetPerson(model.Id);
 
             if (user == null)
             {
@@ -256,8 +264,12 @@ namespace Klimatkollen.Controllers
             else
             {
                 user.Email = model.Email;
-                user.UserName = model.UserName;
+                user.UserName = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
+                person.FirstName = model.FirstName;
+                person.Lastname = model.Lastname;
+                person.Email = model.Email;
+                person.UserName = model.Email;
 
                 var result = await userManager.UpdateAsync(user);
                 if(result.Succeeded)
@@ -278,6 +290,7 @@ namespace Klimatkollen.Controllers
         public async Task<IActionResult> DeleteUser (string id)
         {
             var user = await userManager.FindByIdAsync(id);
+            var person = db.GetPerson(id);
 
             if (user == null)
             {
@@ -286,6 +299,7 @@ namespace Klimatkollen.Controllers
             }
             else
             {
+                db.DeletePerson(person);
                 await userManager.DeleteAsync(user);
                 var result = await userManager.UpdateAsync(user);
                 if (result.Succeeded)

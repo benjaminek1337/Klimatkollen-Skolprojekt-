@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class LoadDatabase : Migration
+    public partial class databas1337 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
