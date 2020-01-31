@@ -1,10 +1,61 @@
-﻿@model Klimatkollen.Models.MainCategory
+﻿@model Klimatkollen.Models.Observation
 
 @{
     ViewData["Title"] = "ReportObservationStep1";
 }
 
-<h1>Välj kategori för din observation</h1>
+<link rel="stylesheet" href="~/css/site.css" />
+<script src="~/js/site.js"></script>
+
+<form id="msform">
+        <ul id="progressbar">
+            <li class="active">Välj katergori</li>
+            <li>Djurart</li>
+            <li>Täckning och väder</li>
+        </ul>
+
+        <fieldset>
+            <h2 class="fs-title">Välj kategori</h2>
+            <h3 class="fs-subtitle">Detta är steg 1</h3>
+            <input type="radio" name="Djur" placeholder="Djur" /> Djur<br />
+            <input type="radio" name="Miljö" placeholder="Miljö" /> Miljö<br />
+            <input type="radio" name="Temperatur" placeholder="Temperatur" /> Temperatur<br />
+            <input type="button" name="next" class="next action-button" value="Next" />
+        </fieldset>
+
+        <fieldset>
+            <h2 class="fs-title">Djurart</h2>
+            <h3 class="fs-subtitle">Detta är steg 2</h3>
+            <input type="radio" name="Fjällräv" placeholder="Fjällräv" />Fjällräv<br />
+            <input type="radio" name="Hare" placeholder="Hare" />Hare<br />
+            <input type="radio" name="Ripa" placeholder="Ripa" />Ripa<br />
+            <input type="radio" name="Vildsvin" placeholder="Vildsvin" />Vildsvin<br />
+            <input type="radio" name="Groda" placeholder="Groda" />Groda<br />
+            <input type="button" name="previous" class="previous action-button" value="Previous" />
+            <input type="button" name="next" class="next action-button" value="Next" />
+        </fieldset>
+
+        <fieldset>
+            <h2 class="fs-title">Täckning och vädet</h2>
+            <h3 class="fs-subtitle">Detta är steg 3</h3>
+            <h6>Täckning</h6>
+            <input type="radio" name="Vinterpäls" placeholder="Vinterpäls" />Vinterpäls<br />
+            <input type="radio" name="Sommarpäls" placeholder="Sommarpäls" />Sommarpäls<br />
+            <h6>Väder</h6>
+            <input type="radio" name="Sommar" placeholder="Sommar" />Sommar<br />
+            <input type="radio" name="Höst" placeholder="Höst" />Höst<br />
+            <input type="radio" name="Vinter" placeholder="Vinter" />Vinter<br />
+            <input type="radio" name="Vår" placeholder="Vår" />Vår<br />
+            <input type="button" name="previous" class="previous action-button" value="Previous" />
+            <input type="submit" name="submit" class="submit action-button" value="Skicka" />
+        </fieldset>
+
+    </form>
+
+
+
+
+<h1>Välj kategori</h1>
 <div id="catDiv">
     @foreach (var item in ViewBag.categories)
     {
@@ -15,7 +66,8 @@
 
 
 
-@using (Html.BeginForm("ReportObservation_step2", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+
+@using (Html.BeginForm("ReportObservation_step2", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -24,21 +76,21 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div style="visibility: hidden">
+
             <div class="form-group">
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control btnResult" } })
+                    @Html.EditorFor(model => model.CategoryTemp, new { htmlAttributes = new { @class = "form-control btnResult" } })
                 </div>
             </div>
         </div>
 
-        <div class="form-group" style="visibility: hidden">
+        <div class="form-group">
             <input type="submit" value="Nästa steg" class="btn btn-primary" />
         </div>
     </div>
 
 }
-
-
+@*<div id="result" style="visibility: hidden">För test</div>*@
 
 <script>
     // Funktion för att sätta aktiv class på den klickade knappen
@@ -52,7 +104,6 @@
             }
             this.className += " active";
             SetValue();
-            Submitform();
         });
     }
 
@@ -64,15 +115,8 @@
         var x = document.getElementsByClassName("active");
         var z = document.getElementsByClassName("btnResult");
 
+        //document.getElementById("result").innerHTML = x[0].value;
         z[0].value = x[0].value;
     }
 </script>
-<script>
-    //Submittar formuläret
-    function Submitform()
-    {
-        document.forms["myForm"].submit();
-    }
-</script>
-
 

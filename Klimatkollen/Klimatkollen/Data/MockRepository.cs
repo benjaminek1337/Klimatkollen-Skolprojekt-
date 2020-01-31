@@ -85,5 +85,12 @@ namespace Klimatkollen.Data
             int i = 2;
             return dbContext.MainCategories.ToList();
         }
+
+        public async Task<IEnumerable<string>> TestAsync() //TEST
+        {
+            var result = GetObservationCategories();
+            return await Task.FromResult(result);
+        }
+
     }
 }

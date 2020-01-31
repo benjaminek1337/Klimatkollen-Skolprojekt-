@@ -6,6 +6,10 @@
 <h1>Rapportera en Observation</h1>
 <h1>Vald kategori: @Model.MainCategory.CategoryName</h1>
 
+
+
+
+
 @using (Html.BeginForm("AddObservation", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
