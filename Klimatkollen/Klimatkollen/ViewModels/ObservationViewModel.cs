@@ -9,5 +9,8 @@ namespace Klimatkollen.ViewModels
     public class ObservationViewModel
     {
         public Observation observation { get; set; }
+        public Measurement measurement { get; set; }
+        public MainCategory mainCategory { get; set; }
+        public Category category { get; set; }
     }
 }
