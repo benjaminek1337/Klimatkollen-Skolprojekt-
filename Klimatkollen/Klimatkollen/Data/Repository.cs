@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Data
 {
-    public class Repository : IRepository
+    public class Repository : IRepository //
     {
         public void AddObservation()
         {
@@ -16,7 +16,10 @@ namespace Klimatkollen.Data
         {
             return new List<String>() { "Animal", "Environment", "Other" };
         }
-            
-            
+
+        public Task<IEnumerable<string>> TestAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

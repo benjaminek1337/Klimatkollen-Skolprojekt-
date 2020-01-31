@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Components
 {
+    [ViewComponent(Name ="Observation")]
     public class ObservationViewComponent :ViewComponent 
     {
         private readonly IRepository db;
@@ -17,11 +18,11 @@ namespace Klimatkollen.Components
         }
 
         //KANSKE?
-        //public async Task<IViewComponentResult> Invoke()
-        //{
-        //    var animalObservations = await db.GetAnimalObservations(); //Gör enmetod som returnerar en lista med djurobservationer
-        //    return View(animalObservations);
-        //}
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var test = await db.TestAsync(); //Gör enmetod som returnerar en lista med djurobservationer
+            return View(test);
+        }
         //Metod som returnerar områden där ett djur synts till?
     }
 }

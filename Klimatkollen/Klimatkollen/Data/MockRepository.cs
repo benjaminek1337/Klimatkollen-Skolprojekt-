@@ -19,5 +19,12 @@ namespace Klimatkollen.Data
            // var measurementCategory = new MeasurementCategory() { measurementCategories = new List<MeasurementCategory> { new MeasurementCategory() {Value = "3" } } };
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", person = person  };
         }
+
+        public async Task<IEnumerable<string>> TestAsync() //TEST
+        {
+            var result = GetObservationCategories();
+            return await Task.FromResult(result);
+        }
+
     }
 }
