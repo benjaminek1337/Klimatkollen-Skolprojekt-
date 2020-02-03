@@ -58,8 +58,7 @@ namespace Klimatkollen.Controllers
             Observation o = new Observation() {
                 Date = DateTime.Today,
                 Latitude = "12.112.3113",
-                Longitude = "12757.113",
-                Comment = "Det här är en kommentar"
+                Longitude = "12757.113"
             };
             model.observation = o;
 

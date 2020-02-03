@@ -62,7 +62,7 @@
 
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox" } })
+        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", placeholder="Fyll i en kommentar" } })
     </div>
     <br />
 
