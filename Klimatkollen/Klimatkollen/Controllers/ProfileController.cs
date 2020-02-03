@@ -1,5 +1,6 @@
 ﻿using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -71,11 +72,18 @@ namespace Klimatkollen.Controllers
             }
             
         }
-
-        public IActionResult EditUserObservation(int id)
+        [HttpGet]
+        public IActionResult EditUserObservation(string id)
         {
-            //Skapa vymodell för observation
+            //Kod för att hämta vald observation
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditUserObservation(ObservationViewModel model)
+        {
+            //Kod för att skicka in den redigerade observationen
+            return RedirectToAction("UserProfile");
         }
 
     }
