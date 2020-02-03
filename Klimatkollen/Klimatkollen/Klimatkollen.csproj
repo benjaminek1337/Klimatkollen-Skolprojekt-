@@ -19,6 +19,19 @@
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\lib\jquery\Chart.js\Chart.bundle.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\Chart.bundle.min.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\Chart.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\Chart.min.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\Chart.js\samples\advanced\content-security-policy.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\samples\charts\area\analyser.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\samples\logo.svg" />
+    <None Include="wwwroot\lib\jquery\Chart.js\samples\samples.js" />
+    <None Include="wwwroot\lib\jquery\Chart.js\samples\utils.js" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

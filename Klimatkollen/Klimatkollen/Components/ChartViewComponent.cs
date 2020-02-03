@@ -7,23 +7,20 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Components
 {
-    [ViewComponent(Name = "Observation")]
-    public class ObservationViewComponent :ViewComponent 
+    public class ChartViewComponent : ViewComponent 
     {
         private readonly IRepository db;
-        public ObservationViewComponent(IRepository repository)
+        public ChartViewComponent(IRepository repository)
         {
             db = repository;
             //db.GenerateRandomFloats(50);
 
         }
-
-        //KANSKE?
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var test = await db.TestAsync(); //Gör enmetod som returnerar en lista med djurobservationer
+            
+            var test = await db.ChartAsync();
             return View(test);
         }
-        //Metod som returnerar områden där ett djur synts till?
     }
 }

@@ -21,5 +21,8 @@ namespace Klimatkollen.Data
         void AddObjectToDb(object objectToAdd);
 
         List<MainCategory> GetMainCategoriesFromDb();
+        Task<IEnumerable<MainCategory>> TestAsync(); //TEST
+        Task<IEnumerable<float>> ChartAsync(); //TEST CHART
+        Task<IEnumerable<float>> TestChartAsync();
     }
 }

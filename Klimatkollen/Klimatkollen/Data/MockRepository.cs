@@ -7,15 +7,30 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Klimatkollen.Data
 {
     public class MockRepository : IRepository
     {
         private readonly ApplicationDbContext dbContext;
+        public List<MainCategory> testList = new List<MainCategory>();
         public MockRepository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
+            MainCategory test = new MainCategory()
+            {
+                Id = 1,
+                CategoryName = "Vinter"
+            };
+            testList.Add(test);
+             test = new MainCategory()
+            {
+                Id = 2,
+                CategoryName = "kulr"
+            };
+            testList.Add(test);
         }
 
         public List<string> GetObservationCategories()
@@ -86,11 +101,42 @@ namespace Klimatkollen.Data
             return dbContext.MainCategories.ToList();
         }
 
-        public async Task<IEnumerable<string>> TestAsync() //TEST
+        public async Task<IEnumerable<MainCategory>> TestAsync() //TEST
         {
-            var result = GetObservationCategories();
-            return await Task.FromResult(result);
+            var result = testList;
+            return await Task.FromResult(testList.ToList());
+            //var result = GetMainCategoriesFromDb();
+            //return await Task.FromResult(result.ToList());
         }
+        public async Task<IEnumerable<float>> ChartAsync() //TEST CHART
+        {
+            List<float> testjson = new List<float>();
+            foreach (var i in GenerateRandomFloats(50))
+            {
+                testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
+            };
 
+            return await Task.FromResult(testjson.ToList());
+
+        }
+        public async Task<IEnumerable<float>> TestChartAsync() //TEST CHART
+        {
+            //List<float> testjson = new List<float>();
+            //foreach (var i in GenerateRandomFloats(50))
+            //{
+            //    testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
+            //};
+            //string hej = SerializeJsonFromFloats(testjson);
+            //WriteJsonToFile(hej, "C:/Users/theap/AppData/Local/Temp/temperatures.json");//DETTa bör vara filen
+
+            //return await Task.FromResult(testjson.ToList());
+            using (var client = new HttpClient())
+            {
+                var endPoint = "C:/Users/theap/AppData/Local/Temp/temperatures.json";
+                var json = await client.GetStringAsync(endPoint);
+                return JsonConvert.DeserializeObject<List<float>>(json);
+            }
+
+        }
     }
 }
