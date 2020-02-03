@@ -79,11 +79,20 @@ namespace Klimatkollen.Data
 
         public List<MainCategory> GetMainCategoriesFromDb()
         {
-            var persons = dbContext.Persons.ToList();
+            //var persons = dbContext.Persons.ToList();
 
 
-            int i = 2;
+            //int i = 2;
             return dbContext.MainCategories.ToList();
+        }
+        public MainCategory GetMainCategoryFromId(int id)
+        {
+            //MainCategory m = (MainCategory)dbContext.MainCategories.Where(x => x.Id == id);
+            return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
+        }
+        public Category GetCategoriesFromId(int id)
+        {
+
         }
     }
 }

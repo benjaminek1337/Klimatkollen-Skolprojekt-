@@ -47,5 +47,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public MainCategory GetMainCategoryFromId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -21,5 +21,6 @@ namespace Klimatkollen.Data
         void AddObjectToDb(object objectToAdd);
 
         List<MainCategory> GetMainCategoriesFromDb();
+        MainCategory GetMainCategoryFromId(int id);
     }
 }

@@ -29,25 +29,26 @@ namespace Klimatkollen.Controllers
  
         public IActionResult ReportObservationStep1()
         {
-            //TODO: Ska hämtas från DB
-            List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
-            ViewBag.Categories = cats;
+            //List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
+            //Hämtar MainCategories från db
+            ViewBag.Categories = db.GetMainCategoriesFromDb();
 
             return View();
         }
         public IActionResult ReportObservationStep2(MainCategory mainCat)
         {
-            if (mainCat.CategoryName == null)
+            if (mainCat.Id == 0)
             {
                 //Stannar på samma sida om ingen kategori är vald. Ska inte gå men man vet aldrig
                 return RedirectToAction("ReportObservationStep1");
-            }         
-
-            ObservationViewModel ob = new ObservationViewModel()
+            }     
+            
+            mainCat = db.GetMainCategoryFromId(mainCat.Id); //Hämtar Namn på MainCat
+            ObservationViewModel ob = new ObservationViewModel() //Skapar ViewModel
             {
                 mainCategory = mainCat
-                //TODO: Id måste sättas också
             };
+
             List<String> category;
             switch (mainCat.CategoryName)
             {             
@@ -61,7 +62,7 @@ namespace Klimatkollen.Controllers
                     ViewBag.list = category;
                     break;
                 case "Annan":
-                    category = new List<string>() { "Annan 1", "annan 2", "Annan 3" };
+                    category = new List<string>() { "Annan 1", "Annan 2", "Annan 3" };
                     ViewBag.list = category;
                     break;
                 default:
@@ -74,7 +75,7 @@ namespace Klimatkollen.Controllers
 
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
-            //Hårdkodar lite data i objetet för att slippa fylla i hela tiden i vyn
+            //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation() {
                 Date = DateTime.Today,
                 Latitude = "12.112.3113",
@@ -110,8 +111,32 @@ namespace Klimatkollen.Controllers
             //db.AddObjectToDb(finalOb);          
             return View();
         }
-        public IActionResult ReportObservationCompleted()
-        {          
+        public IActionResult ReportObservationCompleted(ObservationViewModel model)
+        {
+            Measurement m = new Measurement()
+            {
+                Category = model.category
+            };
+            Person p = new Person();
+
+            //Konverterar ViewModel till ett objekt av Observation
+            Observation finalObservation = new Observation()
+            {
+                //Inloggad person ska anges här
+                Person = p,
+                Comment = model.observation.Comment,
+                Date = model.observation.Date,
+                Longitude = model.observation.Longitude,
+                Latitude = model.observation.Latitude,
+                //MainCategory = model.mainCategory,
+                Measurement = m
+            };
+
+            //Kod för att spara i DB
+            db.AddObjectToDb(p);
+            //db.AddObjectToDb(model.mainCategory);
+            db.AddObjectToDb(m);
+            db.AddObjectToDb(finalObservation);
             return View();
         }
     }

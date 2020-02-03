@@ -16,6 +16,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20200130103058_migrationwithnewdatabasemethod.cs" />
     <Compile Include="Migrations\20200130103058_migrationwithnewdatabasemethod.Designer.cs" />
+    <Compile Include="Migrations\20200203083927_AddtoDB.cs" />
+    <Compile Include="Migrations\20200203083927_AddtoDB.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

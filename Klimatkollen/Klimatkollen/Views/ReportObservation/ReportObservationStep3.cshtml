@@ -74,6 +74,9 @@
     <div>
         @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
     </div>
+    <div>
+        @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
 
     <div class="col-md-8">
         <div class="form-group" style="visibility: visible">
