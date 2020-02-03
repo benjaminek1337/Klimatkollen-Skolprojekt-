@@ -15,7 +15,8 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Components\Person\" />
+    <Folder Include="Components\" />
+    <Folder Include="Views\Shared\Components\" />
   </ItemGroup>
 
 </Project>
