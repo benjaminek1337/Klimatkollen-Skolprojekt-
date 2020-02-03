@@ -21,9 +21,6 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult Index()
         {
-            //var observationCategories = db.GetObservationCategories();
-            //db.AddObservation();
-
             return View();
         }
  
@@ -56,17 +53,21 @@ namespace Klimatkollen.Controllers
 
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
-
+            model.category = db.GetCategoryFromId(model.category.Id);
             //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation() {
-                Date = DateTime.Now,
+                Date = DateTime.Today,
                 Latitude = "12.112.3113",
                 Longitude = "12757.113",
                 Comment = "Det här är en kommentar"
             };
             model.observation = o;
 
-            ViewBag.thirdCategories = db.GetThirdCategories(model.category);
+            //Hämtar underkategori baserat på vad som valts
+            var list = db.GetThirdCategories(model.category);
+            ViewBag.IsValueEnable = CheckList(list);
+            ViewBag.thirdCategories = list;
+
             return View(model);
         }
 
@@ -110,7 +111,7 @@ namespace Klimatkollen.Controllers
             //Konverterar ViewModel till ett objekt av Observation
             Observation finalObservation = new Observation()
             {
-                //Inloggad person ska anges här
+                //TODO: Inloggad person ska anges här
                 Person = p,
                 Comment = model.observation.Comment,
                 Date = model.observation.Date,
@@ -127,7 +128,16 @@ namespace Klimatkollen.Controllers
             db.AddObjectToDb(finalObservation);
             return View();
         }
-    }
-
-
+        private bool CheckList(List<ThirdCategory> list)
+        {
+            if (list.Any(x => x.Unit.Contains("Päls")))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }   
 }

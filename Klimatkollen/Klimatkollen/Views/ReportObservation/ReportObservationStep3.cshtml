@@ -8,53 +8,41 @@
 <h1>Steg 3 - Fyll i värden</h1>
 <h3>@Model.mainCategory.CategoryName och @Model.category.Type</h3>
 <hr />
-@foreach (var item in ViewBag.thirdCategories)
-{
-    <button class="buttonTemp smallbtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
-}
+<div id="catDiv">
+    @foreach (var item in ViewBag.thirdCategories)
+    {
+        <button class="buttonTemp smallbtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+    }
+</div>
 
-@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    @using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
 
 
 
 <div class="form-group">
-
-
-    @if (Model.category.Type == "Vildsvin")
-    {
-        //Kod för vildsvin
-    }
-    @if (Model.category.Type == "Groda")
-    {
-        //Kod för groda
-    }
-    @if (Model.category.Type == "Ripa")
-    {
-        <h5>Päls:</h5>
-        <p>Här ska pälsalternativ dyka upp</p>
-        @*<div class="col-md-10">
-                @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
-            </div>*@
-    }
-    @if (Model.category.Type == "Väder")
-    {
-        <h6>Här ska vädertyper dyka upp</h6>
-        @*<div class="col-md-8">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control" } })
-            </div>*@
-    }
-    @if (Model.category.Type == "Temperatur")
-    {
-        <h6>Här ska Temperatur-alternativ dyka upp</h6>
-        @*<div class="col-md-8">
-                @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
-            </div>*@
-    }
-
-    <br />
+    <div id="valueBox">
+        @if (ViewBag.IsValueEnable == true)
+        {
+            <h5>Värde:</h5>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+            </div>
+            <br />
+        }
+        else
+        {
+            @*<div class="col-md-8" style="line-height: 10px; visibility: hidden">
+                    @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+                </div>*@
+            <div>
+                @Html.HiddenFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+            </div>
+        }
+    </div>
 
     <h5>Datum:</h5>
     <div class="col-md-8">
@@ -71,33 +59,14 @@
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <br />
-    <div id="valueBox">
-        @if (ViewBag.thirdCategories.Count == 0)
-        {
-            <h5>Värde:</h5>
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
-            </div>
-            <br />
-        }
-        else
-        {
-            <div class="col-md-8" style="visibility: hidden">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
-            </div>
-        }
 
-    </div>
-
-    
-    <h5>Kommentar för observation av @Model.category.Type:</h5>
+    <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
         @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox" } })
     </div>
     <br />
-    <div class="col-md-10" style="visibility: visible">
-        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-    </div>
+
+
     <div>
         @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
     </div>
@@ -110,6 +79,9 @@
     <div>
         @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
     </div>
+    <div>
+        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
 
     <div class="col-md-8">
         <div class="form-group" style="visibility: visible">
@@ -117,12 +89,28 @@
         </div>
         <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
     </div>
+    <div class="col-md-10" style="visibility: hidden">
+        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+    </div>
 </div>
-}
-
-<script>
-    function SetValue(y) {
-        var x = document.getElementById("resultBoxId");
-        x.value = y.value;
     }
-</script>
+
+    <script>
+        function SetValue(y) {
+            var x = document.getElementById("resultBoxId");
+            x.value = y.value;
+        }
+        //Funktion för att sätta aktiv class på den klickade knappen
+        var header = document.getElementById("catDiv");
+        var btns = header.getElementsByClassName("smallbtn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("active");
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" active", "");
+                }
+                this.className += " active";
+                
+            });
+        }
+    </script>

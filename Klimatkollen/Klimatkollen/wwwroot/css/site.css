@@ -61,7 +61,9 @@ body {
     border: #4CAF50;
     border-width: 5px;
     color: black;
-    padding: 80px 100px;
+    /*padding: 80px 100px;*/
+    width: 250px;
+    height: 175px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -70,7 +72,8 @@ body {
     cursor: pointer;
 }
 .smallbtn {
-    padding: 50px 70px;
+    width: 200px;
+    height: 150px;
 }
     .active, .buttonTemp:hover {
         background-color: #4CAF50;
@@ -96,13 +99,19 @@ body {
     padding: 10px 12px 10px 12px;
     min-width: 120px;
 }
-@media (max-width: 900px) {
+@media (max-width: 400px) {
     .buttonTemp {
-        min-width: 250px;
-        max-width: 300px;
+        /*min-width: 250px;
+        max-width: 300px;*/
         display: block;
         margin: auto;
         margin-bottom: 10px;
+    }
+    .smallbtn {
+        width: 150px;
+        height: 100px;
+        display: inline-block;
+        margin: auto;
     }
     h1{
         font-size: 2.2em;
@@ -111,10 +120,13 @@ body {
         position: absolute;
         right: 5%;
     }
+    #catDiv{
+        margin: 20px;
+    }
 }
 #observation_Comment {
     width: 100%;
-    min-height: 70px;
+    min-height: 100px;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
