@@ -18,6 +18,12 @@
     <Compile Include="Migrations\20200130103058_migrationwithnewdatabasemethod.Designer.cs" />
     <Compile Include="Migrations\20200203083927_AddtoDB.cs" />
     <Compile Include="Migrations\20200203083927_AddtoDB.Designer.cs" />
+    <Compile Include="Migrations\20200203100941_MainCategoryInCategory.cs" />
+    <Compile Include="Migrations\20200203100941_MainCategoryInCategory.Designer.cs" />
+    <Compile Include="Migrations\20200203114759_MainCategoryInCategory2.cs" />
+    <Compile Include="Migrations\20200203114759_MainCategoryInCategory2.Designer.cs" />
+    <Compile Include="Migrations\20200203121123_MainCategoryInCategory3.cs" />
+    <Compile Include="Migrations\20200203121123_MainCategoryInCategory3.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

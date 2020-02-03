@@ -5,17 +5,25 @@
 
 <h1>Steg 2 - Välj underkategori @*för @Model.mainCategory.CategoryName*@</h1>
 
-<div id="catDiv">
+@*<div id="catDiv">
     @foreach (var item in ViewBag.list)
     {
         <button class="buttonTemp" onclick="SetValue(this)" value=@item>@item</button>
+    }
+</div>*@
+
+
+<div id="catDiv">
+    @foreach (var item in ViewBag.newList)
+    {
+        <button class="buttonTemp" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
     }
 </div>
 
 @using (Html.BeginForm("ReportObservationStep3", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
 {
     @Html.AntiForgeryToken()
-   
+
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
 <div class="form-group">
@@ -23,8 +31,11 @@
     <div class="col-md-8">
         <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
     </div>
-    <div class="col-md-10" style="visibility: hidden">
+    @*<div class="col-md-10" style="visibility: hidden">
         @Html.EditorFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBox" } })
+    </div>*@
+    <div class="col-md-10" style="visibility: hidden">
+        @Html.EditorFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
     </div>
 
     <div>
@@ -65,13 +76,13 @@
         //var z = document.getElementsByClassName("btnResult");
         //z[0].value = x[0].value;
 
-        var q = document.getElementById("resultBox");
+        //var q = document.getElementById("resultBox");
+        var q = document.getElementById("resultBoxId");
         q.value = y.value;
         Submitform();
     }
     //Submittar formuläret
-    function Submitform()
-    {
+    function Submitform() {
         document.forms["myForm"].submit();
     }
 </script>

@@ -12,5 +12,6 @@ namespace Klimatkollen.Models
         public String Value { get; set; }
         //[Required]
         public Category Category { get; set; }
+        public int CatId { get; set; }
     }
 }

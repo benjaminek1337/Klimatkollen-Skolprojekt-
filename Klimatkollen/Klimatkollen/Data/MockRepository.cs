@@ -90,9 +90,14 @@ namespace Klimatkollen.Data
             //MainCategory m = (MainCategory)dbContext.MainCategories.Where(x => x.Id == id);
             return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
         }
-        public Category GetCategoriesFromId(int id)
+        public List<Category> GetCategoriesFromId(MainCategory cat)
         {
-
+            return dbContext.Categories.Where(x => x.MainCategory == cat).ToList();
+        }
+        public Category GetCategoryFromId(int id)
+        {
+            Category temp = dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
+            return temp;
         }
     }
 }

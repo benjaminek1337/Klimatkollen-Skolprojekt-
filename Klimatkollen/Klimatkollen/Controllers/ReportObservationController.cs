@@ -29,7 +29,6 @@ namespace Klimatkollen.Controllers
  
         public IActionResult ReportObservationStep1()
         {
-            //List<String> cats = new List<string>() {"Djur", "Miljö", "Annan"};
             //Hämtar MainCategories från db
             ViewBag.Categories = db.GetMainCategoriesFromDb();
 
@@ -49,35 +48,19 @@ namespace Klimatkollen.Controllers
                 mainCategory = mainCat
             };
 
-            List<String> category;
-            switch (mainCat.CategoryName)
-            {             
-                //TODO: Värden ska hämtas från DB
-                case "Djur":
-                    category = new List<string>() { "Vildsvin", "Groda", "Ripa" };
-                    ViewBag.list = category;
-                    break;
-                case "Miljö":
-                    category = new List<string>() { "Väder", "Temperatur", "Vind" };
-                    ViewBag.list = category;
-                    break;
-                case "Annan":
-                    category = new List<string>() { "Annan 1", "Annan 2", "Annan 3" };
-                    ViewBag.list = category;
-                    break;
-                default:
-                    break;
-            }
-            
+            ViewBag.newList = db.GetCategoriesFromId(mainCat);
+           
             //Skickar tillbaka en vymodell
             return View(ob);
         }
 
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
+            //model.category = db.GetCategoryFromId(model.category.Id);
+
             //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation() {
-                Date = DateTime.Today,
+                Date = DateTime.Now,
                 Latitude = "12.112.3113",
                 Longitude = "12757.113",
                 Comment = "Det här är en kommentar"
@@ -115,8 +98,12 @@ namespace Klimatkollen.Controllers
         {
             Measurement m = new Measurement()
             {
-                Category = model.category
+                //Category = model.category,
+                Value = model.measurement.Value,
+                CatId = model.category.Id
             };
+            
+
             Person p = new Person();
 
             //Konverterar ViewModel till ett objekt av Observation
