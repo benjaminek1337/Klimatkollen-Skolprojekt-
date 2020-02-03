@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200203123911_MainCategoryInCategory4")]
+    partial class MainCategoryInCategory4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,8 +96,6 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Value");
 
-                    b.Property<int>("thirdCategoryId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -107,15 +107,13 @@ namespace Klimatkollen.Migrations
                         {
                             Id = 1,
                             CatId = 0,
-                            Value = "14",
-                            thirdCategoryId = 0
+                            Value = "14"
                         },
                         new
                         {
                             Id = 2,
                             CatId = 0,
-                            Value = "134",
-                            thirdCategoryId = 0
+                            Value = "134"
                         });
                 });
 
@@ -186,25 +184,6 @@ namespace Klimatkollen.Migrations
                             Id = 3,
                             Email = "Lisantia@gmail.com"
                         });
-                });
-
-            modelBuilder.Entity("Klimatkollen.Models.ThirdCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<string>("Type");
-
-                    b.Property<string>("Unit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("ThirdCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -401,13 +380,6 @@ namespace Klimatkollen.Migrations
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Klimatkollen.Models.ThirdCategory", b =>
-                {
-                    b.HasOne("Klimatkollen.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

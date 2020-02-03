@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Klimatkollen.Models
 {
-    public class Measurement
+    public class ThirdCategory
     {
         public int Id { get; set; }
-        public String Value { get; set; }
-        //[Required]
+        public String Unit { get; set; } // Eg. Celcius, M/S 
+        public String Type { get; set; } // Eg. Vindstyrka
         public Category Category { get; set; }
-        public int CatId { get; set; }
-        public int thirdCategoryId { get; set; }
     }
 }

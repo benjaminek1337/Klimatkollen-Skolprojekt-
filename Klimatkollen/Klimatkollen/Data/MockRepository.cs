@@ -99,5 +99,10 @@ namespace Klimatkollen.Data
             Category temp = dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
             return temp;
         }
+        public List<ThirdCategory> GetThirdCategories(Category cat)
+        {
+            //var cat = GetCategoryFromId(id);
+            return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
+        }
     }
 }

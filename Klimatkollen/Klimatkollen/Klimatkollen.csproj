@@ -24,6 +24,12 @@
     <Compile Include="Migrations\20200203114759_MainCategoryInCategory2.Designer.cs" />
     <Compile Include="Migrations\20200203121123_MainCategoryInCategory3.cs" />
     <Compile Include="Migrations\20200203121123_MainCategoryInCategory3.Designer.cs" />
+    <Compile Include="Migrations\20200203123911_MainCategoryInCategory4.cs" />
+    <Compile Include="Migrations\20200203123911_MainCategoryInCategory4.Designer.cs" />
+    <Compile Include="Migrations\20200203124057_MainCategoryInCategory5.cs" />
+    <Compile Include="Migrations\20200203124057_MainCategoryInCategory5.Designer.cs" />
+    <Compile Include="Migrations\20200203131932_MainCategoryInCategory6.cs" />
+    <Compile Include="Migrations\20200203131932_MainCategoryInCategory6.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

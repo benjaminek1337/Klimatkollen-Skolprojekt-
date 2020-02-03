@@ -1,5 +1,6 @@
 ﻿@model Klimatkollen.ViewModels.ObservationViewModel
 
+
 @{
     ViewData["Title"] = "ReportObservationStep3";
 }
@@ -7,13 +8,20 @@
 <h1>Steg 3 - Fyll i värden</h1>
 <h3>@Model.mainCategory.CategoryName och @Model.category.Type</h3>
 <hr />
+@foreach (var item in ViewBag.thirdCategories)
+{
+    <button class="buttonTemp smallbtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+}
 
 @using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
+
+
 <div class="form-group">
+
 
     @if (Model.category.Type == "Vildsvin")
     {
@@ -28,22 +36,22 @@
         <h5>Päls:</h5>
         <p>Här ska pälsalternativ dyka upp</p>
         @*<div class="col-md-10">
-            @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
-        </div>*@
+                @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
+            </div>*@
     }
     @if (Model.category.Type == "Väder")
     {
         <h6>Här ska vädertyper dyka upp</h6>
         @*<div class="col-md-8">
-            @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control" } })
-        </div>*@
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control" } })
+            </div>*@
     }
     @if (Model.category.Type == "Temperatur")
     {
         <h6>Här ska Temperatur-alternativ dyka upp</h6>
         @*<div class="col-md-8">
-            @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
-        </div>*@
+                @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
+            </div>*@
     }
 
     <br />
@@ -63,17 +71,33 @@
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <br />
-    <h5>Värde:</h5>
-    <div class="col-md-8">
-        @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control" } })
+    <div id="valueBox">
+        @if (ViewBag.thirdCategories.Count == 0)
+        {
+            <h5>Värde:</h5>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+            </div>
+            <br />
+        }
+        else
+        {
+            <div class="col-md-8" style="visibility: hidden">
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+            </div>
+        }
+
     </div>
-    <br />
+
+    
     <h5>Kommentar för observation av @Model.category.Type:</h5>
     <div class="col-md-8">
         @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox" } })
     </div>
     <br />
-
+    <div class="col-md-10" style="visibility: visible">
+        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+    </div>
     <div>
         @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
     </div>
@@ -95,3 +119,10 @@
     </div>
 </div>
 }
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("resultBoxId");
+        x.value = y.value;
+    }
+</script>

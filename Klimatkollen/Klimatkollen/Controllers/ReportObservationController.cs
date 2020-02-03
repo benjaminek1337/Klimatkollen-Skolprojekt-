@@ -56,7 +56,6 @@ namespace Klimatkollen.Controllers
 
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
-            //model.category = db.GetCategoryFromId(model.category.Id);
 
             //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation() {
@@ -67,6 +66,7 @@ namespace Klimatkollen.Controllers
             };
             model.observation = o;
 
+            ViewBag.thirdCategories = db.GetThirdCategories(model.category);
             return View(model);
         }
 
@@ -100,7 +100,8 @@ namespace Klimatkollen.Controllers
             {
                 //Category = model.category,
                 Value = model.measurement.Value,
-                CatId = model.category.Id
+                CatId = model.category.Id,
+                thirdCategoryId = model.measurement.thirdCategoryId
             };
             
 

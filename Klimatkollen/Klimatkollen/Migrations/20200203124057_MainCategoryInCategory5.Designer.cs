@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200203124057_MainCategoryInCategory5")]
+    partial class MainCategoryInCategory5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,8 +96,6 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Value");
 
-                    b.Property<int>("thirdCategoryId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -107,15 +107,13 @@ namespace Klimatkollen.Migrations
                         {
                             Id = 1,
                             CatId = 0,
-                            Value = "14",
-                            thirdCategoryId = 0
+                            Value = "14"
                         },
                         new
                         {
                             Id = 2,
                             CatId = 0,
-                            Value = "134",
-                            thirdCategoryId = 0
+                            Value = "134"
                         });
                 });
 

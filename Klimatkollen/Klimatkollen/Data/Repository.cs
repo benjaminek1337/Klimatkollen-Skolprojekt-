@@ -62,5 +62,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public List<ThirdCategory> GetThirdCategories(Category cat)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

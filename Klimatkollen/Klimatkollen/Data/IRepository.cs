@@ -24,5 +24,6 @@ namespace Klimatkollen.Data
         MainCategory GetMainCategoryFromId(int id);
         List<Category> GetCategoriesFromId(MainCategory cat);
         Category GetCategoryFromId(int id);
+        List<ThirdCategory> GetThirdCategories(Category cat);
     }
 }
