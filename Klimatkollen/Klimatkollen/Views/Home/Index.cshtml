@@ -1,26 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model Observation
+<h3>Sök efter observationer i området</h3>
+@Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { placeholder = "Longitud", @class = "form-control" } })
+@Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { placeholder = "Latitud", @class = "form-control" } })
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-primary mt-5 mr-2" value="Sök" /> @*Ska fråga efter en action*@
+    </div>
+</div>
 
-@*class="text-center">*@
-@*<h1 class="display-4">Välkommen till klimatkollen!</h1>
-    <div class="slider">
-        <ul class="slides">*@
-@* <li class="slide"><img src="~/pictures/fox.jpg" alt="" /></li> image by David Markfrom Pixabay*@
-@* <li class="slide"><img src="~/pictures/forest.jpg" alt="" /></li> image by Jonathan Petersson Pixabay*@
-@*<li class="slide"><img src="~/pictures/sky.jpg" alt="" /></li> image by Rudy and Peter Skitterians Pixabay*@
-@*</ul>
-    </div>*@
 @*<div>
-    @await Component.InvokeAsync("Observation")
-</div>*@
+        @await Component.InvokeAsync("Observation")
+    </div>*@
 <div>
     @await Component.InvokeAsync("Chart")
 </div>
 
 <div>
-    @*class="text-center"*@
-
     <h2> Lorem ipsum</h2>
     <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ex sit amet ipsum bibendum dignissim. Pellentesque varius aliquam libero id tempor. Ut quis lacus ultricies libero maximus blandit congue nec nisl. Integer vitae vehicula nunc, ut iaculis metus. Phasellus nulla turpis, hendrerit sed finibus a, hendrerit at elit. Donec tempus mauris sit amet sapien vestibulum consectetur. Proin nec odio viverra, suscipit nulla et, venenatis ipsum. Cras placerat tortor a sapien dapibus, ut ullamcorper risus consequat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed imperdiet fermentum faucibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.

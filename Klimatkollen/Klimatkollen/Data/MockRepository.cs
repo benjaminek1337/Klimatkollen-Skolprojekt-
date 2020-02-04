@@ -117,7 +117,7 @@ namespace Klimatkollen.Data
             List<float> testjson = new List<float>();
             foreach (var i in GenerateRandomFloats(50))
             {
-                testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
+                testjson.Add(i);
             };
 
             return await Task.FromResult(testjson.ToList());
@@ -128,26 +128,77 @@ namespace Klimatkollen.Data
             List<float> testjson = new List<float>();
             foreach (var i in GenerateRandomFloats(50))
             {
-                testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
+                testjson.Add(i);
             };
-            string hej = SerializeJsonFromFloats(testjson);
-            //WriteJsonToFile(hej, "~/Properties/jsondata.txt");//DETTa bör vara filen
-
+            
             return await Task.FromResult(testjson.ToList());
-            //using (var client = new HttpClient())
-            //{
-            //    var endPoint = "~/Properties/jsondata.txt";
-            //    var json = await client.GetStringAsync(endPoint);
-            //    return JsonConvert.DeserializeObject<List<float>>(json);
-            //}
 
         }
-        //public async Task<IEnumerable<Observation>> GetAllObservationsAsync() //Kanske skickain id för category
-        //{
-        //    var result = testList;
-        //    return await Task.FromResult(testList.ToList());
-        //    //var result = GetMainCategoriesFromDb();
-        //    //return await Task.FromResult(result.ToList());
-        //}
+        public List<Observation> ShowObservationsTest()
+        {
+            List<Observation> AllObservations = new List<Observation>();
+            Person p = new Person()
+            {
+                Id = 1,
+                Email = "testc@.com",
+                FirstName = "Lotta",
+                Lastname = "lottasson",
+                IdentityId = "1",
+                UserName = "Lottlott"
+            };
+            Category c = new Category()
+            {
+                Id = 1,
+                Unit = "katt",
+                Type = "kat"
+            };
+            Measurement m = new Measurement()
+            {
+                Id = 1,
+                Value = "13",
+                Category =c,
+            };
+            MainCategory mc = new MainCategory()
+            {
+                Id = 1,
+                CategoryName = "Djur"
+            };
+
+            Observation ob = new Observation()
+            {
+                Id = 1,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt",
+                Latitude = "12",
+                Longitude="12",
+                Person=p,
+                Measurement=m,
+                MainCategory=mc
+            };AllObservations.Add(ob);
+            ob = new Observation()
+            {
+                Id = 2,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt igen",
+                Latitude = "12",
+                Longitude = "12",
+                Person = p,
+                Measurement = m,
+                MainCategory = mc
+            }; AllObservations.Add(ob);
+            ob = new Observation()
+            {
+                Id = 3,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt igen",
+                Latitude = "13",
+                Longitude = "12",
+                Person = p,
+                Measurement = m,
+                MainCategory = mc
+            }; AllObservations.Add(ob);
+
+            return AllObservations;
+        }
     }
 }
