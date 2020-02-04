@@ -48,6 +48,8 @@ namespace Klimatkollen.Data
             var observations = new List<Observation>();
             foreach (var observation in dbContext.Observations)
             {
+                //Skicka in person-id här
+                //if(observation.Person.Id == id)
                 observations.Add(observation);
             }
             return observations;
@@ -55,7 +57,14 @@ namespace Klimatkollen.Data
 
         public Observation GetObservation(int id)
         {
-            return dbContext.Observations.FirstOrDefault(o => o.Id.Equals(id));
+            return dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
         }
+
+        public void PostEditedObservation(Observation observation)
+        {
+            dbContext.Update(observation);
+            dbContext.SaveChanges();
+        }
+
     }
 }

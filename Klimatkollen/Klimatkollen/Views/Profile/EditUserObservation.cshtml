@@ -6,93 +6,98 @@
 
 <h1>Ändra i observation</h1>
 <hr />
-<div id="map" style="height: 400px; width:75%"></div>
-<div id="coordsForm">
-    <label class="form-label">Latitud</label>
-    <input class="form-control" id="lat" type="text" value="" />
-    <label class="form-label">Longitud</label>
-    <input class="form-control" id="long" type="text" value="" />
-</div>
+<h3>Plats där observation gjordes</h3>
+<div id="map" style="height: 500px; width:100%"></div>
+
 <div id="editForm">
     <form method="post">
-        <label class="form-label">Latitud</label>
+        <input id="long" type="hidden" value="@Model.Longitude" asp-for="@Model.Longitude" />
+        <input id="lat" type="hidden" value="@Model.Latitude" asp-for="@Model.Latitude" />
+        <input type="hidden" asp-for="@Model.Person" value="@Model.Person" />
+
+        <label class="form-label">Kommentar</label>
         <input class="form-control" asp-for="@Model.Comment" />
-        <label class="form-label">Longitud</label>
-        <input class="form-control" id="long" type="text" value="" />
+
+        <label class="form-label">Observation av @Model.MainCategory.CategoryName,</label>
+        <label class="form-label">@Model.Measurement.Category.Type, @Model.Measurement.Category.Unit</label> 
+        <input asp-for="@Model.Measurement.Value" class="form-control" value="@Model.Measurement.Value" />
+        <input type="submit" value="Ändra observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile"/>
     </form>
 </div>
 
 <script>
-    var map, marker;
-$(document).ready(function() {
+        var map, marker;
+    $(document).ready(function() {
 
-    function myMap(lat, long) {
-        var myCenter = new google.maps.LatLng(lat, long);
-        var mapCanvas = document.getElementById("map");
-        var latInput, longInput;
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+            var latInput = document.getElementById("lat").value;
+            var longInput = document.getElementById("long").value;
+            var coords = { lat: Number(latInput), lng: Number(longInput) };
 
-        var mapOptions = {
-            center: myCenter,
-            zoom: 12,
-            streetViewControl: false,
-            mapTypeControl: true,
-            zoomControl: false,
-            scrollwheel:true
-        };
+            var mapOptions = {
+                center: coords,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel:true
+            };
 
-        map = new google.maps.Map(mapCanvas, mapOptions);
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                latInput = document.getElementById("lat").value = position.coords.latitude;
-                longInput = document.getElementById("long").value = position.coords.longitude;
-                
-                marker = new google.maps.Marker({
-                    position: { lat: latInput, lng: longInput },
-                    map: map,
-                    draggable: true
-                });
-                marker.addListener('click', function () {
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            //if (navigator.geolocation) {
+            //    navigator.geolocation.getCurrentPosition(function (position) {
+            //        latInput = document.getElementById("lat").value = position.coords.latitude;
+            //        longInput = document.getElementById("long").value = position.coords.longitude;
+
+                    marker = new google.maps.Marker({
+                        position: { lat: Number(latInput), lng: Number(longInput) },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+
                     map.setCenter(marker.getPosition());
-                });
-                marker.addListener('dragend', function () {
-                    document.getElementById("lat").value = marker.getPosition().lat();
-                    document.getElementById("long").value = marker.getPosition().lng();
-                });
+            //    }, function () {
+            //        handleLocationError(true, infoWindow, map.getCenter());
+            //    });
+            //} else {
+            //    // Browser doesn't support Geolocation
+            //    handleLocationError(false, infoWindow, map.getCenter());
+            //}
 
-                map.setCenter(marker.getPosition());
-            }, function () {
-                handleLocationError(true, infoWindow, map.getCenter());
-            });
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
+            //marker = new google.maps.Marker({
+            //        position: myCenter,
+            //        draggable: true
+            //    }
+            //);
+            //marker.setMap(map);
         }
 
-        marker = new google.maps.Marker({
-                position: myCenter,
-                draggable: true
-            }
-        );
-        marker.setMap(map);
-    }
+        //function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        //    infoWindow.setPosition(pos);
+        //    infoWindow.setContent(browserHasGeolocation ?
+        //        'Error: The Geolocation service failed.' :
+        //        'Error: Your browser doesn\'t support geolocation.');
+        //    infoWindow.open(map);
+        //}
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-    }
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
 
-    google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
-
-    map.addListener('click', function (event) {
-        marker.setPosition(event.latLng);
-        document.getElementById("lat").value = marker.getPosition().lat();
-        document.getElementById("long").value = marker.getPosition().lng();
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();
+        });
     });
-});
 
-</script>
+    </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
         async defer></script>

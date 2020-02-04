@@ -14,11 +14,13 @@ namespace Klimatkollen.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserRepository db;
+        private readonly IRepository observationdb;
 
-        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db)
+        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository)
         {
             this.userManager = userManager;
             this.db = db;
+            observationdb = repository;
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
@@ -73,15 +75,20 @@ namespace Klimatkollen.Controllers
             
         }
         [HttpGet]
-        public IActionResult EditUserObservation(string id)
+        public async Task<IActionResult> EditUserObservation(Observation observation)
         {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            observation.Person = db.GetPerson(userId);
+            observation = observationdb.GetObservation(observation.Person.Id);
             //Kod för att hämta vald observation
-            return View();
+            return View(observation);
         }
 
         [HttpPost]
-        public IActionResult EditUserObservation(ObservationViewModel model)
+        public IActionResult PostEditUserObservation(Observation model)
         {
+            observationdb.PostEditedObservation(model);
             //Kod för att skicka in den redigerade observationen
             return RedirectToAction("UserProfile");
         }
