@@ -223,6 +223,11 @@ body {
 
 /*SLIDER ONE*/
 
+@media only screen and (max-width: 400px) {
+    #slideOne, #slideTwo {
+        display: none;
+    }
+}
     .slidershow {
         width: 700px;
         height: 400px;
@@ -311,11 +316,11 @@ body {
         background-size: 700px 400px;
     }
     50% {
-        background: url(/pictures/hare.jpg);
+        background: url(/pictures/sky.jpg);
         background-size: 700px 400px;
     }
     75% {
-        background: url(/pictures/sky.jpg);
+        background: url(/pictures/hare.jpg);
         background-size: 700px 400px;
     }
     100%{
@@ -324,4 +329,7 @@ body {
     }
 }
 
-
+/*BECOME MEMBER*/
+.member h1, .member h4, .member div{
+    text-align: center;
+}
