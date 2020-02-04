@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Klimatkollen.Models
 {
@@ -17,6 +18,8 @@ namespace Klimatkollen.Models
         public String Comment { get; set; }
         [Required]
         public Measurement Measurement { get; set; }
+        public int maincategoryId { get; set; }
+        [ForeignKey("maincategoryId")]
         public MainCategory MainCategory { get; set; }
     }
 }

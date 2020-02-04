@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200204060719_NewDb1")]
+    partial class NewDb1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,15 +92,15 @@ namespace Klimatkollen.Migrations
 
                     b.Property<int>("CategoryId");
 
-                    b.Property<string>("Value");
+                    b.Property<int?>("ThirdCategoryId");
 
-                    b.Property<int>("thirdCategoryId");
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("thirdCategoryId");
+                    b.HasIndex("ThirdCategoryId");
 
                     b.ToTable("Measurements");
 
@@ -107,15 +109,13 @@ namespace Klimatkollen.Migrations
                         {
                             Id = 1,
                             CategoryId = 0,
-                            Value = "14",
-                            thirdCategoryId = 0
+                            Value = "14"
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 0,
-                            Value = "134",
-                            thirdCategoryId = 0
+                            Value = "134"
                         });
                 });
 
@@ -133,19 +133,19 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Longitude");
 
+                    b.Property<int?>("MainCategoryId");
+
                     b.Property<int>("MeasurementId");
 
                     b.Property<int>("PersonId");
 
-                    b.Property<int>("maincategoryId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("MainCategoryId");
 
                     b.HasIndex("MeasurementId");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("maincategoryId");
 
                     b.ToTable("Observations");
                 });
@@ -388,12 +388,15 @@ namespace Klimatkollen.Migrations
 
                     b.HasOne("Klimatkollen.Models.ThirdCategory", "ThirdCategory")
                         .WithMany()
-                        .HasForeignKey("thirdCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ThirdCategoryId");
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
                 {
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("MainCategoryId");
+
                     b.HasOne("Klimatkollen.Models.Measurement", "Measurement")
                         .WithMany()
                         .HasForeignKey("MeasurementId")
@@ -402,11 +405,6 @@ namespace Klimatkollen.Migrations
                     b.HasOne("Klimatkollen.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
-                        .WithMany()
-                        .HasForeignKey("maincategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
