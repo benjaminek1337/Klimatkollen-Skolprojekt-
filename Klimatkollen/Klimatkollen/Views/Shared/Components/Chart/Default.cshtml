@@ -11,29 +11,41 @@
         data.addColumn('number', 'Datum');
         data.addColumn('number', 'Temperatur');
         
-        //var myArray = new Array();    @*@foreach (var d in Model)    {        @:myArray.push("@d");    }*@        int i;
-        for (i = 0; i < @Model.Count(); i++) {
-            data.addRow([[i, "@Model"[i]]]);
-        }
-            //Få in siffror på båda
-        //data.addRows([
-        //    [1,  41.8],
-        //    [2, 32.4],
-        //    [3, 25.7],
-        //    [4, 10.5],
-        //    [5, 10.4],
-        //    [6, 7.7],
-        //    [7, 9.6],
-        //    [8, 10.6],
-        //    [9, 14.8],
-        //    [10, 11.6],
-        //    [11, 4.7],
-        //    [12, 5.2],
-        //    [13, 3.6],
-        //    [14, 3.4]
-        //]);
+        //var myArray = new Array();    @*@foreach (var d in Model)    {        @:myArray.push("@d");    }*@        //int i;
 
-        var options = {
+      
+        
+       
+    var temperatures = [];
+
+    @foreach (var m in Model)
+    {
+        @:temperatures.push("@m");
+
+    }
+
+    for (i = 0; i < temperatures.length; i++) {
+        data.addRow([i, parseFloat(temperatures[i])]);
+    }
+                //Få in siffror på båda
+                //data.addRows([
+                //    [1,  41.8],
+                //    [2, 32.4],
+                //    [3, 25.7],
+                //    [4, 10.5],
+                //    [5, 10.4],
+                //    [6, 7.7],
+                //    [7, 9.6],
+                //    [8, 10.6],
+                //    [9, 14.8],
+                //    [10, 11.6],
+                //    [11, 4.7],
+                //    [12, 5.2],
+                //    [13, 3.6],
+                //    [14, 3.4]
+                //]);
+
+                var options = {
             chart: {
                 title: 'Test',
                 subtitle: 'Test'
@@ -42,15 +54,15 @@
             height: 500,
             axes: {
                 x: {
-                    0: { side: 'top' }
+                        0: { side: 'top' }
+                    }
                 }
-            }
-        };
+            };
 
-        var chart = new google.charts.Line(document.getElementById('line_top_x'));
+            var chart = new google.charts.Line(document.getElementById('line_top_x'));
 
-        chart.draw(data, google.charts.Line.convertOptions(options));
-    }
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
 </script>
 
 
