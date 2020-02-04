@@ -13,7 +13,6 @@ namespace Klimatkollen.Controllers
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
-       // ObservationViewModel newModel = new ObservationViewModel();
         
         public ReportObservationController(IRepository repository)
         {
@@ -106,7 +105,7 @@ namespace Klimatkollen.Controllers
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
             
-            Person p = new Person();
+            Person p = new Person(); //Ska tas bort
 
             //Konverterar ViewModel till ett objekt av Observation
             Observation finalObservation = new Observation()

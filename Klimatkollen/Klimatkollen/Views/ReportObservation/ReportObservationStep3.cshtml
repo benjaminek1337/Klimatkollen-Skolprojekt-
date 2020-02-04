@@ -1,5 +1,9 @@
 ﻿@model Klimatkollen.ViewModels.ObservationViewModel
 
+<!-- Compiled and minified CSS -->
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">*@
+
+
 
 @{
     ViewData["Title"] = "ReportObservationStep3";
@@ -16,98 +20,100 @@
 </div>
 
 
-    @using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary("", new { @class = "text-danger" })
+@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
 
 
 
-<div class="form-group">
-    <div id="valueBox">
-        @if (ViewBag.IsValueEnable == true)
-        {
-            <h5>Värde:</h5>
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
-            </div>
-            <br />
-        }
-        else
-        {
-            <div>
-                @Html.HiddenFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
-            </div>
-        }
-    </div>
-
-    <h5>Datum:</h5>
-    <div class="col-md-8">
-        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <br />
-    <h5>Longitud:</h5>
-    <div class="col-md-8">
-        @Html.EditorFor(model => model.observation.Longitude, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <br />
-    <h5>Latitud:</h5>
-    <div class="col-md-8">
-        @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <br />
-
-    <h5>Kommentar för observationen:</h5>
-    <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder="Fyll i en kommentar" } })
-    </div>
-    <br />
-
-
-    <div>
-        @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-
-    <div class="col-md-8">
-        <div class="form-group" style="visibility: visible">
-            <input type="submit" value="Spara Observation" class="btn btn-primary btn-right" />
+    <div class="form-group">
+        <div id="valueBox">
+            @if (ViewBag.IsValueEnable == true)
+            {
+                <h5>Värde:</h5>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+                </div>
+                <br />
+            }
+            else
+            {
+                <div>
+                    @Html.HiddenFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
+                </div>
+            }
         </div>
-        <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
-    </div>
-    <div class="col-md-10" style="visibility: hidden">
-        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-    </div>
-</div>
-    }
 
-    <script>
-        function SetValue(y) {
-            var x = document.getElementById("resultBoxId");
-            x.value = y.value;
-        }
-        //Funktion för att sätta aktiv class på den klickade knappen
-        var header = document.getElementById("catDiv");
-        var btns = header.getElementsByClassName("smallbtn");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function () {
-                var current = document.getElementsByClassName("active");
-                if (current.length > 0) {
-                    current[0].className = current[0].className.replace(" active", "");
-                }
-                this.className += " active";
-                
-            });
-        }
-    </script>
+        <h5>Datum:</h5>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <br />
+        <h5>Longitud:</h5>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.observation.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <br />
+        <h5>Latitud:</h5>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <br />
+
+        <h5>Kommentar för observationen:</h5>
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
+        </div>
+        <br />
+
+
+        <div>
+            @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="col-md-8">
+            <div class="form-group" style="visibility: visible">
+                <input type="submit" value="Spara Observation" class="btn btn-primary btn-right" />
+            </div>
+            <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
+        </div>
+        <div class="col-md-10" style="visibility: hidden">
+            @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+        </div>
+    </div>
+}
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("resultBoxId");
+        x.value = y.value;
+    }
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var header = document.getElementById("catDiv");
+    var btns = header.getElementsByClassName("smallbtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+
+        });
+    }
+</script>
+<!-- Compiled and minified JavaScript -->
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>*@
