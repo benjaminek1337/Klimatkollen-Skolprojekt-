@@ -1,55 +1,64 @@
-﻿@*@{
-        Layout = null;
-    }*@
+﻿@model IEnumerable<float>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-@model IEnumerable<float>
-@{var myLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x).ToList());
-    var myData = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x).ToList()); }
+@*@{var myLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x).ToList());
+    var myData = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x).ToList()); }*@
 <h1>Default</h1>
-<script scr="~lib/jquery/Chart.js/Chart.js"></script>
-<link rel="stylesheet" href="~/css/Chart.css" />
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['line'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Datum');
+        data.addColumn('number', 'Temperatur');
+
+        
+            //Få in dina siffror på båda? For-loop?
+           @*data.addRows([ @Html.Raw(Model.ToString())*@
+
+        //        [1,  41.8],
+        //    [2, 32.4],
+        //    [3, 25.7],
+        //    [4, 10.5],
+        //    [5, 10.4],
+        //    [6, 7.7],
+        //    [7, 9.6],
+        //    [8, 10.6],
+        //    [9, 14.8],
+        //    [10, 11.6],
+        //    [11, 4.7],
+        //    [12, 5.2],
+        //    [13, 3.6],
+        //    [14, 3.4]
+        ]);
+
+        var options = {
+            chart: {
+                title: 'Box Office Earnings in First Two Weeks of Opening',
+                subtitle: 'in millions of dollars (USD)'
+            },
+            width: 900,
+            height: 500,
+            axes: {
+                x: {
+                    0: { side: 'top' }
+                }
+            }
+        };
+
+        var chart = new google.charts.Line(document.getElementById('line_top_x'));
+
+        chart.draw(data, google.charts.Line.convertOptions(options));
+    }
+</script>
+
 @foreach (var v in Model)
 {
     <li>@v.ToString()</li>
 }
 
-<canvas id="myChart" width="400" height="400"></canvas>
-<script>
-    var ctx = document.getElementById('myChart');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-</script>
+
+<div id="line_top_x"></div>
+@*//Test*@

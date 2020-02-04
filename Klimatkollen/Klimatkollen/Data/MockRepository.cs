@@ -15,22 +15,26 @@ namespace Klimatkollen.Data
     public class MockRepository : IRepository
     {
         private readonly ApplicationDbContext dbContext;
-        public List<MainCategory> testList = new List<MainCategory>();
+        public List<MainCategory> testList = new List<MainCategory>();//TEST
         public MockRepository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            MainCategory test = new MainCategory()
+            MainCategory test = new MainCategory()//TEST
             {
                 Id = 1,
-                CategoryName = "Vinter"
+                CategoryName = "Vinter"//TEST
             };
             testList.Add(test);
-             test = new MainCategory()
-            {
+             test = new MainCategory()//TEST
+             {
                 Id = 2,
-                CategoryName = "kulr"
-            };
-            testList.Add(test);
+                CategoryName = "kulr"//TEST
+             };
+            testList.Add(test);//TEST
+            //Observation ob=new Observation()
+            //{
+
+            //}
         }
 
         public List<string> GetObservationCategories()
@@ -121,22 +125,29 @@ namespace Klimatkollen.Data
         }
         public async Task<IEnumerable<float>> TestChartAsync() //TEST CHART
         {
-            //List<float> testjson = new List<float>();
-            //foreach (var i in GenerateRandomFloats(50))
-            //{
-            //    testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
-            //};
-            //string hej = SerializeJsonFromFloats(testjson);
-            //WriteJsonToFile(hej, "C:/Users/theap/AppData/Local/Temp/temperatures.json");//DETTa bör vara filen
-
-            //return await Task.FromResult(testjson.ToList());
-            using (var client = new HttpClient())
+            List<float> testjson = new List<float>();
+            foreach (var i in GenerateRandomFloats(50))
             {
-                var endPoint = "C:/Users/theap/AppData/Local/Temp/temperatures.json";
-                var json = await client.GetStringAsync(endPoint);
-                return JsonConvert.DeserializeObject<List<float>>(json);
-            }
+                testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
+            };
+            string hej = SerializeJsonFromFloats(testjson);
+            WriteJsonToFile(hej, "~/Properties/jsondata.txt");//DETTa bör vara filen
+
+            return await Task.FromResult(testjson.ToList());
+            //using (var client = new HttpClient())
+            //{
+            //    var endPoint = "~/Properties/jsondata.txt";
+            //    var json = await client.GetStringAsync(endPoint);
+            //    return JsonConvert.DeserializeObject<List<float>>(json);
+            //}
 
         }
+        //public async Task<IEnumerable<Observation>> GetAllObservationsAsync() //Kanske skickain id för category
+        //{
+        //    var result = testList;
+        //    return await Task.FromResult(testList.ToList());
+        //    //var result = GetMainCategoriesFromDb();
+        //    //return await Task.FromResult(result.ToList());
+        //}
     }
 }

@@ -18,7 +18,7 @@ namespace Klimatkollen.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            
+             
             var test = await db.ChartAsync();
             return View(test);
         }
