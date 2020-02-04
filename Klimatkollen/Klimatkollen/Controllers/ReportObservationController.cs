@@ -96,11 +96,11 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult ReportObservationCompleted(ObservationViewModel model)
         {
-            Measurement m = new Measurement()
+            Measurement newMeasurement = new Measurement()
             {
                 //Category = model.category,
                 Value = model.measurement.Value,
-                CatId = model.category.Id,
+                CategoryId = model.category.Id,
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
             
@@ -116,14 +116,13 @@ namespace Klimatkollen.Controllers
                 Date = model.observation.Date,
                 Longitude = model.observation.Longitude,
                 Latitude = model.observation.Latitude,
-                //MainCategory = model.mainCategory,
-                Measurement = m
+                Measurement = newMeasurement,
+                maincategoryId = model.mainCategory.Id
             };
 
             //Kod för att spara i DB
-            db.AddObjectToDb(p);
-            //db.AddObjectToDb(model.mainCategory);
-            db.AddObjectToDb(m);
+            db.AddObjectToDb(p); //Ska ej genonföras
+            db.AddObjectToDb(newMeasurement);
             db.AddObjectToDb(finalObservation);
             return View();
         }
