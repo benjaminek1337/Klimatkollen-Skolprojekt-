@@ -26,8 +26,8 @@ namespace Klimatkollen.Data
         public void AddObservation()
         {
             var person = new Person();
-           // var measurementCategory = new MeasurementCategory() { measurementCategories = new List<MeasurementCategory> { new MeasurementCategory() {Value = "3" } } };
-            var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person  };
+            // var measurementCategory = new MeasurementCategory() { measurementCategories = new List<MeasurementCategory> { new MeasurementCategory() {Value = "3" } } };
+            var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person };
         }
 
         public List<float> GenerateRandomFloats(int amountToGenerate)
@@ -39,7 +39,7 @@ namespace Klimatkollen.Data
             {
                 floats.Add((float)random.NextDouble() * (25 - -20) - 20);
             }
-            
+
             return floats;
         }
 
@@ -52,7 +52,7 @@ namespace Klimatkollen.Data
             {
                 js.WriteObject(msObj, floats);
                 msObj.Position = 0;
-                using(StreamReader sr = new StreamReader(msObj))
+                using (StreamReader sr = new StreamReader(msObj))
                 {
                     json = sr.ReadToEnd();
                 }
@@ -64,7 +64,7 @@ namespace Klimatkollen.Data
         public void WriteJsonToFile(String jsonString, String filePath)
         {
             IFormatter formatter = new BinaryFormatter();
-           
+
             using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 formatter.Serialize(stream, jsonString);
@@ -77,6 +77,94 @@ namespace Klimatkollen.Data
             dbContext.SaveChanges();
         }
 
+        public List<Observation> GetObservations()
+        {
+            var observations = new List<Observation>();
+            MainCategory mc = new MainCategory()
+            {
+                CategoryName = "Luft",
+                Id = 1,
+            };
+            Person person = new Person()
+            {
+                Id = 1,
+                FirstName = "Mattias",
+                Lastname = "Kenttä",
+                Email = "miss_kicki@hotmail.com"
+            };
+            Category category = new Category()
+            {
+                Id = 1,
+                Unit = "Meter per sekund",
+                Type = "Vindhastighet"
+            };
+            Measurement measurement = new Measurement()
+            {
+                Id = 1,
+                Value = "23 m/s",
+                Category = category
+
+            };
+            Observation observation = new Observation()
+            {
+                Id = 1,
+                Date = DateTime.Now,
+                Latitude = "67.86",
+                Longitude = "20.23",
+                Comment = "Coolaste observationen öster om Norge",
+                MainCategory = mc,
+                Person = person,
+                Measurement = measurement
+            }; observations.Add(observation);
+            return observations;
+        }
+
+        public Observation GetObservation(int id)
+        {
+            MainCategory mc = new MainCategory()
+            {
+                CategoryName = "Luft",
+                Id = 1,
+            };
+            Person person = new Person()
+            {
+                Id = 1,
+                FirstName = "Mattias",
+                Lastname = "Kenttä",
+                Email = "miss_kicki@hotmail.com"
+            };
+            Category category = new Category()
+            {
+                Id = 1,
+                Unit = "Meter per sekund",
+                Type = "Vindhastighet"
+            };
+            Measurement measurement = new Measurement()
+            {
+                Id = 1,
+                Value = "23 m/s",
+                Category = category
+
+            };
+            Observation observation = new Observation()
+            {
+                Id = 1,
+                Date = DateTime.Now,
+                Latitude = "-3.3730559",
+                Longitude = "29.9188862",
+                Comment = "Coolaste observationen öster om Norge",
+                MainCategory = mc,
+                Person = person,
+                Measurement = measurement
+            };
+            return observation;
+        }
+
+        public void PostEditedObservation(Observation observation)
+        {
+            
+            throw new NotImplementedException();
+        }
         public List<MainCategory> GetMainCategoriesFromDb()
         {
             return dbContext.MainCategories.ToList();

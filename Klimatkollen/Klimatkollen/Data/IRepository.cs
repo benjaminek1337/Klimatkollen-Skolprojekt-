@@ -20,10 +20,17 @@ namespace Klimatkollen.Data
 
         void AddObjectToDb(object objectToAdd);
 
+
         List<MainCategory> GetMainCategoriesFromDb();
         MainCategory GetMainCategoryFromId(int id);
         List<Category> GetCategoriesFromId(MainCategory cat);
         Category GetCategoryFromId(int id);
         List<ThirdCategory> GetThirdCategories(Category cat);
+        List<Observation> GetObservations();
+
+        Observation GetObservation(int id);
+        void PostEditedObservation(Observation observation);
+
+        //void GetMainCategoriesFromDb(object objectToAdd);
     }
 }
