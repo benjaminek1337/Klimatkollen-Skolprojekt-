@@ -49,17 +49,23 @@
 
 
 <div class="form-group">
-    <div class="col-md-8">
-        <h5>Datum:</h5>
-        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <br />
+
+
 
     <div class="col-md-8">
         <h5>Välj plats:</h5>
-        <div id="map" style="height: 400px; width:50%"></div>
+        <div id="map" style="height: 400px; width:100%"></div>
         <br />
     </div>
+
+
+    <div class="col-md-8">
+        <h5>Datum:</h5>
+        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+        <br />
+    </div>
+
+
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
         @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })

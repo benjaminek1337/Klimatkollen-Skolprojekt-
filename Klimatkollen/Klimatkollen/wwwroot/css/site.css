@@ -120,6 +120,7 @@ body {
         height: 100px;
         display: inline-block;
         margin: auto;
+        margin-bottom: 5px;
     }
     h1{
         font-size: 2.2em;
