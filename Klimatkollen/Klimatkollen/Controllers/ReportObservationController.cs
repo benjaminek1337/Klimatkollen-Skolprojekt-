@@ -45,7 +45,7 @@ namespace Klimatkollen.Controllers
             };
 
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
-           
+            
             //Skickar tillbaka en vymodell
             return View(ob);
         }
@@ -64,11 +64,22 @@ namespace Klimatkollen.Controllers
             //Hämtar underkategori baserat på vad som valts
             var list = db.GetThirdCategories(model.category);
             ViewBag.IsValueEnable = CheckList(list);
+
             ViewBag.thirdCategories = list;
+
+            if (model.category.Unit.Equals("Päls"))
+            {
+                ViewBag.thirdCategories = list.Where(x => x.Unit.Equals("Päls"));
+                ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
+            }
+            //if (model.category.Unit.Equals("Djur"))
+            //{
+            //    ViewBag.IsValueEnable = false;
+            //}
+
 
             return View(model);
         }
-
 
         [HttpPost]
         //[AllowAnonymous]

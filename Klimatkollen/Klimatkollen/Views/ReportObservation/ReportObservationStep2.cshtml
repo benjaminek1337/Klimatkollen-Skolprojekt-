@@ -1,6 +1,6 @@
 ﻿@model Klimatkollen.ViewModels.ObservationViewModel
 @{
-    ViewData["Title"] = "ReportObservationView";
+    ViewData["Title"] = "Rapportera observation";
 }
 
 <h1>Steg 2 - Välj underkategori @*för @Model.mainCategory.CategoryName*@</h1>
@@ -39,24 +39,6 @@
 </div>
 }
 
-@*Flytta nedan till annan fil*@
-<script>
-    // Funktion för att sätta aktiv class på den klickade knappen
-    //var header = document.getElementById("catDiv");
-    //var btns = header.getElementsByClassName("buttonTemp");
-    //for (var i = 0; i < btns.length; i++) {
-    //    btns[i].addEventListener("click", function () {
-    //        var current = document.getElementsByClassName("active");
-    //        if (current.length > 0) {
-    //            current[0].className = current[0].className.replace(" active", "");
-    //        }
-    //        this.className += " active";
-    //        SetValue();
-    //        Submitform();
-    //    });
-    //}
-
-</script>
 
 <script>
     //Sätter värdet på den klickade knappen till en textbox för objektets "category"
