@@ -44,14 +44,14 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
-        public List<Observation> GetObservations()
+        public List<Observation> GetObservations(int id)
         {
             var observations = new List<Observation>();
             foreach (var observation in dbContext.Observations)
             {
                 //Skicka in person-id här
-                //if(observation.Person.Id == id)
-                observations.Add(observation);
+                if (observation.Person.Id == id)
+                    observations.Add(observation);
             }
             return observations;
         }

@@ -5,49 +5,64 @@
     ViewBag.Title = "Profil";
 }
 
-<h1>@Model.FirstName's profil</h1>
+<h1>@Model.FirstName @Model.Lastname's profil</h1>
 <hr />
+<div class="row">
 
-<div id="displayUserInfo">
-    <p>
-        Förnamn: @Model.FirstName
+    <div id="myObservations" class="col-sm-7">
+        @await Component.InvokeAsync("UserObservations")
+    </div>
+
+    <div class="col-sm-5">
         <br />
-        Efternamn: @Model.Lastname
-        <br />
-        E-postadress: @Model.Email
-        <br />
-    </p>
-    <button class="btn btn-primary" id="launchEdit">Ändra information</button>
+        <div id="displayUserInfo" style="text-align:center">
+            <button class="btn btn-outline-primary" id="launchEdit">Ändra personlig information</button>
+        </div>
+
+        <div id="editUserInfo" style="display:none">
+            <form method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
+                <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-3">Förnamn:</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-3">Efternamn:</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
+                    </div>
+                </div>
+                <div class="form-group row" >
+                    <label class="col-form-label col-sm-3">E-postadress:</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required asp-for="@Model.Email" value="@Model.Email" />
+                    </div>
+                </div>
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary"><a style="color:white" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a></button>
+                <button type="button" class="btn btn-primary" id="abortEdit">Avbryt</button>
+            </form>
+
+        </div>
+    </div>
+
+
 </div>
-
-<div id="editUserInfo" style="display:none">
-    <form method="post">
-        <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
-        <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-        <label class="col-form-label">Förnamn</label>
-        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
-        <label class="col-form-label">Efternamn</label>
-        <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
-        <label class="col-form-label">E-postadress</label>
-        <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required  asp-for="@Model.Email" value="@Model.Email" />
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
-    </form>
-        
-            <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
-    <a class="btn btn-primary" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a>
-
-
-</div>
-
-<div id="myObservations">
-    @await Component.InvokeAsync("UserObservations")
-</div>
-
+<br /><br />
+<h1>ÄR DET HÄR VI VILL VISA LITE GAMIFICATION SHEISSE? Hur ska vi göra det måtro?</h1>
 <script>
     $(document).ready(function () {
         $("#launchEdit").click(function () {
-            $("#displayUserInfo").hide(200);
+            $("#displayUserInfo").hide();
             $("#editUserInfo").show(200);
         })
     })
@@ -56,7 +71,7 @@
 <script>
     $(document).ready(function () {
         $("#abortEdit").click(function () {
-            $("#displayUserInfo").show(200);
+            $("#displayUserInfo").show();
             $("#editUserInfo").hide(200);
         })
     })

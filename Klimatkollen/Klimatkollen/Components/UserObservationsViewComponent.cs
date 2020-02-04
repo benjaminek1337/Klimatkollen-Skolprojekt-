@@ -1,4 +1,6 @@
 ﻿using Klimatkollen.Data;
+using Klimatkollen.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,15 +12,23 @@ namespace Klimatkollen.Components
     public class UserObservationsViewComponent : ViewComponent
     {
         private readonly IRepository db;
+        private readonly IUserRepository userdb;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public UserObservationsViewComponent(IRepository repo)
+        public UserObservationsViewComponent(UserManager<IdentityUser> userManager, IUserRepository userRepo, IRepository repo)
         {
             db = repo;
+            userdb = userRepo;
+            this.userManager = userManager;
         }
-
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var observation = db.GetObservations();
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = userdb.GetPerson(userId);
+
+            var observation = db.GetObservations(person.Id);
             return View(observation);
         }
     }
