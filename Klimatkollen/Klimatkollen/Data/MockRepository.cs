@@ -165,5 +165,27 @@ namespace Klimatkollen.Data
             
             throw new NotImplementedException();
         }
+        public List<MainCategory> GetMainCategoriesFromDb()
+        {
+            return dbContext.MainCategories.ToList();
+        }
+        public MainCategory GetMainCategoryFromId(int id)
+        {
+            return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
+        }
+        public List<Category> GetCategoriesFromId(MainCategory cat)
+        {
+            return dbContext.Categories.Where(x => x.MainCategory == cat).ToList();
+        }
+        public Category GetCategoryFromId(int id)
+        {
+            Category temp = dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
+            return temp;
+        }
+        public List<ThirdCategory> GetThirdCategories(Category cat)
+        {
+            //var cat = GetCategoryFromId(id);
+            return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
+        }
     }
 }

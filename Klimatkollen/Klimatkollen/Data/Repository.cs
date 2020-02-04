@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Klimatkollen.Models;
 
 namespace Klimatkollen.Data
 {
@@ -66,5 +67,30 @@ namespace Klimatkollen.Data
             dbContext.SaveChanges();
         }
 
+
+        public List<MainCategory> GetMainCategoriesFromDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MainCategory GetMainCategoryFromId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Category> GetCategoriesFromId(MainCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Category GetCategoryFromId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ThirdCategory> GetThirdCategories(Category cat)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
