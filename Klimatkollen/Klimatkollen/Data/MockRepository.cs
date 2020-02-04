@@ -77,7 +77,7 @@ namespace Klimatkollen.Data
             dbContext.SaveChanges();
         }
 
-        public List<Observation> GetObservations()
+        public List<Observation> GetObservations(int id)
         {
             var observations = new List<Observation>();
             MainCategory mc = new MainCategory()

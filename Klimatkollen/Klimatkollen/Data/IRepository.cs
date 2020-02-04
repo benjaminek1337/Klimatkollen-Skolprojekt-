@@ -26,7 +26,7 @@ namespace Klimatkollen.Data
         List<Category> GetCategoriesFromId(MainCategory cat);
         Category GetCategoryFromId(int id);
         List<ThirdCategory> GetThirdCategories(Category cat);
-        List<Observation> GetObservations();
+        List<Observation> GetObservations(int id);
 
         Observation GetObservation(int id);
         void PostEditedObservation(Observation observation);

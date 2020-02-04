@@ -53,6 +53,7 @@ namespace Klimatkollen.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUserProfile(Person person)
         {
             var user = await GetCurrentUserAsync();
@@ -86,6 +87,7 @@ namespace Klimatkollen.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult PostEditUserObservation(Observation model)
         {
             observationdb.PostEditedObservation(model);
