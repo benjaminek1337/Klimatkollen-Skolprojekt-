@@ -6,7 +6,7 @@
     @foreach (var observation in Model)
     {
         <li>
-            <a href="#" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">
+            <a asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">
                 <text>
                     Observation: @observation.MainCategory.CategoryName  <br />
                     Typ: @observation.Measurement.Value<br />Kommentar: @observation.Comment <br />
