@@ -94,6 +94,8 @@ namespace Klimatkollen.Controllers
             //db.AddObjectToDb(finalOb);          
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ReportObservationCompleted(ObservationViewModel model)
         {
             Measurement newMeasurement = new Measurement()
@@ -104,7 +106,6 @@ namespace Klimatkollen.Controllers
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
             
-
             Person p = new Person();
 
             //Konverterar ViewModel till ett objekt av Observation

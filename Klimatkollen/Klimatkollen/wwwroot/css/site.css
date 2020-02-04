@@ -103,9 +103,12 @@ body {
     .buttonTemp {
         /*min-width: 250px;
         max-width: 300px;*/
-        display: block;
+        display: inline-block;
+        width: 150px;
+        height: 100px;
+        /*display: block;*/
         margin: auto;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
     .smallbtn {
         width: 150px;

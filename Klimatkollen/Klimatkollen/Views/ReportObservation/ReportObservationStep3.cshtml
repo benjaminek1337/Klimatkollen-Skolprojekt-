@@ -35,9 +35,6 @@
         }
         else
         {
-            @*<div class="col-md-8" style="line-height: 10px; visibility: hidden">
-                    @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
-                </div>*@
             <div>
                 @Html.HiddenFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control resultBoxValue" } })
             </div>
@@ -62,7 +59,7 @@
 
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", placeholder="Fyll i en kommentar" } })
+        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder="Fyll i en kommentar" } })
     </div>
     <br />
 
