@@ -131,7 +131,7 @@ namespace Klimatkollen.Data
                 testjson.Add(i);//Hur gör jag för att använda json-grejjen?!
             };
             string hej = SerializeJsonFromFloats(testjson);
-            WriteJsonToFile(hej, "~/Properties/jsondata.txt");//DETTa bör vara filen
+            //WriteJsonToFile(hej, "~/Properties/jsondata.txt");//DETTa bör vara filen
 
             return await Task.FromResult(testjson.ToList());
             //using (var client = new HttpClient())
