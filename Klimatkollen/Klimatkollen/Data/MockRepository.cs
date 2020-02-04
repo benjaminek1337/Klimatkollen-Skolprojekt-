@@ -30,14 +30,14 @@ namespace Klimatkollen.Data
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person  };
         }
 
-        public List<float> GenerateRandomFloats(int amountToGenerate)
+        public List<float> GenerateRandomFloats(int amountToGenerate, int minvValue, int maxValue)
         {
             var floats = new List<float>();
             Random random = new Random();
 
             for (int i = 0; i < amountToGenerate; i++)
             {
-                floats.Add((float)random.NextDouble() * (25 - -20) - 20);
+                floats.Add((float)random.NextDouble() * (maxValue - minvValue) - 20);
             }
             
             return floats;
@@ -80,9 +80,6 @@ namespace Klimatkollen.Data
         public List<MainCategory> GetMainCategoriesFromDb()
         {
             var persons = dbContext.Persons.ToList();
-
-
-            int i = 2;
             return dbContext.MainCategories.ToList();
         }
     }

@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200202180854_testmodelcreation")]
+    partial class testmodelcreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,14 +42,15 @@ namespace Klimatkollen.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Type = "Vind"
+                            Id = 2,
+                            Type = "VindStyrka",
+                            Unit = "m/s"
                         },
                         new
                         {
-                            Id = 2,
-                            CategoriesId = 1,
-                            Type = "Vindstyrka"
+                            Id = 3,
+                            Type = "Vindriktning",
+                            Unit = "grader"
                         });
                 });
 
@@ -62,6 +65,23 @@ namespace Klimatkollen.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MainCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Miljö"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Djur"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Annat"
+                        });
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Measurement", b =>
@@ -79,6 +99,18 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Measurements");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "14"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "134"
+                        });
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
@@ -131,6 +163,23 @@ namespace Klimatkollen.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Persons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "Uia@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "Udalliaa@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "Lisantia@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

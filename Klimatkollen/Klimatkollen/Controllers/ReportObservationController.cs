@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Klimatkollen.Controllers
 {
@@ -41,8 +42,24 @@ namespace Klimatkollen.Controllers
             //var jsonString =db.SerializeJsonFromFloats(floats);
             //db.WriteJsonToFile(jsonString, "C:\\temperatures.json");
 
+            var activeUserId = FindActiveUserId();
+
             return View(model);
         }
+
+        private String FindActiveUserId()
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+
+            if (claimsIdentity != null)
+            {
+                var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                return claim.Value;
+            }
+
+            return null;
+        }
+
         public IActionResult ReportObservationStep1()
         {
             //Temp för att lista kategorier i vyn

@@ -11,5 +11,10 @@ namespace Klimatkollen.Models
         public String Unit { get; set; } // Eg. Celcius, M/S 
         public String Type  { get; set; } // Eg. Vindstyrka
         public Category Categories { get; set; }
+
+        public static implicit operator Category(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

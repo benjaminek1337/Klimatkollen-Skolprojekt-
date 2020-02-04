@@ -18,11 +18,6 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
-        public List<float> GenerateRandomFloats(int amountToGenerate)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<string> GetObservationCategories() 
         {
             return new List<String>() { "Animal", "Environment", "Other" };
@@ -44,6 +39,11 @@ namespace Klimatkollen.Data
         }
 
         public List<MainCategory> GetMainCategoriesFromDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<float> GenerateRandomFloats(int amountToGenerate, int minvValue, int maxValue)
         {
             throw new NotImplementedException();
         }

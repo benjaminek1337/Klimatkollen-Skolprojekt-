@@ -12,7 +12,7 @@ namespace Klimatkollen.Data
 
         void AddObservation();
 
-        List<float> GenerateRandomFloats(int amountToGenerate);
+        List<float> GenerateRandomFloats(int amountToGenerate, int minvValue, int maxValue);
 
         String SerializeJsonFromFloats(List<float> floats);
 
