@@ -13,16 +13,16 @@ namespace Klimatkollen.Controllers
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
-        
+
         public ReportObservationController(IRepository repository)
         {
-            db = repository;          
+            db = repository;
         }
         public IActionResult Index()
         {
             return View();
         }
- 
+
         public IActionResult ReportObservationStep1()
         {
             //Hämtar MainCategories från db
@@ -36,8 +36,8 @@ namespace Klimatkollen.Controllers
             {
                 //Stannar på samma sida om ingen kategori är vald. Ska inte gå men man vet aldrig
                 return RedirectToAction("ReportObservationStep1");
-            }     
-            
+            }
+
             mainCat = db.GetMainCategoryFromId(mainCat.Id); //Hämtar Namn på MainCat
             ObservationViewModel ob = new ObservationViewModel() //Skapar ViewModel
             {
@@ -45,7 +45,7 @@ namespace Klimatkollen.Controllers
             };
 
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
-            
+
             //Skickar tillbaka en vymodell
             return View(ob);
         }
@@ -54,7 +54,8 @@ namespace Klimatkollen.Controllers
         {
             model.category = db.GetCategoryFromId(model.category.Id);
             //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
-            Observation o = new Observation() {
+            Observation o = new Observation()
+            {
                 Date = DateTime.Today,
                 Latitude = "12.112.3113",
                 Longitude = "12757.113"
@@ -100,7 +101,7 @@ namespace Klimatkollen.Controllers
                 MainCategory = model.mainCategory,
                 Measurement = m
             };
-            
+
             //db.AddObjectToDb(finalOb);          
             return View();
         }
@@ -115,7 +116,7 @@ namespace Klimatkollen.Controllers
                 CategoryId = model.category.Id,
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
-            
+
             Person p = new Person(); //Ska tas bort
 
             //Konverterar ViewModel till ett objekt av Observation
@@ -148,5 +149,5 @@ namespace Klimatkollen.Controllers
                 return true;
             }
         }
-    }   
+    }
 }
