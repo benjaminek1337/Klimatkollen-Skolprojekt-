@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class NewDb : Migration
+    public partial class fourthoffebruary : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -232,8 +232,8 @@ namespace Klimatkollen.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Value = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true),
-                    ThirdCategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false),
+                    thirdCategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,13 +243,13 @@ namespace Klimatkollen.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Measurements_ThirdCategories_ThirdCategoryId",
-                        column: x => x.ThirdCategoryId,
+                        name: "FK_Measurements_ThirdCategories_thirdCategoryId",
+                        column: x => x.thirdCategoryId,
                         principalTable: "ThirdCategories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -264,17 +264,11 @@ namespace Klimatkollen.Migrations
                     Latitude = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     MeasurementId = table.Column<int>(nullable: false),
-                    MainCategoryId = table.Column<int>(nullable: true)
+                    maincategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Observations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Observations_MainCategories_MainCategoryId",
-                        column: x => x.MainCategoryId,
-                        principalTable: "MainCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Observations_Measurements_MeasurementId",
                         column: x => x.MeasurementId,
@@ -285,6 +279,12 @@ namespace Klimatkollen.Migrations
                         name: "FK_Observations_Persons_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Observations_MainCategories_maincategoryId",
+                        column: x => x.maincategoryId,
+                        principalTable: "MainCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -310,11 +310,11 @@ namespace Klimatkollen.Migrations
 
             migrationBuilder.InsertData(
                 table: "Measurements",
-                columns: new[] { "Id", "CategoryId", "ThirdCategoryId", "Value" },
+                columns: new[] { "Id", "CategoryId", "Value", "thirdCategoryId" },
                 values: new object[,]
                 {
-                    { 1, null, null, "14" },
-                    { 2, null, null, "134" }
+                    { 1, 0, "14", 0 },
+                    { 2, 0, "134", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -377,14 +377,9 @@ namespace Klimatkollen.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Measurements_ThirdCategoryId",
+                name: "IX_Measurements_thirdCategoryId",
                 table: "Measurements",
-                column: "ThirdCategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Observations_MainCategoryId",
-                table: "Observations",
-                column: "MainCategoryId");
+                column: "thirdCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Observations_MeasurementId",
@@ -395,6 +390,11 @@ namespace Klimatkollen.Migrations
                 name: "IX_Observations_PersonId",
                 table: "Observations",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Observations_maincategoryId",
+                table: "Observations",
+                column: "maincategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ThirdCategories_CategoryId",

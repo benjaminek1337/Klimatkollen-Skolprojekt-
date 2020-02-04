@@ -6,25 +6,6 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\**" />
-    <Content Remove="Migrations\**" />
-    <EmbeddedResource Remove="Migrations\**" />
-    <None Remove="Migrations\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Migrations\20200204060535_NewDb.cs" />
-    <Compile Include="Migrations\20200204060535_NewDb.Designer.cs" />
-    <Compile Include="Migrations\20200204060719_NewDb1.cs" />
-    <Compile Include="Migrations\20200204060719_NewDb1.Designer.cs" />
-    <Compile Include="Migrations\20200204060839_NewDb2.cs" />
-    <Compile Include="Migrations\20200204060839_NewDb2.Designer.cs" />
-    <Compile Include="Migrations\20200204061106_UpdateDb.cs" />
-    <Compile Include="Migrations\20200204061106_UpdateDb.Designer.cs" />
-    <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
