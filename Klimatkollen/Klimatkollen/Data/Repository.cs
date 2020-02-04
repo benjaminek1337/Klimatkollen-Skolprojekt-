@@ -17,9 +17,5 @@ namespace Klimatkollen.Data
             return new List<String>() { "Animal", "Environment", "Other" };
         }
 
-        public Task<IEnumerable<string>> TestAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
