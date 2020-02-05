@@ -36,8 +36,9 @@
         <div class="form-group row">
             <label class="col-form-label col-sm-2">Datum:</label>
             <div class="col-sm-10">
-                @Html.TextBoxFor(model => model.Date, new { type = "date", @class = "form-control", value = Model.Date })
-            </div>
+                <input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />
+
+            </div>      
         </div>
 
 
@@ -49,6 +50,12 @@
         <input type="submit" value="Ändra observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
     </form>
 </div>
+
+<script>
+    $(document).ready( function() {
+        $( "#datepicker" ).datepicker();
+    });
+</script>
 
 <script>
     var map, marker;
