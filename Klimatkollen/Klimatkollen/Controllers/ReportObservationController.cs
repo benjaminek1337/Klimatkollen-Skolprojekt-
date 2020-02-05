@@ -41,7 +41,7 @@ namespace Klimatkollen.Controllers
             mainCat = db.GetMainCategoryFromId(mainCat.Id); //Hämtar Namn på MainCat
             ObservationViewModel ob = new ObservationViewModel() //Skapar ViewModel
             {
-                mainCategory = mainCat
+                mainCategory = db.GetMainCategoryFromId(mainCat.Id)
             };
 
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
@@ -53,12 +53,10 @@ namespace Klimatkollen.Controllers
         public IActionResult ReportObservationStep3(ObservationViewModel model)
         {
             model.category = db.GetCategoryFromId(model.category.Id);
-            //Hårdkodar lite data i objektet för att slippa fylla i hela tiden i vyn
             Observation o = new Observation()
             {
+                //Laddar dagens datum som default
                 Date = DateTime.Today,
-                Latitude = "12.112.3113",
-                Longitude = "12757.113"
             };
             model.observation = o;
 
@@ -70,14 +68,10 @@ namespace Klimatkollen.Controllers
 
             if (model.category.Unit.Equals("Päls"))
             {
+                //filtrerar listan om det gäller päls
                 ViewBag.thirdCategories = list.Where(x => x.Unit.Equals("Päls"));
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
-            //if (model.category.Unit.Equals("Djur"))
-            //{
-            //    ViewBag.IsValueEnable = false;
-            //}
-
 
             return View(model);
         }
