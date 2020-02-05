@@ -88,8 +88,11 @@ namespace Klimatkollen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PostEditUserObservation(Observation model)
+        public async Task<IActionResult> PostEditUserObservation(Observation model)
         {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            model.Person = db.GetPerson(userId);
             observationdb.PostEditedObservation(model);
             //Kod för att skicka in den redigerade observationen
             return RedirectToAction("UserProfile");
