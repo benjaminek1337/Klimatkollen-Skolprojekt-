@@ -193,7 +193,7 @@ namespace Klimatkollen.Data
             updatedObservation.Longitude = observation.Longitude;
             updatedObservation.Date = observation.Date;
             updatedObservation.Comment = observation.Comment;
-            updatedObservation.Measurement.ThirdCategory.Unit = observation.Measurement.ThirdCategory.Unit;
+            updatedObservation.Measurement.Value = observation.Measurement.Value;
             updatedObservation.Person = observation.Person;
 
             dbContext.Update(updatedObservation);
