@@ -7,16 +7,22 @@ using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
 using Klimatkollen.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace Klimatkollen.Controllers
 {
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IUserRepository userDb;
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
-        public ReportObservationController(IRepository repository)
+        public ReportObservationController(IRepository repository, IUserRepository userRepository, UserManager<IdentityUser> userManager)
         {
-            db = repository;
+            this.db = repository;
+            this.userManager = userManager;
+            this.userDb = userRepository;
         }
         public IActionResult Index()
         {
@@ -101,7 +107,7 @@ namespace Klimatkollen.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ReportObservationCompleted(ObservationViewModel model)
+        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model)
         {
             if (model.measurement.thirdCategoryId == 0)
             {
@@ -116,13 +122,14 @@ namespace Klimatkollen.Controllers
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
 
-            Person p = new Person(); //Ska tas bort
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = userDb.GetPerson(userId);
 
             //Konverterar ViewModel till ett objekt av Observation
             Observation finalObservation = new Observation()
             {
-                //TODO: Inloggad person ska anges här
-                Person = p,
+                Person = person,
                 Comment = model.observation.Comment,
                 Date = model.observation.Date,
                 Longitude = model.observation.Longitude,
@@ -132,7 +139,6 @@ namespace Klimatkollen.Controllers
             };
 
             //Kod för att spara i DB
-            db.AddObjectToDb(p); //Ska ej genonföras
             db.AddObjectToDb(newMeasurement);
             db.AddObjectToDb(finalObservation);
             return View();

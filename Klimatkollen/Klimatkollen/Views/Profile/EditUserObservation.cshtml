@@ -17,10 +17,10 @@
 
 
 
-        <h3 style="text-align:center">Observation av @Model.MainCategory.CategoryName, @*@Model.Measurement.Category.Type*@ </h3>
+        <h3 style="text-align:center">Observation av @*@Model.MainCategory.CategoryName,*@ @Model.Measurement.ThirdCategory.Type </h3>
         <br />
         <div class="form-group row">
-            @*<label class="col-form-label col-sm-2">@Model.Measurement.Category.Unit:</label>*@
+            <label class="col-form-label col-sm-2">@Model.Measurement.ThirdCategory.Unit Värde:</label>
             <div class="col-sm-10">
                 <input asp-for="@Model.Measurement.Value" class="form-control" value="@Model.Measurement.Value" />
             </div>

@@ -17,6 +17,8 @@ namespace Klimatkollen.Models
         public String Latitude { get; set; }
         public String Comment { get; set; }
         [Required]
+        public int measurementID { get; set; }
+        [ForeignKey("measurementID")]
         public Measurement Measurement { get; set; }
         public int maincategoryId { get; set; }
         [ForeignKey("maincategoryId")]
