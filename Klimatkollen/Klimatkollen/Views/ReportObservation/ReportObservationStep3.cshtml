@@ -1,22 +1,29 @@
 ﻿@model Klimatkollen.ViewModels.ObservationViewModel
+@*<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
+ @*Compiled and minified CSS*@ 
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">*@
 
+<!-- Compiled and minified JavaScript -->
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>*@
 
 @{
     ViewData["Title"] = "Rapportera observation";
 }
 
+<br />
 <h1>Steg 3 - Fyll i värden</h1>
 <h3>@Model.mainCategory.CategoryName och @Model.category.Type</h3>
 <hr />
+
 <div id="catDiv">
     @foreach (var item in ViewBag.thirdCategories)
     {
         <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
     }
 </div>
-<div id="valueBox">
 
-    @if(ViewBag.IsValueEnable == false)
+<div id="valueBox">
+    @if (ViewBag.IsValueEnable == false)
     {
         <hr />
         <h5>Miljö:</h5>
@@ -38,76 +45,77 @@
 
 
 
-<div class="form-group">
-    @if (ViewBag.IsValueEnable == true)
-    {
-        if (!Model.category.Unit.Equals("Djur"))
+    <div class="form-group">
+        @if (ViewBag.IsValueEnable == true)
         {
-            <h5>Värde:</h5>
-            <div class="col-md-8" style="visibility: visible">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
-            </div>
-            <br />
+            if (!Model.category.Unit.Equals("Djur") && !Model.category.Unit.Equals("Annat"))
+            {
+                <h5>Värde:</h5>
+                <div class="col-md-8" style="visibility: visible">
+                    @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+                </div>
+                <br />
+            }
         }
-    }
 
-
-    <div class="col-md-8">
-        <h5>Välj plats:</h5>
-        <div id="map" style="height: 400px; width:100%"></div>
-        <br />
-    </div>
-
-
-    <div class="col-md-8">
-        <h5>Datum:</h5>
-        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
-        <br />
-    </div>
-
-
-    <h5>Kommentar för observationen:</h5>
-    <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
-    </div>
-    <br />
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <input type="submit" value="Spara Observation" class="btn btn-primary btn-right" />
+        <div class="col-md-8">
+            <h5>Välj plats:</h5>
+            <div id="map" style="height: 400px; width:100%"></div>
+            <br />
         </div>
-        <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
-    </div>
 
-    @*Gömda element*@
-    <div class="col-md-10" style="visibility: hidden">
-        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-    </div>
-    <div class="col-md-8" style="visibility: hidden">
-        @Html.EditorFor(model => model.observation.Longitude, new { htmlAttributes = new { @class = "form-control", @id = "long" } })
-    </div>
-    <div class="col-md-8" style="visibility: hidden">
-        @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
-    </div>
-    <div class="col-md-8" style="visibility: hidden">
+
+        <div class="col-md-8">
+            <h5>Datum:</h5>
+            @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+            <br />
+        </div>
+
+
+        <h5>Kommentar för observationen:</h5>
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
+        </div>
+        <br />
+
+        <div class="col-md-8">
+            <div class="form-group">
+                <button type="submit" value="Spara Observation" class="btn btn-primary btn-right">Spara observation</button>
+            </div>
+            <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
+        </div>
+        <hr />
+
+        
+        @*Gömda element*@
+        <div class="col-md-10" style="visibility: hidden">
+            @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+        </div>
+        <div class="col-md-8" style="visibility: hidden">
+            @Html.EditorFor(model => model.observation.Longitude, new { htmlAttributes = new { @class = "form-control", @id = "long" } })
+        </div>
+        <div class="col-md-8" style="visibility: hidden">
+            @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
+        </div>
+        <div class="col-md-8" style="visibility: hidden">
             @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
-      </div>
-    <div>
-        @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
     </div>
-    <div>
-        @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
 }
 
 
