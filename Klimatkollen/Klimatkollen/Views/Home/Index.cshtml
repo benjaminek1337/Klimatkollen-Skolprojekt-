@@ -17,6 +17,7 @@
 @*<div>
     @await  Component.InvokeAsync("ObservationViewComponent")
 </div>*@
+    
 <div>
     @await Component.InvokeAsync("SliderOne")
 </div>
@@ -36,6 +37,7 @@
 <br />
 <br />
 <br />
+<a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Ny observation</a>
 @*<div class="hometext">*@
     @*class="text-center"*@
 
@@ -53,7 +55,7 @@
     </p>
 </div>*@
 
-<a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Ny observation</a>
+
 
 
 
