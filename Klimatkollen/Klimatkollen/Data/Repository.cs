@@ -51,14 +51,24 @@ namespace Klimatkollen.Data
             {
                 //Skicka in person-id här
                 if (observation.Person.Id == id)
+                {
+                    var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
+                    observation.Measurement = measurement;
+                    observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+
                     observations.Add(observation);
+                }
             }
             return observations;
         }
 
         public Observation GetObservation(int id)
         {
-            return dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
+            var observation = dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
+            observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
+            observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+
+            return observation;
         }
 
         public void PostEditedObservation(Observation observation)
