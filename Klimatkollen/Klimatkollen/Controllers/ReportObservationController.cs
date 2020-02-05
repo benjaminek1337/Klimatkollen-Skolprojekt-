@@ -108,7 +108,7 @@ namespace Klimatkollen.Controllers
             {
                 //Category = model.category,
                 Value = model.measurement.Value,
-                categoryId = model.category.Id,
+                //categoryId = model.category.Id,
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
             
