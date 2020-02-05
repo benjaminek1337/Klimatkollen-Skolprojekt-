@@ -186,9 +186,17 @@ namespace Klimatkollen.Data
 
         public void PostEditedObservation(Observation observation)
         {
-            //Kod för att uppdatera den valda observationen
-            //Risken finns att VI MANUELLT MÅSTE PLOCKA TABELLER SOM OVAN HOPPAS INTE!
-            dbContext.Update(observation);
+            var oldobservation = GetObservation(observation.Id);
+
+            var updatedObservation = oldobservation;
+            updatedObservation.Latitude = observation.Latitude;
+            updatedObservation.Longitude = observation.Longitude;
+            updatedObservation.Date = observation.Date;
+            updatedObservation.Comment = observation.Comment;
+            updatedObservation.Measurement.ThirdCategory.Unit = observation.Measurement.ThirdCategory.Unit;
+            updatedObservation.Person = observation.Person;
+
+            dbContext.Update(updatedObservation);
             dbContext.SaveChanges();
         }
         public List<MainCategory> GetMainCategoriesFromDb()
