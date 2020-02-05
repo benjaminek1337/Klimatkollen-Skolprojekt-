@@ -122,8 +122,9 @@ namespace Klimatkollen.Data
             var observations = new List<Observation>();
             foreach (var observation in dbContext.Observations)
             {
+                
                 //Skicka in person-id här
-                if (observation.Person.Id == id)
+                if (observation.Person != null && observation.Person.Id == id)
                 {
                     var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
                     observation.Measurement = measurement;
@@ -177,9 +178,6 @@ namespace Klimatkollen.Data
                 .ThenInclude(y => y.ThirdCategory)
                 .FirstOrDefault(o => o.Person.Id.Equals(id));
                 
-
-
-
             //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
             //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
 
