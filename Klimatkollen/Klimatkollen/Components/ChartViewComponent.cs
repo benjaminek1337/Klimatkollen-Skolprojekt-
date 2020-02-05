@@ -13,8 +13,6 @@ namespace Klimatkollen.Components
         public ChartViewComponent(IRepository repository)
         {
             db = repository;
-            //db.GenerateRandomFloats(50);
-
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
