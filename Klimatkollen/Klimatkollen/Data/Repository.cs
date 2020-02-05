@@ -7,7 +7,7 @@ using Klimatkollen.Models;
 
 namespace Klimatkollen.Data
 {
-    public class Repository : IRepository
+    public class Repository : IRepository //
     {
         private readonly ApplicationDbContext dbContext;
         public Repository(ApplicationDbContext dbContext)

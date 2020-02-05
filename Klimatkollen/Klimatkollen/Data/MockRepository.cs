@@ -213,5 +213,8 @@ namespace Klimatkollen.Data
         {
             return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
         }
+
+
+
     }
 }
