@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Klimatkollen.Data
 {
@@ -172,9 +173,15 @@ namespace Klimatkollen.Data
             //    Person = person,
             //    Measurement = measurement
             //};
-            var observation = dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
-            observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-            observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+            var observation = dbContext.Observations.Include(x => x.Measurement)
+                .ThenInclude(y => y.ThirdCategory)
+                .FirstOrDefault(o => o.Person.Id.Equals(id));
+                
+
+
+
+            //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
+            //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
 
             return observation;
         }
