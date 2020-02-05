@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Rapportera observation";
 }
-
+<br />
 <h1>Steg 2 - Välj underkategori @*för @Model.mainCategory.CategoryName*@</h1>
 
 <div id="catDiv">
@@ -18,25 +18,25 @@
 
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
-<div class="form-group">
-    <br />
-    <div class="col-md-8">
-        <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
-    </div>
+    <div class="form-group">
+        <br />
+        <div class="col-md-8">
+            <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
+        </div>
 
-    <div class="col-md-10" style="visibility: hidden">
-        @Html.EditorFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-    </div>
+        <div class="col-md-10" style="visibility: hidden">
+            @Html.EditorFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+        </div>
 
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
 
-    <hr />
-</div>
+        <hr />
+    </div>
 }
 
 
