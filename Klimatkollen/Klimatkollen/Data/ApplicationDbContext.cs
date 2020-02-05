@@ -25,9 +25,9 @@ namespace Klimatkollen.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            Category windStrength;
-            Category windCategory;
-            Category windDirection;
+            //Category windStrength;
+            //Category windCategory;
+            //Category windDirection;
 
 
             //modelBuilder.Entity<Category>(c =>
@@ -45,44 +45,44 @@ namespace Klimatkollen.Data
             //    });
             //});
 
-            modelBuilder.Entity<Category>().HasData(
+            //modelBuilder.Entity<Category>().HasData(
 
-                //windCategory = new Category()
-                //{
-                //    Id = 1,
-                //    Type = "Vind",
-                //},
-                windStrength = new Category()
-                {
-                    Id = 2,
-                    Type = "VindStyrka",
-                    Unit = "m/s",
-                        //Categories = windCategory
-                    },
-                windDirection = new Category()
-                {
-                    Id = 3,
-                    Type = "Vindriktning",
-                    Unit = "grader",
-                        //Categories = windCategory
-                    });
+            //    //windCategory = new Category()
+            //    //{
+            //    //    Id = 1,
+            //    //    Type = "Vind",
+            //    //},
+            //    windStrength = new Category()
+            //    {
+            //        Id = 2,
+            //        Type = "VindStyrka",
+            //        Unit = "m/s",
+            //            //Categories = windCategory
+            //        },
+            //    windDirection = new Category()
+            //    {
+            //        Id = 3,
+            //        Type = "Vindriktning",
+            //        Unit = "grader",
+            //            //Categories = windCategory
+            //        });
 
 
 
-            modelBuilder.Entity<Measurement>().HasData(
+            //modelBuilder.Entity<Measurement>().HasData(
 
-                new Measurement()
-                {
-                    Id = 1,
-                    Value = "14",
-                    //Category = windStrength
-                    },
-                new Measurement()
-                {
-                    Id = 2,
-                    Value = "134",
-                    //Category = windDirection
-                    });
+            //    new Measurement()
+            //    {
+            //        Id = 1,
+            //        Value = "14",
+            //        //Category = windStrength
+            //        },
+            //    new Measurement()
+            //    {
+            //        Id = 2,
+            //        Value = "134",
+            //        //Category = windDirection
+            //        });
 
             modelBuilder.Entity<MainCategory>().HasData(
 

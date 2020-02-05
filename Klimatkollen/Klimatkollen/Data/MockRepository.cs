@@ -102,7 +102,7 @@ namespace Klimatkollen.Data
             {
                 Id = 1,
                 Value = "23 m/s",
-                Category = category
+                //Category = category
 
             };
             Observation observation = new Observation()
@@ -143,7 +143,7 @@ namespace Klimatkollen.Data
             {
                 Id = 1,
                 Value = "23 m/s",
-                Category = category
+                //Category = category
 
             };
             Observation observation = new Observation()

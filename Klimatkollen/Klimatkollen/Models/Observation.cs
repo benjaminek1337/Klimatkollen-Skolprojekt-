@@ -18,8 +18,8 @@ namespace Klimatkollen.Models
         public String Comment { get; set; }
         [Required]
         public Measurement Measurement { get; set; }
-        public int maincategoryId { get; set; }
-        [ForeignKey("maincategoryId")]
+        //public int maincategoryId { get; set; }
+        //[ForeignKey("maincategoryId")]
         public MainCategory MainCategory { get; set; }
     }
 }

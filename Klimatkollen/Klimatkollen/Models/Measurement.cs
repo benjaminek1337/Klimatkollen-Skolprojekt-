@@ -9,13 +9,14 @@ namespace Klimatkollen.Models
 {
     public class Measurement
     {
+        [Key]
         public int Id { get; set; }
         public String Value { get; set; }
         //[Required]
 
-        public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        //public int categoryId { get; set; }
+        //[ForeignKey("categoryId")]
+        //public Category Category { get; set; }
 
         public int thirdCategoryId { get; set; }
         [ForeignKey("thirdCategoryId")]

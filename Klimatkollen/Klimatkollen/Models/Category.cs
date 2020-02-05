@@ -8,6 +8,7 @@ namespace Klimatkollen.Models
 {
     public class Category
     {
+        [Key]
         public int Id { get; set; }
         public String Unit { get; set; } // Eg. Celcius, M/S 
         public String Type  { get; set; } // Eg. Vindstyrka

@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200205080915_FreshDb1")]
+    partial class FreshDb1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,13 +76,13 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Value");
+                    b.Property<int?>("ThirdCategoryId");
 
-                    b.Property<int>("thirdCategoryId");
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("thirdCategoryId");
+                    b.HasIndex("ThirdCategoryId");
 
                     b.ToTable("Measurements");
                 });
@@ -349,8 +351,7 @@ namespace Klimatkollen.Migrations
                 {
                     b.HasOne("Klimatkollen.Models.ThirdCategory", "ThirdCategory")
                         .WithMany()
-                        .HasForeignKey("thirdCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ThirdCategoryId");
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
