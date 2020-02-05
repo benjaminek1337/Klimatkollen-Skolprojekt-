@@ -102,7 +102,7 @@ namespace Klimatkollen.Data
             {
                 Id = 1,
                 Value = "23 m/s",
-                Category = category
+                //Category = category
 
             };
             Observation observation = new Observation()
@@ -143,7 +143,7 @@ namespace Klimatkollen.Data
             {
                 Id = 1,
                 Value = "23 m/s",
-                Category = category
+                //Category = category
 
             };
             Observation observation = new Observation()
@@ -161,8 +161,7 @@ namespace Klimatkollen.Data
         }
 
         public void PostEditedObservation(Observation observation)
-        {
-            
+        {         
             throw new NotImplementedException();
         }
         public List<MainCategory> GetMainCategoriesFromDb()
@@ -179,12 +178,10 @@ namespace Klimatkollen.Data
         }
         public Category GetCategoryFromId(int id)
         {
-            Category temp = dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
-            return temp;
+            return dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
         }
         public List<ThirdCategory> GetThirdCategories(Category cat)
         {
-            //var cat = GetCategoryFromId(id);
             return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
         }
     }

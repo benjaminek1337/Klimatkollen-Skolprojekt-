@@ -10,11 +10,11 @@
         {
             <li>
                 <div class="card">
-                    <div class="card-header" style="border:0px; background-color:dodgerblue">
-                        <h3 style="color:white">Observation av @observation.MainCategory.CategoryName</h3>
+                    <div class="card-header">
+                        Observation av @observation.MainCategory.CategoryName
                     </div>
-                    <div class="card-body" style="border:0px">
-                        Mätvärde: @observation.Measurement.Value, @observation.Measurement.Category.Type <br /><br />
+                    <div class="card-body">
+                        Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />
                         Kommentar: @observation.Comment <br />
                         Observation gjord den @observation.Date
                     </div>

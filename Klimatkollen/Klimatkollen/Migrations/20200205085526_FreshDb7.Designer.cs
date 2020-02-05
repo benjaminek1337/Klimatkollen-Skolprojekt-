@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200205085526_FreshDb7")]
+    partial class FreshDb7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,19 +105,19 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Longitude");
 
+                    b.Property<int?>("MainCategoryId");
+
                     b.Property<int>("MeasurementId");
 
                     b.Property<int>("PersonId");
 
-                    b.Property<int>("maincategoryId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("MainCategoryId");
 
                     b.HasIndex("MeasurementId");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("maincategoryId");
 
                     b.ToTable("Observations");
                 });
@@ -363,6 +365,10 @@ namespace Klimatkollen.Migrations
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
                 {
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("MainCategoryId");
+
                     b.HasOne("Klimatkollen.Models.Measurement", "Measurement")
                         .WithMany()
                         .HasForeignKey("MeasurementId")
@@ -371,11 +377,6 @@ namespace Klimatkollen.Migrations
                     b.HasOne("Klimatkollen.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
-                        .WithMany()
-                        .HasForeignKey("maincategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

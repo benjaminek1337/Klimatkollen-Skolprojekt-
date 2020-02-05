@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200204110418_fourthoffebruary")]
-    partial class fourthoffebruary
+    [Migration("20200205084827_FreshDb3")]
+    partial class FreshDb3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,20 +38,6 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("MainCategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            Type = "VindStyrka",
-                            Unit = "m/s"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Type = "Vindriktning",
-                            Unit = "grader"
-                        });
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.MainCategory", b =>
@@ -90,7 +76,7 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryId");
+                    b.Property<int?>("CategoryId");
 
                     b.Property<string>("Value");
 
@@ -103,22 +89,6 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("thirdCategoryId");
 
                     b.ToTable("Measurements");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 0,
-                            Value = "14",
-                            thirdCategoryId = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 0,
-                            Value = "134",
-                            thirdCategoryId = 0
-                        });
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
@@ -135,19 +105,19 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Longitude");
 
+                    b.Property<int?>("MainCategoryId");
+
                     b.Property<int>("MeasurementId");
 
                     b.Property<int>("PersonId");
 
-                    b.Property<int>("maincategoryId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("MainCategoryId");
 
                     b.HasIndex("MeasurementId");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("maincategoryId");
 
                     b.ToTable("Observations");
                 });
@@ -196,15 +166,15 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId");
-
                     b.Property<string>("Type");
 
                     b.Property<string>("Unit");
 
+                    b.Property<int>("categoryId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("categoryId");
 
                     b.ToTable("ThirdCategories");
                 });
@@ -385,8 +355,7 @@ namespace Klimatkollen.Migrations
                 {
                     b.HasOne("Klimatkollen.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("Klimatkollen.Models.ThirdCategory", "ThirdCategory")
                         .WithMany()
@@ -396,6 +365,10 @@ namespace Klimatkollen.Migrations
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
                 {
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("MainCategoryId");
+
                     b.HasOne("Klimatkollen.Models.Measurement", "Measurement")
                         .WithMany()
                         .HasForeignKey("MeasurementId")
@@ -405,18 +378,14 @@ namespace Klimatkollen.Migrations
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
-                        .WithMany()
-                        .HasForeignKey("maincategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.ThirdCategory", b =>
                 {
                     b.HasOne("Klimatkollen.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

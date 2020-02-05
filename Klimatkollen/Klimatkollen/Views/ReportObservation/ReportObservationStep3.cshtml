@@ -15,18 +15,8 @@
     }
 </div>
 <div id="valueBox">
-    @if (ViewBag.IsValueEnable == true)
-    {
-        if (!Model.category.Unit.Equals("Djur"))
-        {
-            <h5>Värde:</h5>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
-            </div>
-            <br />
-        }
-    }
-    else
+
+    @if(ViewBag.IsValueEnable == false)
     {
         <hr />
         <h5>Miljö:</h5>
@@ -49,7 +39,17 @@
 
 
 <div class="form-group">
-
+    @if (ViewBag.IsValueEnable == true)
+    {
+        if (!Model.category.Unit.Equals("Djur"))
+        {
+            <h5>Värde:</h5>
+            <div class="col-md-8" style="visibility: visible">
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+            </div>
+            <br />
+        }
+    }
 
 
     <div class="col-md-8">
@@ -90,8 +90,8 @@
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
     </div>
     <div class="col-md-8" style="visibility: hidden">
-        @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
-    </div>
+            @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+      </div>
     <div>
         @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
     </div>
