@@ -109,6 +109,11 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ReportObservationCompleted(ObservationViewModel model)
         {
+            if (model.measurement.thirdCategoryId == 0)
+            {
+                //TODO: Fixa fullösning
+                model.measurement.thirdCategoryId = 11;
+            }
             Measurement newMeasurement = new Measurement()
             {
                 //Category = model.category,

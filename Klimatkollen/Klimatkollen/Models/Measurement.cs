@@ -16,7 +16,7 @@ namespace Klimatkollen.Models
 
         //public int categoryId { get; set; }
         //[ForeignKey("categoryId")]
-        //public Category Category { get; set; }
+        public Category Category { get; set; }
 
         public int thirdCategoryId { get; set; }
         [ForeignKey("thirdCategoryId")]
