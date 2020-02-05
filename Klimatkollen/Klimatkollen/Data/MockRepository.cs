@@ -86,7 +86,9 @@ namespace Klimatkollen.Data
             return dbContext.MainCategories.ToList();
         }
 
-
-
+        public void AddObjectToDb(Observation model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

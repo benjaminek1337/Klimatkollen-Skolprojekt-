@@ -11,5 +11,6 @@ namespace Klimatkollen.Data
         List<string> GetObservationCategories();
 
         void AddObservation();
+        void AddObjectToDb(Observation model);
     }
 }

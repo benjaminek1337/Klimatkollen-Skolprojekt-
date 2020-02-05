@@ -13,6 +13,12 @@ namespace Klimatkollen.Data
         {
             this.dbContext = dbContext;
         }
+
+        public void AddObjectToDb(Observation model)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddObservation()
         {
             throw new NotImplementedException();
