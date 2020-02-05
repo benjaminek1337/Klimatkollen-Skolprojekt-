@@ -2,7 +2,7 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class NewDb2 : Migration
+    public partial class NewFreshDb2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,20 +26,6 @@ namespace Klimatkollen.Migrations
                 nullable: false,
                 oldClrType: typeof(int),
                 oldNullable: true);
-
-            migrationBuilder.UpdateData(
-                table: "Measurements",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "thirdCategoryId",
-                value: 0);
-
-            migrationBuilder.UpdateData(
-                table: "Measurements",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "thirdCategoryId",
-                value: 0);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Measurements_ThirdCategories_thirdCategoryId",
@@ -71,20 +57,6 @@ namespace Klimatkollen.Migrations
                 table: "Measurements",
                 nullable: true,
                 oldClrType: typeof(int));
-
-            migrationBuilder.UpdateData(
-                table: "Measurements",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "ThirdCategoryId",
-                value: null);
-
-            migrationBuilder.UpdateData(
-                table: "Measurements",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "ThirdCategoryId",
-                value: null);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Measurements_ThirdCategories_ThirdCategoryId",

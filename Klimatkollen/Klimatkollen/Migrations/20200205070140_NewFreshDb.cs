@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class NewDb : Migration
+    public partial class NewFreshDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -232,18 +232,11 @@ namespace Klimatkollen.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Value = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true),
                     ThirdCategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measurements", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Measurements_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Measurements_ThirdCategories_ThirdCategoryId",
                         column: x => x.ThirdCategoryId,
@@ -290,15 +283,6 @@ namespace Klimatkollen.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "MainCategoryId", "Type", "Unit" },
-                values: new object[,]
-                {
-                    { 2, null, "VindStyrka", "m/s" },
-                    { 3, null, "Vindriktning", "grader" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "MainCategories",
                 columns: new[] { "Id", "CategoryName" },
                 values: new object[,]
@@ -309,22 +293,13 @@ namespace Klimatkollen.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Measurements",
-                columns: new[] { "Id", "CategoryId", "ThirdCategoryId", "Value" },
-                values: new object[,]
-                {
-                    { 1, null, null, "14" },
-                    { 2, null, null, "134" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Persons",
                 columns: new[] { "Id", "Email", "FirstName", "IdentityId", "Lastname", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "Uia@gmail.com", null, null, null, null },
-                    { 2, "Udalliaa@gmail.com", null, null, null, null },
-                    { 3, "Lisantia@gmail.com", null, null, null, null }
+                    { 1, "person1@gmail.com", "Person1", null, null, null },
+                    { 2, "person2@gmail.com", "Person2", null, null, null },
+                    { 3, "person3@gmail.com", "Person3", null, null, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -370,11 +345,6 @@ namespace Klimatkollen.Migrations
                 name: "IX_Categories_MainCategoryId",
                 table: "Categories",
                 column: "MainCategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Measurements_CategoryId",
-                table: "Measurements",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Measurements_ThirdCategoryId",

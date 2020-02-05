@@ -14,14 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20200204060535_NewDb.cs" />
-    <Compile Include="Migrations\20200204060535_NewDb.Designer.cs" />
-    <Compile Include="Migrations\20200204060719_NewDb1.cs" />
-    <Compile Include="Migrations\20200204060719_NewDb1.Designer.cs" />
-    <Compile Include="Migrations\20200204060839_NewDb2.cs" />
-    <Compile Include="Migrations\20200204060839_NewDb2.Designer.cs" />
-    <Compile Include="Migrations\20200204061106_UpdateDb.cs" />
-    <Compile Include="Migrations\20200204061106_UpdateDb.Designer.cs" />
+    <Compile Include="Migrations\20200205070140_NewFreshDb.cs" />
+    <Compile Include="Migrations\20200205070140_NewFreshDb.Designer.cs" />
+    <Compile Include="Migrations\20200205070225_NewFreshDb1.cs" />
+    <Compile Include="Migrations\20200205070225_NewFreshDb1.Designer.cs" />
+    <Compile Include="Migrations\20200205070303_NewFreshDb2.cs" />
+    <Compile Include="Migrations\20200205070303_NewFreshDb2.Designer.cs" />
+    <Compile Include="Migrations\20200205070951_NewFreshDb3.cs" />
+    <Compile Include="Migrations\20200205070951_NewFreshDb3.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

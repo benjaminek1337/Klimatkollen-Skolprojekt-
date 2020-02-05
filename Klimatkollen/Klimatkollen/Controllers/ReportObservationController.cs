@@ -72,11 +72,6 @@ namespace Klimatkollen.Controllers
                 ViewBag.thirdCategories = list.Where(x => x.Unit.Equals("Päls"));
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
-            //if (model.category.Unit.Equals("Djur"))
-            //{
-            //    ViewBag.IsValueEnable = false;
-            //}
-
 
             return View(model);
         }
@@ -88,7 +83,8 @@ namespace Klimatkollen.Controllers
         {
             Measurement m = new Measurement()
             {
-                Category = model.category
+                //Category = model.category,
+
             };
             //Konverterar ViewModel till ett objekt av Observation
             Observation finalObservation = new Observation()
@@ -112,7 +108,7 @@ namespace Klimatkollen.Controllers
             {
                 //Category = model.category,
                 Value = model.measurement.Value,
-                CategoryId = model.category.Id,
+                categoryId = model.category.Id,
                 thirdCategoryId = model.measurement.thirdCategoryId
             };
             
@@ -128,7 +124,7 @@ namespace Klimatkollen.Controllers
                 Longitude = model.observation.Longitude,
                 Latitude = model.observation.Latitude,
                 Measurement = newMeasurement,
-                maincategoryId = model.mainCategory.Id
+                //maincategoryId = model.mainCategory.Id
             };
 
             //Kod för att spara i DB
