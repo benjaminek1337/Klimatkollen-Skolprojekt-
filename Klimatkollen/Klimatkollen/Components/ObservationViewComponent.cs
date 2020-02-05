@@ -21,7 +21,7 @@ namespace Klimatkollen.Components
         //KANSKE?
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var test = await db.TestTableAsync(); //Gör enmetod som returnerar en lista med djurobservationer
+            var test = await db.TestTableAsync(); 
             return View(test);
         }
     }

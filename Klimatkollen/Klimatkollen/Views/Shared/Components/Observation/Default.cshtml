@@ -1,13 +1,16 @@
-﻿@*@{
-    Layout = null;
-}*@
-@model IEnumerable<Observation>
+﻿@model IEnumerable<Klimatkollen.Models.Observation>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset='UTF-8' />
+<link rel="stylesheet" href="~/css/site.css" />
 <h1>Hej</h1>
-@foreach(var v in Model)
+@foreach (var v in Model)
 {
-	<li>@v.Comment</li> //PÅ NÅGOT SÄTT SKICKA IN LONGITUD OCH LATITUD
+    if (v.Latitude == "12")//PÅ NÅGOT SÄTT SKICKA IN LONGITUD OCH LATITUD
+    {
+    <li>@v.Comment</li>
+    }
 }
-                                                                                                           
+
 
 
 

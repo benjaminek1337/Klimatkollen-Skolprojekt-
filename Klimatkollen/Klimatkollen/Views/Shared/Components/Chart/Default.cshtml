@@ -1,7 +1,10 @@
-﻿@model IEnumerable<float> 
+﻿@model IEnumerable<float>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset='UTF-8' />
+<link rel="stylesheet" href="~/css/site.css" />
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <h1>Default</h1>
-
+@*Begränsa till temperaturen till ett område, mellan vissa datum, *@
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
@@ -10,7 +13,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'Datum');
         data.addColumn('number', 'Temperatur');
-  
+
     var temperatures = [];
 
     @foreach (var m in Model)
@@ -28,7 +31,7 @@
                 title: 'Test',
                 subtitle: 'Test'
             },
-            width: 900,
+            width: 900, /*Sätta bredd och vidd i css så grafen kan bli responsiv*/
             height: 500,
             axes: {
                 x: {
