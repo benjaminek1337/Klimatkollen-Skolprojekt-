@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<float> 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
@@ -36,8 +37,7 @@
 
                 var options = {
             chart: {
-                title: 'Miljö-statistik',
-         
+                title: 'Senaste temperaturen'
             },
             width: 900,
             height: 500,
