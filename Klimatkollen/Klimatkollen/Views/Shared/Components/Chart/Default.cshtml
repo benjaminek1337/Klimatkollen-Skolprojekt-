@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<float> 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<h1>Default</h1>
+<h1>Statistik</h1>
+
 
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['line'] });
@@ -25,8 +26,7 @@
 
                 var options = {
             chart: {
-                title: 'Test',
-                subtitle: 'Test'
+                title: 'Temperaturer',
             },
             width: 900,
             height: 500,
@@ -42,7 +42,6 @@
             chart.draw(data, google.charts.Line.convertOptions(options));
         }
 </script>
-
 
 
 <div id="line_top_x"></div>

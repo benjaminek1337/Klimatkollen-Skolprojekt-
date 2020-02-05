@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Models;
 using Klimatkollen.Data;
 using Microsoft.AspNetCore.Authorization;
->>>>>>>>> Temporary merge branch 2
+
 
 namespace Klimatkollen.Controllers
 {
