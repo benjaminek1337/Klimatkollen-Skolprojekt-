@@ -81,7 +81,7 @@ namespace Klimatkollen.Controllers
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             observation.Person = db.GetPerson(userId);
-            observation = observationdb.GetObservation(observation.Person.Id);
+            observation = observationdb.GetObservation(observation.Id);
             //Kod för att hämta vald observation
             return View(observation);
         }

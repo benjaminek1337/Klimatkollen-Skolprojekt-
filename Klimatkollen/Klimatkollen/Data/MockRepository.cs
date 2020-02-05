@@ -176,7 +176,7 @@ namespace Klimatkollen.Data
             //};
             var observation = dbContext.Observations.Include(x => x.Measurement)
                 .ThenInclude(y => y.ThirdCategory)
-                .FirstOrDefault(o => o.Person.Id.Equals(id));
+                .FirstOrDefault(o => o.Id.Equals(id));
                 
             //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
             //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
