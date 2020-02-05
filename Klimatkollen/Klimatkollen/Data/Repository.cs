@@ -7,7 +7,7 @@ using Klimatkollen.Models;
 
 namespace Klimatkollen.Data
 {
-    public class Repository : IRepository //
+    public class Repository : IRepository
     {
         private readonly ApplicationDbContext dbContext;
         public Repository(ApplicationDbContext dbContext)
@@ -105,6 +105,16 @@ namespace Klimatkollen.Data
         }
 
         public List<ThirdCategory> GetThirdCategories(Category cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<float>> ChartAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Observation>> TestTableAsync()
         {
             throw new NotImplementedException();
         }

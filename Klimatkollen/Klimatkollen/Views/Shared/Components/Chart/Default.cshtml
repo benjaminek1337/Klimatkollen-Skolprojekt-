@@ -1,0 +1,49 @@
+﻿@model IEnumerable<float> 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<h1>Default</h1>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['line'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Datum');
+        data.addColumn('number', 'Temperatur');
+  
+    var temperatures = [];
+
+    @foreach (var m in Model)
+    {
+        @:temperatures.push("@m");
+
+    }
+
+    for (i = 0; i < temperatures.length; i++) {
+        data.addRow([i, parseFloat(temperatures[i])]);
+    }
+
+                var options = {
+            chart: {
+                title: 'Test',
+                subtitle: 'Test'
+            },
+            width: 900,
+            height: 500,
+            axes: {
+                x: {
+                        0: { side: 'top' }
+                    }
+                }
+            };
+
+            var chart = new google.charts.Line(document.getElementById('line_top_x'));
+
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+</script>
+
+
+
+<div id="line_top_x"></div>
+@*//Div för diagrammet*@

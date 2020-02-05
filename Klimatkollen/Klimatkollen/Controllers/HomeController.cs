@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Models;
 using Klimatkollen.Data;
 using Microsoft.AspNetCore.Authorization;
+>>>>>>>>> Temporary merge branch 2
 
 namespace Klimatkollen.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly IRepository db;
-        //public HomeController(IRepository repository)
-        //{
-        //    db = repository;
-        //}
+        private readonly IRepository db;
+        public HomeController(IRepository repository)
+        {
+            db = repository;
+        }
         public IActionResult Index()
         {
             return View();
@@ -33,5 +34,11 @@ namespace Klimatkollen.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //[HttpGet]
+        //public async Task<IActionResult> GetObservationByLonLat(string longitud, string latitud)
+        //{
+
+        //    return View();
+        //}
     }
 }

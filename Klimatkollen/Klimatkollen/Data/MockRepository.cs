@@ -213,10 +213,93 @@ namespace Klimatkollen.Data
         {
             return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
         }
-
-        public void AddObjectToDb(Observation model)
+        public async Task<IEnumerable<float>> ChartAsync() //TEST CHART
         {
-            throw new NotImplementedException();
+            List<float> testjson = new List<float>();
+            foreach (var i in GenerateRandomFloats(50))
+            {
+                testjson.Add(i);
+            };
+
+            return await Task.FromResult(testjson.ToList());
+
+        }
+        public List<Observation> ShowObservationsTest()//Test Table OBSERVATION
+        {
+            List<Observation> AllObservations = new List<Observation>();
+            Person p = new Person()
+            {
+                Id = 1,
+                Email = "testc@.com",
+                FirstName = "Lotta",
+                Lastname = "lottasson",
+                IdentityId = "1",
+                UserName = "Lottlott"
+            };
+            Category c = new Category()
+            {
+                Id = 1,
+                Unit = "katt",
+                Type = "kat"
+            };
+            Measurement m = new Measurement()
+            {
+                Id = 1,
+                Value = "13",
+                Category = c,
+            };
+            MainCategory mc = new MainCategory()
+            {
+                Id = 1,
+                CategoryName = "Djur"
+            };
+
+            Observation ob = new Observation()
+            {
+                Id = 1,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt",
+                Latitude = "12",
+                Longitude = "12",
+                Person = p,
+                Measurement = m,
+                MainCategory = mc
+            }; AllObservations.Add(ob);
+            ob = new Observation()
+            {
+                Id = 2,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt igen",
+                Latitude = "12",
+                Longitude = "12",
+                Person = p,
+                Measurement = m,
+                MainCategory = mc
+            }; AllObservations.Add(ob);
+            ob = new Observation()
+            {
+                Id = 3,
+                Date = DateTime.Now,
+                Comment = "Jättefin katt igen",
+                Latitude = "13",
+                Longitude = "12",
+                Person = p,
+                Measurement = m,
+                MainCategory = mc
+            }; AllObservations.Add(ob);
+
+            return AllObservations;
+        }
+        public async Task<IEnumerable<Observation>> TestTableAsync() //TEST table observation
+        {
+            List<Observation> observationTestList = new List<Observation>();
+            foreach (var i in ShowObservationsTest())
+            {
+                observationTestList.Add(i);
+            };
+
+            return await Task.FromResult(observationTestList.ToList());
+
         }
     }
-}
+    }

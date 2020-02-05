@@ -1,6 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model Observation
+<h3>Sök efter observationer i området</h3>
+@Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { placeholder = "Longitud", @class = "form-control" } })
+@Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { placeholder = "Latitud", @class = "form-control" } })
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-primary mt-5 mr-2" value="Sök" /> @*Ska fråga efter en action*@
+    </div>
+</div>
 
 
 @*class="text-center">*@
@@ -12,17 +21,9 @@
         @*<li class="slide"><img src="~/pictures/sky.jpg" alt="" /></li> image by Rudy and Peter Skitterians Pixabay*@
     @*</ul>
 </div>*@
-
-<br />
-<div>
-    @await Component.InvokeAsync("SliderOne")
-</div>
-
-
-<div>
-    @await Component.InvokeAsync("BecomeMember")
-</div>
-<br />
+@*<div>
+    @await  Component.InvokeAsync("ObservationViewComponent")
+</div>*@
 
 <div>
     @await Component.InvokeAsync("SeeObservations")
