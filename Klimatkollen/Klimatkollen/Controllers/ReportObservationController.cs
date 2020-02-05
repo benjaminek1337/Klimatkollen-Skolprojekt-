@@ -134,7 +134,7 @@ namespace Klimatkollen.Controllers
                 Longitude = model.observation.Longitude,
                 Latitude = model.observation.Latitude,
                 Measurement = newMeasurement,
-                //maincategoryId = model.mainCategory.Id
+                maincategoryId = model.mainCategory.Id
             };
 
             //Kod för att spara i DB
