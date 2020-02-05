@@ -1,0 +1,21 @@
+﻿@model Klimatkollen.Models.Person
+
+@{
+    ViewBag.Title = "Fyll i användarinformation";
+}
+
+<h1>Fyll i användarinformation</h1>
+<hr />
+<div id="editUserInfo">
+    <form method="post">
+        <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
+        <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+        <input type="hidden" asp-for="@Model.Email" value="@Model.Email" />
+        <label class="col-form-label" asp-for="@Model.FirstName"></label>
+        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+        <label class="col-form-label" asp-for="@Model.Lastname"></label>
+        <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
+    </form>
+</div>

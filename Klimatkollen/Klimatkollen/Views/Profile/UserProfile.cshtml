@@ -1,0 +1,63 @@
+﻿@model Klimatkollen.Models.Person
+
+
+@{
+    ViewBag.Title = "Profil";
+}
+
+<h1>@Model.FirstName's profil</h1>
+<hr />
+
+<div id="displayUserInfo">
+    <p>
+        Förnamn: @Model.FirstName
+        <br />
+        Efternamn: @Model.Lastname
+        <br />
+        E-postadress: @Model.Email
+        <br />
+    </p>
+    <button class="btn btn-primary" id="launchEdit">Ändra information</button>
+</div>
+
+<div id="editUserInfo" style="display:none">
+    <form method="post">
+        <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
+        <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+        <label class="col-form-label">Förnamn</label>
+        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+        <label class="col-form-label">Efternamn</label>
+        <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
+        <label class="col-form-label">E-postadress</label>
+        <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required  asp-for="@Model.Email" value="@Model.Email" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
+    </form>
+        
+            <button class="btn btn-outline-primary" id="abortEdit">Avbryt</button>
+    <a class="btn btn-primary" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a>
+
+
+</div>
+
+<div id="myObservations">
+    <h1>LÄGGA TILL OBSERVATIONER HÄR INNE</h1>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#launchEdit").click(function () {
+            $("#displayUserInfo").hide(200);
+            $("#editUserInfo").show(200);
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#abortEdit").click(function () {
+            $("#displayUserInfo").show(200);
+            $("#editUserInfo").hide(200);
+        })
+    })
+</script>

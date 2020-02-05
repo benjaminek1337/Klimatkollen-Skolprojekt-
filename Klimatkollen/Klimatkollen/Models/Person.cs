@@ -9,8 +9,13 @@ namespace Klimatkollen.Models
 {
     public class Person
     {
-        public String Email { get; set; }
+        public int Id { get; set; }
+        public String IdentityId { get; set; }
         public String UserName { get; set; }
-
+        public String Email { get; set; }
+        public String FirstName { get; set; }
+        public String Lastname { get; set; }
     }
+
+    
 }
