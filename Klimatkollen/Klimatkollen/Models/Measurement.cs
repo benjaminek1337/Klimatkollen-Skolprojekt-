@@ -14,8 +14,8 @@ namespace Klimatkollen.Models
         public String Value { get; set; }
         //[Required]
 
-        //public int categoryId { get; set; }
-        //[ForeignKey("categoryId")]
+        //public int catId { get; set; }
+        //[ForeignKey("catId")]
         public Category Category { get; set; }
 
         public int thirdCategoryId { get; set; }
