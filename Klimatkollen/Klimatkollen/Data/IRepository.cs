@@ -32,5 +32,8 @@ namespace Klimatkollen.Data
         void PostEditedObservation(Observation observation);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
+        Task<IEnumerable<float>> ChartAsync();//TEST Chart
+
+        Task<IEnumerable<Observation>> TestTableAsync();
     }
 }

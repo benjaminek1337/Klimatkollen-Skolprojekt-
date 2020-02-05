@@ -92,5 +92,15 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<float>> ChartAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Observation>> TestTableAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
