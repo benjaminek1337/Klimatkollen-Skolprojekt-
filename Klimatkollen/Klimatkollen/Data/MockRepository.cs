@@ -214,7 +214,9 @@ namespace Klimatkollen.Data
             return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
         }
 
-
-
+        public void AddObjectToDb(Observation model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

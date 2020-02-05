@@ -18,7 +18,10 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
-<body>
+<body style="background-color: #a3b5a8;">
+
+    @*style="background-image: url(/pictures/background.jpg); background-repeat: no-repeat; background-size: cover;*@
+  
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -50,14 +53,15 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="background-color: #fff; margin-top: -16px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="background-color: #fff">
         <div class="container">
             &copy; 2020 - Klimatkollen - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
