@@ -19,6 +19,7 @@ namespace Klimatkollen.Data
         public DbSet<Measurement> Measurements{ get; set; }
         public DbSet<Observation> Observations { get; set; }
         public DbSet<MainCategory> MainCategories{ get; set; }
+        public DbSet<ThirdCategory> ThirdCategories{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

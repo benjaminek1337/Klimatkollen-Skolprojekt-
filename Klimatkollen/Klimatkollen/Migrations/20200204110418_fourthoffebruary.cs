@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class databas1337 : Migration
+    public partial class fourthoffebruary : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,28 +48,7 @@ namespace Klimatkollen.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Unit = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    CategoriesId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MainCategory",
+                name: "MainCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -78,7 +57,7 @@ namespace Klimatkollen.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MainCategory", x => x.Id);
+                    table.PrimaryKey("PK_MainCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,13 +184,56 @@ namespace Klimatkollen.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Unit = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    MainCategoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_MainCategories_MainCategoryId",
+                        column: x => x.MainCategoryId,
+                        principalTable: "MainCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ThirdCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Unit = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ThirdCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ThirdCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Measurements",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Value = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false),
+                    thirdCategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,7 +243,13 @@ namespace Klimatkollen.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Measurements_ThirdCategories_thirdCategoryId",
+                        column: x => x.thirdCategoryId,
+                        principalTable: "ThirdCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,17 +264,11 @@ namespace Klimatkollen.Migrations
                     Latitude = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     MeasurementId = table.Column<int>(nullable: false),
-                    MainCategoryId = table.Column<int>(nullable: true)
+                    maincategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Observations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Observations_MainCategory_MainCategoryId",
-                        column: x => x.MainCategoryId,
-                        principalTable: "MainCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Observations_Measurements_MeasurementId",
                         column: x => x.MeasurementId,
@@ -259,11 +281,17 @@ namespace Klimatkollen.Migrations
                         principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Observations_MainCategories_maincategoryId",
+                        column: x => x.maincategoryId,
+                        principalTable: "MainCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "CategoriesId", "Type", "Unit" },
+                columns: new[] { "Id", "MainCategoryId", "Type", "Unit" },
                 values: new object[,]
                 {
                     { 2, null, "VindStyrka", "m/s" },
@@ -271,7 +299,7 @@ namespace Klimatkollen.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "MainCategory",
+                table: "MainCategories",
                 columns: new[] { "Id", "CategoryName" },
                 values: new object[,]
                 {
@@ -282,11 +310,11 @@ namespace Klimatkollen.Migrations
 
             migrationBuilder.InsertData(
                 table: "Measurements",
-                columns: new[] { "Id", "CategoryId", "Value" },
+                columns: new[] { "Id", "CategoryId", "Value", "thirdCategoryId" },
                 values: new object[,]
                 {
-                    { 1, null, "14" },
-                    { 2, null, "134" }
+                    { 1, 0, "14", 0 },
+                    { 2, 0, "134", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -339,9 +367,9 @@ namespace Klimatkollen.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_CategoriesId",
+                name: "IX_Categories_MainCategoryId",
                 table: "Categories",
-                column: "CategoriesId");
+                column: "MainCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Measurements_CategoryId",
@@ -349,9 +377,9 @@ namespace Klimatkollen.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Observations_MainCategoryId",
-                table: "Observations",
-                column: "MainCategoryId");
+                name: "IX_Measurements_thirdCategoryId",
+                table: "Measurements",
+                column: "thirdCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Observations_MeasurementId",
@@ -362,6 +390,16 @@ namespace Klimatkollen.Migrations
                 name: "IX_Observations_PersonId",
                 table: "Observations",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Observations_maincategoryId",
+                table: "Observations",
+                column: "maincategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThirdCategories_CategoryId",
+                table: "ThirdCategories",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -391,16 +429,19 @@ namespace Klimatkollen.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "MainCategory");
-
-            migrationBuilder.DropTable(
                 name: "Measurements");
 
             migrationBuilder.DropTable(
                 name: "Persons");
 
             migrationBuilder.DropTable(
+                name: "ThirdCategories");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "MainCategories");
         }
     }
 }

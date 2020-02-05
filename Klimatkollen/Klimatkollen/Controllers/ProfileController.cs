@@ -1,5 +1,6 @@
 ﻿using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,11 +14,13 @@ namespace Klimatkollen.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserRepository db;
+        private readonly IRepository observationdb;
 
-        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db)
+        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository)
         {
             this.userManager = userManager;
             this.db = db;
+            observationdb = repository;
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
@@ -25,7 +28,6 @@ namespace Klimatkollen.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfile(Person person)
         {
-
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             person = db.GetPerson(userId);
@@ -72,21 +74,24 @@ namespace Klimatkollen.Controllers
             }
             
         }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangeUserPassword(string oldPassword, string newPassword)
+        [HttpGet]
+        public async Task<IActionResult> EditUserObservation(Observation observation)
         {
             var user = await GetCurrentUserAsync();
-            if(user == null)
-            {
-                ViewBag.ErrorMessage = $"Användare kan inte hittas.";
-                return RedirectToAction("Home", "Index");
-            }
-            else
-            {
-                await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
-            }
+            string userId = user?.Id;
+            observation.Person = db.GetPerson(userId);
+            observation = observationdb.GetObservation(observation.Person.Id);
+            //Kod för att hämta vald observation
+            return View(observation);
+        }
+
+        [HttpPost]
+        public IActionResult PostEditUserObservation(Observation model)
+        {
+            observationdb.PostEditedObservation(model);
+            //Kod för att skicka in den redigerade observationen
             return RedirectToAction("UserProfile");
         }
+
     }
 }

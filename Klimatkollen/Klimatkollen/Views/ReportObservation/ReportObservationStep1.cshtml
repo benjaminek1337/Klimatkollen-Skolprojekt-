@@ -1,122 +1,73 @@
-﻿@*@model Klimatkollen.Models.Observation
+﻿@model Klimatkollen.Models.MainCategory
+    
 
     @{
-        ViewData["Title"] = "ReportObservationStep1";
+        ViewData["Title"] = "Rapportera observation";
     }
 
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="~/js/site.js"></script>
-
-    <form id="msform">
-            <ul id="progressbar">
-                <li class="active">Välj katergori</li>
-                <li>Djurart</li>
-                <li>Täckning och väder</li>
-            </ul>
-
-            <fieldset>
-                <h2 class="fs-title">Välj kategori</h2>
-                <h3 class="fs-subtitle">Detta är steg 1</h3>
-                <input type="radio" name="Djur" placeholder="Djur" /> Djur<br />
-                <input type="radio" name="Miljö" placeholder="Miljö" /> Miljö<br />
-                <input type="radio" name="Temperatur" placeholder="Temperatur" /> Temperatur<br />
-                <input type="button" name="next" class="next action-button" value="Next" />
-            </fieldset>
-
-            <fieldset>
-                <h2 class="fs-title">Djurart</h2>
-                <h3 class="fs-subtitle">Detta är steg 2</h3>
-                <input type="radio" name="Fjällräv" placeholder="Fjällräv" />Fjällräv<br />
-                <input type="radio" name="Hare" placeholder="Hare" />Hare<br />
-                <input type="radio" name="Ripa" placeholder="Ripa" />Ripa<br />
-                <input type="radio" name="Vildsvin" placeholder="Vildsvin" />Vildsvin<br />
-                <input type="radio" name="Groda" placeholder="Groda" />Groda<br />
-                <input type="button" name="previous" class="previous action-button" value="Previous" />
-                <input type="button" name="next" class="next action-button" value="Next" />
-            </fieldset>
-
-            <fieldset>
-                <h2 class="fs-title">Täckning och vädet</h2>
-                <h3 class="fs-subtitle">Detta är steg 3</h3>
-                <h6>Täckning</h6>
-                <input type="radio" name="Vinterpäls" placeholder="Vinterpäls" />Vinterpäls<br />
-                <input type="radio" name="Sommarpäls" placeholder="Sommarpäls" />Sommarpäls<br />
-                <h6>Väder</h6>
-                <input type="radio" name="Sommar" placeholder="Sommar" />Sommar<br />
-                <input type="radio" name="Höst" placeholder="Höst" />Höst<br />
-                <input type="radio" name="Vinter" placeholder="Vinter" />Vinter<br />
-                <input type="radio" name="Vår" placeholder="Vår" />Vår<br />
-                <input type="button" name="previous" class="previous action-button" value="Previous" />
-                <input type="submit" name="submit" class="submit action-button" value="Skicka" />
-            </fieldset>
-
-        </form>
-
-
-
-
-    <h1>Välj kategori</h1>
+    <h1>Steg 1 - Välj kategori</h1>
     <div id="catDiv">
         @foreach (var item in ViewBag.categories)
         {
-            <button class="buttonTemp" value=@item>@item</button>
+            <button class="buttonTemp" value=@item.Id data="@item.CategoryName" onclick="SetValue(this)">@item.CategoryName</button>
         }
     </div>
 
 
-
-
-
-    @using (Html.BeginForm("ReportObservation_step2", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("ReportObservationStep2", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
+<div class="form-horizontal">
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div style="visibility: hidden">
-
-                <div class="form-group">
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.CategoryTemp, new { htmlAttributes = new { @class = "form-control btnResult" } })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Nästa steg" class="btn btn-primary" />
+    <div style="visibility: hidden">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxName" } })
             </div>
         </div>
+    </div>
+    <div style="visibility: hidden">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+            </div>
+        </div>
+    </div>
+
+</div>
 
     }
-    <div id="result" style="visibility: hidden">För test</div>
 
-    <script>
-        // Funktion för att sätta aktiv class på den klickade knappen
-        var header = document.getElementById("catDiv");
-        var btns = header.getElementsByClassName("buttonTemp");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function () {
-                var current = document.getElementsByClassName("active");
-                if (current.length > 0) {
-                    current[0].className = current[0].className.replace(" active", "");
-                }
-                this.className += " active";
-                SetValue();
-            });
-        }
 
-    </script>
+
 
     <script>
         //Sätter värdet på den klickade knappen till en textbox för objektets "category"
-        function SetValue() {
-            var x = document.getElementsByClassName("active");
-            var z = document.getElementsByClassName("btnResult");
+        function SetValue(x) {
+            //OLD:
+            //var x = document.getElementsByClassName("active");
+            //var z = document.getElementsByClassName("btnResult");
+            //z[0].value = x[0].value;
+            //z[0].value = y.value;
 
-            //document.getElementById("result").innerHTML = x[0].value;
-            z[0].value = x[0].value;
+            
+
+            //var q = document.getElementById("resultBoxName");
+            var t = document.getElementById("resultBoxId");
+
+            t.value = x.value;
+            //q.value = x.name83;
+            //alert(x.value);
+            Submitform();
         }
-    </script>*@
+        //Submittar formuläret
+        function Submitform() {
+            document.forms["myForm"].submit();
+        }
+    </script>
+
+
 

@@ -1,4 +1,5 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
@@ -61,7 +62,9 @@ body {
     border: #4CAF50;
     border-width: 5px;
     color: black;
-    padding: 80px 100px;
+    /*padding: 80px 100px;*/
+    width: 250px;
+    height: 175px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -69,152 +72,80 @@ body {
     margin: 4px 2px;
     cursor: pointer;
 }
+.smallbtn {
+    width: 200px;
+    height: 150px;
+}
     .active, .buttonTemp:hover {
         background-color: #4CAF50;
         color: white;
     }
+.activeBtnTwo {
+    background-color: #4CAF50;
+    color: white;
+}
 .btn-primary, .btn-primary:hover {
     color: #fff;
     background-color: #4CAF50;
     border-color: #4CAF50;
+    padding: 10px 12px 10px 12px;
 }
     .btn-primary:hover {
         background-color: #3d8b40;
         border-color: #3d8b40;
     }
-
-@media (max-width: 900px) {
+.btn-right {
+    position: absolute;
+    right: 0%;
+}
+.btn-sec {
+    background-color: #e7e7e7;
+    color: black;
+    padding: 10px 12px 10px 12px;
+    min-width: 120px;
+}
+@media (max-width: 400px) {
     .buttonTemp {
-        min-width: 250px;
-        max-width: 300px;
-        display: block;
+        /*min-width: 250px;
+        max-width: 300px;*/
+        display: inline-block;
+        width: 150px;
+        height: 100px;
+        /*display: block;*/
         margin: auto;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+    }
+    .smallbtn {
+        width: 150px;
+        height: 100px;
+        display: inline-block;
+        margin: auto;
+        margin-bottom: 5px;
+    }
+    h1{
+        font-size: 2.2em;
+    }
+    .btn-right {
+        position: absolute;
+        right: 5%;
+    }
+    #catDiv {
+        margin: 20px;
+    }
+    #valueBox {
+        margin: 20px;
     }
 }
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-
-* {
-    margin: 0;
-    padding: 0;
+#observation_Comment {
+    width: 100%;
+    min-height: 100px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
-
-
-#msform {
-    width: 400px;
-    margin: 50px auto;
-    text-align: center;
-    position: relative;
-}
-
-    #msform fieldset {
-        background: white;
-        border: 0 none;
-        border-radius: 3px;
-        box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-        padding: 20px 30px;
-        box-sizing: border-box;
-        width: 80%;
-        margin: 0 10%;
-        /*stacking fieldsets above each other*/
-        position: relative;
-    }
-        /*Hide all except first fieldset*/
-        #msform fieldset:not(:first-of-type) {
-            display: none;
-        }
-    /*inputs*/
-    #msform input, #msform h6 {
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        /*width: 100%;*/
-        box-sizing: border-box;
-        font-family: montserrat;
-        color: #2C3E50;
-        font-size: 13px;
-    }
-    /*buttons*/
-    #msform .action-button {
-        width: 100px;
-        background: #27AE60;
-        font-weight: bold;
-        color: white;
-        border: 0 none;
-        border-radius: 1px;
-        cursor: pointer;
-        padding: 10px 5px;
-        margin: 10px 5px;
-    }
-
-        #msform .action-button:hover, #msform .action-button:focus {
-            box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
-        }
-/*headings*/
-.fs-title {
-    font-size: 15px;
-    text-transform: uppercase;
-    color: #2C3E50;
-    margin-bottom: 10px;
-}
-
-.fs-subtitle {
-    font-weight: normal;
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
-}
-/*progressbar*/
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    /*CSS counters to number the steps*/
-    counter-reset: step;
-}
-
-    #progressbar li {
-        list-style-type: none;
-        color: white;
-        text-transform: uppercase;
-        font-size: 9px;
-        width: 33.33%;
-        float: left;
-        position: relative;
-    }
-
-        #progressbar li:before {
-            content: counter(step);
-            counter-increment: step;
-            width: 20px;
-            line-height: 20px;
-            display: block;
-            font-size: 10px;
-            color: #333;
-            background: white;
-            border-radius: 3px;
-            margin: 0 auto 5px auto;
-        }
-        /*progressbar connectors*/
-        #progressbar li:after {
-            content: '';
-            width: 100%;
-            height: 2px;
-            background: white;
-            position: absolute;
-            left: -50%;
-            top: 9px;
-            z-index: -1; /*put it behind the numbers*/
-        }
-
-        #progressbar li:first-child:after {
-            /*connector not needed before the first step*/
-            content: none;
-        }
-        /*marking active/completed steps green*/
-        /*The number of the step and the connector before it = green*/
-        #progressbar li.active:before, #progressbar li.active:after {
-            background: #27AE60;
-            color: white;
-        }

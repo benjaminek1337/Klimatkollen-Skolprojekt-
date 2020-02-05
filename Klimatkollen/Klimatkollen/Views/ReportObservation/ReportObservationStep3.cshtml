@@ -1,0 +1,230 @@
+﻿@model Klimatkollen.ViewModels.ObservationViewModel
+
+
+@{
+    ViewData["Title"] = "Rapportera observation";
+}
+
+<h1>Steg 3 - Fyll i värden</h1>
+<h3>@Model.mainCategory.CategoryName och @Model.category.Type</h3>
+<hr />
+<div id="catDiv">
+    @foreach (var item in ViewBag.thirdCategories)
+    {
+        <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+    }
+</div>
+<div id="valueBox">
+    @if (ViewBag.IsValueEnable == true)
+    {
+        if (!Model.category.Unit.Equals("Djur"))
+        {
+            <h5>Värde:</h5>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+            </div>
+            <br />
+        }
+    }
+    else
+    {
+        <hr />
+        <h5>Miljö:</h5>
+        <div id="valueDiv">
+            @foreach (var item in ViewBag.environment)
+            {
+                {
+                    <button class="buttonTemp smallbtn environmentBtn" onclick="SetValueTwo(this)" value=@item.Type>@item.Type</button>
+                }
+            }
+        </div>
+    }
+</div>
+
+@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+
+
+<div class="form-group">
+
+
+
+    <div class="col-md-8">
+        <h5>Välj plats:</h5>
+        <div id="map" style="height: 400px; width:100%"></div>
+        <br />
+    </div>
+
+
+    <div class="col-md-8">
+        <h5>Datum:</h5>
+        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+        <br />
+    </div>
+
+
+    <h5>Kommentar för observationen:</h5>
+    <div class="col-md-8">
+        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
+    </div>
+    <br />
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <input type="submit" value="Spara Observation" class="btn btn-primary btn-right" />
+        </div>
+        <a class="btn btn-sec" href="javascript:void(0);" onclick="history.go(-1);"> &larr; Tillbaka</a>
+    </div>
+
+    @*Gömda element*@
+    <div class="col-md-10" style="visibility: hidden">
+        @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+    </div>
+    <div class="col-md-8" style="visibility: hidden">
+        @Html.EditorFor(model => model.observation.Longitude, new { htmlAttributes = new { @class = "form-control", @id = "long" } })
+    </div>
+    <div class="col-md-8" style="visibility: hidden">
+        @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
+    </div>
+    <div class="col-md-8" style="visibility: hidden">
+        @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+}
+
+
+
+
+
+<script>
+    var map, marker;
+    $(document).ready(function () {
+
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+            var latInput, longInput;
+
+            var mapOptions = {
+                center: myCenter,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel: true
+            };
+
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latInput = document.getElementById("lat").value = position.coords.latitude;
+                    longInput = document.getElementById("long").value = position.coords.longitude;
+
+                    marker = new google.maps.Marker({
+                        position: { lat: latInput, lng: longInput },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+
+                    map.setCenter(marker.getPosition());
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+
+            marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            }
+            );
+            marker.setMap(map);
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
+
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();
+        });
+    });
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
+        async defer></script>
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("resultBoxId");
+        x.value = y.value;
+    }
+    function SetValueTwo(y) {
+        var x = document.getElementById("resultBoxValue");
+        x.value = y.value;
+    }
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var header = document.getElementById("catDiv");
+    var btns = header.getElementsByClassName("thirdCategoryBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+
+        });
+    }
+</script>
+<script>
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var headerTwo = document.getElementById("valueDiv");
+    var btnsTwo = headerTwo.getElementsByClassName("environmentBtn");
+    for (var i = 0; i < btnsTwo.length; i++) {
+        btnsTwo[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeBtnTwo");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeBtnTwo", "");
+            }
+            this.className += " activeBtnTwo";
+
+        });
+    }
+
+</script>
