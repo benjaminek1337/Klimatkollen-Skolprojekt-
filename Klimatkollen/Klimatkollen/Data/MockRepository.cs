@@ -180,8 +180,11 @@ namespace Klimatkollen.Data
         }
 
         public void PostEditedObservation(Observation observation)
-        {         
-            throw new NotImplementedException();
+        {
+            //Kod för att uppdatera den valda observationen
+            //Risken finns att VI MANUELLT MÅSTE PLOCKA TABELLER SOM OVAN HOPPAS INTE!
+            dbContext.Update(observation);
+            dbContext.SaveChanges();
         }
         public List<MainCategory> GetMainCategoriesFromDb()
         {
