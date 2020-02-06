@@ -72,8 +72,7 @@ namespace Klimatkollen.Controllers
                     await userManager.SetUserNameAsync(user, person.Email);
                 }
                 return RedirectToAction("UserProfile");
-            }
-            
+            }            
         }
         [HttpGet]
         public async Task<IActionResult> EditUserObservation(Observation observation)
@@ -96,6 +95,17 @@ namespace Klimatkollen.Controllers
             observationdb.PostEditedObservation(model);
             //Kod för att skicka in den redigerade observationen
             return RedirectToAction("UserProfile");
+        }
+
+        public async Task<IActionResult> EditUserFilters(Person person)
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            person = db.GetPerson(userId);
+
+
+
+            return View();
         }
 
     }

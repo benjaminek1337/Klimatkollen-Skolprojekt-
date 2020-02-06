@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200205085638_FreshDb8")]
-    partial class FreshDb8
+    [Migration("20200206091142_AddingUserFilterTable3")]
+    partial class AddingUserFilterTable3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,19 +105,19 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Longitude");
 
-                    b.Property<int>("MeasurementId");
-
                     b.Property<int>("PersonId");
 
                     b.Property<int>("maincategoryId");
 
-                    b.HasKey("Id");
+                    b.Property<int>("measurementID");
 
-                    b.HasIndex("MeasurementId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
                     b.HasIndex("maincategoryId");
+
+                    b.HasIndex("measurementID");
 
                     b.ToTable("Observations");
                 });
@@ -177,6 +177,31 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("categoryId");
 
                     b.ToTable("ThirdCategories");
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FilterName");
+
+                    b.Property<int?>("PersonId");
+
+                    b.Property<int>("categoryId");
+
+                    b.Property<int>("mainCategoryId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("categoryId");
+
+                    b.HasIndex("mainCategoryId");
+
+                    b.ToTable("UserFilters");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -365,11 +390,6 @@ namespace Klimatkollen.Migrations
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
                 {
-                    b.HasOne("Klimatkollen.Models.Measurement", "Measurement")
-                        .WithMany()
-                        .HasForeignKey("MeasurementId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Klimatkollen.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
@@ -379,6 +399,11 @@ namespace Klimatkollen.Migrations
                         .WithMany()
                         .HasForeignKey("maincategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Klimatkollen.Models.Measurement", "Measurement")
+                        .WithMany()
+                        .HasForeignKey("measurementID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.ThirdCategory", b =>
@@ -386,6 +411,23 @@ namespace Klimatkollen.Migrations
                     b.HasOne("Klimatkollen.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.HasOne("Klimatkollen.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
+
+                    b.HasOne("Klimatkollen.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("mainCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -2,35 +2,35 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class FreshDb8 : Migration
+    public partial class AddingUserFilterTable2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Observations_MainCategories_MainCategoryId",
-                table: "Observations");
+                name: "FK_UserFilters_MainCategories_MainCategoryId",
+                table: "UserFilters");
 
             migrationBuilder.RenameColumn(
                 name: "MainCategoryId",
-                table: "Observations",
-                newName: "maincategoryId");
+                table: "UserFilters",
+                newName: "mainCategoryId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Observations_MainCategoryId",
-                table: "Observations",
-                newName: "IX_Observations_maincategoryId");
+                name: "IX_UserFilters_MainCategoryId",
+                table: "UserFilters",
+                newName: "IX_UserFilters_mainCategoryId");
 
             migrationBuilder.AlterColumn<int>(
-                name: "maincategoryId",
-                table: "Observations",
+                name: "mainCategoryId",
+                table: "UserFilters",
                 nullable: false,
                 oldClrType: typeof(int),
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Observations_MainCategories_maincategoryId",
-                table: "Observations",
-                column: "maincategoryId",
+                name: "FK_UserFilters_MainCategories_mainCategoryId",
+                table: "UserFilters",
+                column: "mainCategoryId",
                 principalTable: "MainCategories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -39,28 +39,28 @@ namespace Klimatkollen.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Observations_MainCategories_maincategoryId",
-                table: "Observations");
+                name: "FK_UserFilters_MainCategories_mainCategoryId",
+                table: "UserFilters");
 
             migrationBuilder.RenameColumn(
-                name: "maincategoryId",
-                table: "Observations",
+                name: "mainCategoryId",
+                table: "UserFilters",
                 newName: "MainCategoryId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Observations_maincategoryId",
-                table: "Observations",
-                newName: "IX_Observations_MainCategoryId");
+                name: "IX_UserFilters_mainCategoryId",
+                table: "UserFilters",
+                newName: "IX_UserFilters_MainCategoryId");
 
             migrationBuilder.AlterColumn<int>(
                 name: "MainCategoryId",
-                table: "Observations",
+                table: "UserFilters",
                 nullable: true,
                 oldClrType: typeof(int));
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Observations_MainCategories_MainCategoryId",
-                table: "Observations",
+                name: "FK_UserFilters_MainCategories_MainCategoryId",
+                table: "UserFilters",
                 column: "MainCategoryId",
                 principalTable: "MainCategories",
                 principalColumn: "Id",

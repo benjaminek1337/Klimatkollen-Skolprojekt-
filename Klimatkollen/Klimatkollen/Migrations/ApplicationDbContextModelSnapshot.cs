@@ -177,6 +177,31 @@ namespace Klimatkollen.Migrations
                     b.ToTable("ThirdCategories");
                 });
 
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FilterName");
+
+                    b.Property<int?>("PersonId");
+
+                    b.Property<int>("categoryId");
+
+                    b.Property<int>("mainCategoryId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("categoryId");
+
+                    b.HasIndex("mainCategoryId");
+
+                    b.ToTable("UserFilters");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -384,6 +409,23 @@ namespace Klimatkollen.Migrations
                     b.HasOne("Klimatkollen.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.HasOne("Klimatkollen.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
+
+                    b.HasOne("Klimatkollen.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("mainCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

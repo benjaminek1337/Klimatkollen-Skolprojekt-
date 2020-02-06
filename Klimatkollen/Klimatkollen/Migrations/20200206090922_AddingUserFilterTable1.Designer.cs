@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200205144651_updatenr5648")]
-    partial class updatenr5648
+    [Migration("20200206090922_AddingUserFilterTable1")]
+    partial class AddingUserFilterTable1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,6 +177,31 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("categoryId");
 
                     b.ToTable("ThirdCategories");
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId");
+
+                    b.Property<string>("FilterName");
+
+                    b.Property<int?>("MainCategoryId");
+
+                    b.Property<int?>("PersonId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("MainCategoryId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("UserFilters");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -387,6 +412,21 @@ namespace Klimatkollen.Migrations
                         .WithMany()
                         .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UserFilter", b =>
+                {
+                    b.HasOne("Klimatkollen.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("MainCategoryId");
+
+                    b.HasOne("Klimatkollen.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

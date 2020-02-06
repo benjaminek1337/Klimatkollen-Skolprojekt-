@@ -307,5 +307,10 @@ namespace Klimatkollen.Data
             return await Task.FromResult(observationTestList.ToList());
 
         }
+
+        public List<UserFilter> GetUserFilters(int id)
+        {
+            return dbContext.UserFilters.Where(x => x.Person.Id.Equals(id)).ToList();
+        }
     }
     }

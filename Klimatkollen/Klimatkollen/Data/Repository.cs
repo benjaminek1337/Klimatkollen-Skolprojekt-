@@ -117,5 +117,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public List<UserFilter> GetUserFilters(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

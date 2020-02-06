@@ -2,7 +2,7 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class FreshDb10 : Migration
+    public partial class AddingUserFilterTable1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
