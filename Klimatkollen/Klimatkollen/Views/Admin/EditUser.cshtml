@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Hantera användare";
+    var observations = ViewBag.Observations;
 }
 
 <h1>Hantera användare</h1>
@@ -45,7 +46,28 @@
             <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-danger">Radera användare</a>
         </div>
     </div>
-
+    <div class="observations">
+        <ul style="list-style-type:none; padding: 0;">
+            @foreach (var observation in observations)
+            {
+                <li>
+                    <div class="card">
+                        <div class="card-header">
+                            Observation av @observation.measurementID
+                        </div>
+                        <div class="card-body">
+                            Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />
+                            Kommentar: @observation.Comment <br />
+                            Observation gjord den @observation.Date
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-outline-primary" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
     <div class="card">
         <div class="card-header">
             <h3>Användarens systembehörigheter</h3>
