@@ -47,7 +47,27 @@
         </div>
     </div>
     <div class="observations">
-        @await Component.InvokeAsync("UserObservations")
+        <ul style="list-style-type:none; padding: 0;">
+            @foreach (var observation in Model)
+            {
+                <li>
+                    <div class="card">
+                        <div class="card-header">
+                            Observation av @observation.measurementID
+                        </div>
+                        <div class="card-body">
+                            Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />
+                            Kommentar: @observation.Comment <br />
+                            Observation gjord den @observation.Date
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-outline-primary" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        </div>
+                    </div>
+                </li>
+                <br />
+            }
+        </ul>
     </div>
     <div class="card">
         <div class="card-header">
