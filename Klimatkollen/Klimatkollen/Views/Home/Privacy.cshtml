@@ -1,15 +1,66 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-    <h1>BENJAMINS PRIVATA KARTOR OCH HEMLIGA EXPERIMENT</h1>
+<h1>BENJAMINS PRIVATA KARTOR OCH HEMLIGA EXPERIMENT</h1>
 
-    <div id="map" style="height: 650px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
-    <div id="inputs">
-        <br />
-        <input class="form-control" type="text" value="" id="lat" />
-        <input class="form-control" type="text" value="" id="long" />
-    </div>
+<div id="map" style="height: 550px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+<div id="inputs">
+    <br />
+    <input class="form-control" type="text" value="" placeholder="Latitud..." id="lat" />
+    <input class="form-control" type="text" value="" placeholder="Longitud..." id="long" />
+    <input class="form-control" type="text" placeholder="Fritextsök område..." id="areaTextBox" />
+    <select name="Län" id="areas" class="form-control">
+        <option>Välj område att bevaka</option>
+    </select>
 
+    <button onclick="GetLocation()">Kör</button>
+</div>
+
+<script>
+    function removeOptions(selectbox) {
+        var i;
+        for (i = selectbox.options.length - 1; i >= 0; i--) {
+            selectbox.remove(i);
+        }
+    }
+
+    function GetAreasJson(_lat, _lng) {
+        var select = document.getElementById("areas");
+        removeOptions(select);
+        var lat = _lat;
+        var lng = _lng;
+        var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
+            + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let parts = data.results[0].address_components;
+                parts.forEach(part => {
+                    if (part.types.includes("administrative_area_level_1")
+                        || part.types.includes("administrative_area_level_2")
+                        || part.types.includes("locality")
+                        || part.types.includes("postal_town")
+                        || part.types.includes("sublocality")
+                        || part.types.includes("sublocality_level_1")
+                        || part.types.includes("sublocality_level_2")
+                        || part.types.includes("political")
+                    ) {
+                        var option = document.createElement("option");
+                        option.setAttribute("id", "option");
+                        option.text = part.long_name;
+                        select.add(option);
+                    }
+                });
+            })
+            .catch(error => console.warn(error.message));
+    }
+
+
+
+</script>
 
 <script>
     var map, marker;
@@ -49,6 +100,7 @@
                     });
 
                     map.setCenter(marker.getPosition());
+                    GetAreasJson(latInput, longInput)
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -77,10 +129,15 @@
 
         map.addListener('click', function (event) {
             marker.setPosition(event.latLng);
-            document.getElementById("lat").value = marker.getPosition().lat();
-            document.getElementById("long").value = marker.getPosition().lng();
+            var latInput = document.getElementById("lat").value = marker.getPosition().lat();
+            var longInput = document.getElementById("long").value = marker.getPosition().lng();
+
+            GetAreasJson(latInput, longInput)
         });
     });
+
+
+    
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
