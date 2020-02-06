@@ -79,8 +79,17 @@ namespace Klimatkollen.Data
 
         public void PostEditedObservation(Observation observation)
         {
-            dbContext.Update(observation);
+            var updatedObservation = GetObservation(observation.Id);
+
+            updatedObservation.Latitude = observation.Latitude;
+            updatedObservation.Longitude = observation.Longitude;
+            updatedObservation.Date = observation.Date;
+            updatedObservation.Comment = observation.Comment;
+            updatedObservation.Measurement.Value = observation.Measurement.Value;
+
+            dbContext.Update(updatedObservation);
             dbContext.SaveChanges();
+
         }
 
 
