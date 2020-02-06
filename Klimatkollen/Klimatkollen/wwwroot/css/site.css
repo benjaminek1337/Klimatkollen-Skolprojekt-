@@ -76,6 +76,10 @@ body {
     width: 200px;
     height: 150px;
 }
+.superSmallBtn {
+    width: 120px;
+    height: 90px;
+}
     .active, .buttonTemp:hover {
         background-color: #4CAF50;
         color: white;

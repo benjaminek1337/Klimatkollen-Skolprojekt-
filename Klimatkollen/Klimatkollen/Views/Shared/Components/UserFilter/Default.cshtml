@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<Klimatkollen.Models.UserFilter>
+@{
+    ViewData["Title"] = "Default";
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <h3>Mina nuvarande intressen</h3>
+    <br />
+    <div>
+        @foreach (var item in Model)
+        {
+            <p>@item.FilterName</p>
+            @*if (item.Category != null)
+            {
+                <p>@item.categoryId</p>
+            }*@
+            @*if (item.MainCategory != null)
+            {
+                <p>@item.mainCategoryId</p>
+            }*@
+            <hr />
+        }
+    </div>
+}
+else
+{
+    <p>inga filter....</p>
+}
+
+

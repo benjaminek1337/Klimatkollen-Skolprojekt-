@@ -13,6 +13,7 @@
         @await Component.InvokeAsync("UserObservations")
     </div>
 
+    
     <div class="col-sm-5">
         <br />
         <div id="displayUserInfo" style="text-align:center">
@@ -20,7 +21,7 @@
         </div>
         <br />
         <div id="userFiltersDiv" style="text-align:center">
-            <button class="btn btn-outline-primary" id="userFilters">Mina intressen</button>
+            <a class="btn btn-outline-primary"  asp-action="EditUserFilters" asp-controller="Profile">Mina intressen / filter</a>
         </div>
 
         <div id="editUserInfo" style="display:none">

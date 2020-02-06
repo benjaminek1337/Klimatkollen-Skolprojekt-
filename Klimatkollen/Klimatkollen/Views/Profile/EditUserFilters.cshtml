@@ -1,0 +1,84 @@
+﻿@model Klimatkollen.Models.UserFilter
+@{
+    ViewData["Title"] = "EditUserFilters";
+}
+
+ <br />
+<h1>Hantera intressen</h1>
+<br />
+<div class="col-md-6">
+    <p>Ett intresse är som ett filter av vad du som observatör är intresserad att se mer av. Exempelvis kommer startsidan att anpassas utifrån vilka intressen du anger här.</p>
+
+</div>
+
+<br />
+
+
+<div class="col-sm-6">
+    @await Component.InvokeAsync("UserFilter")
+</div>
+
+<button class="btn btn-outline-primary" id="launchFilters">Lägg till nytt intresse</button>
+
+<div id="filtersDiv" style="display:none" class="col-sm-6">
+    <h3>Här ska tillgänliga filter/intressen synas</h3>
+    <br />
+
+    @foreach (var item in ViewBag.categories)
+    {
+        if (item.Id != 11)
+        {
+            <button class="buttonTemp superSmallBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        }
+    }
+    <br />
+    <div class="col-md-8" style="visibility: hidden">
+        @Html.EditorFor(model => model.categoryId, new { htmlAttributes = new { @class = "form-control", @id = "categoryIdResult" } })
+        <br />
+    </div>
+
+    <button class="btn btn-outline-primary" id="saveFilter">Spara intresse</button>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#launchFilters").click(function () {
+            $("#launchFilters").hide();
+            $("#filtersDiv").show(100);
+            $("#saveFilter").show(100);
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#saveFilter").click(function () {
+            $("#saveFilter").hide();
+            $("#filtersDiv").hide();
+            $("#launchFilters").show(50);
+        })
+    })
+</script>
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("categoryIdResult");
+        x.value = y.value;
+    }
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var header = document.getElementById("filtersDiv");
+    var btns = header.getElementsByClassName("superSmallBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+
+        });
+    }
+</script>

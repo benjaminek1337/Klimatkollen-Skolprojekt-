@@ -211,6 +211,10 @@ namespace Klimatkollen.Data
         {
             return dbContext.Categories.Where(x => x.MainCategory == cat).ToList();
         }
+        public List<Category> GetAllCategories()
+        {
+            return dbContext.Categories.ToList();
+        }
         public Category GetCategoryFromId(int id)
         {
             return dbContext.Categories.Where(x => x.Id == id).FirstOrDefault();
@@ -308,9 +312,9 @@ namespace Klimatkollen.Data
 
         }
 
-        public List<UserFilter> GetUserFilters(int id)
+        public List<UserFilter> GetUserFilters(Person p)
         {
-            return dbContext.UserFilters.Where(x => x.Person.Id.Equals(id)).ToList();
+            return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
         }
     }
     }

@@ -97,13 +97,10 @@ namespace Klimatkollen.Controllers
             return RedirectToAction("UserProfile");
         }
 
-        public async Task<IActionResult> EditUserFilters(Person person)
+        public IActionResult EditUserFilters()
         {
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            person = db.GetPerson(userId);
-
-
+            //ViewBag.mainCategories = observationdb.GetMainCategoriesFromDb();
+            ViewBag.categories = observationdb.GetAllCategories();
 
             return View();
         }

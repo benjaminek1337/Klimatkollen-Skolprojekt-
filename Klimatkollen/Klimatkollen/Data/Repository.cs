@@ -118,7 +118,12 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
-        public List<UserFilter> GetUserFilters(int id)
+        public List<UserFilter> GetUserFilters(Person p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Category> GetAllCategories()
         {
             throw new NotImplementedException();
         }
