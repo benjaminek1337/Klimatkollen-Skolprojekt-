@@ -186,9 +186,8 @@ namespace Klimatkollen.Data
 
         public void PostEditedObservation(Observation observation)
         {
-            var oldobservation = GetObservation(observation.Id);
+            var updatedObservation = GetObservation(observation.Id);
 
-            var updatedObservation = oldobservation;
             updatedObservation.Latitude = observation.Latitude;
             updatedObservation.Longitude = observation.Longitude;
             updatedObservation.Date = observation.Date;
@@ -306,6 +305,14 @@ namespace Klimatkollen.Data
 
             return await Task.FromResult(observationTestList.ToList());
 
+        }
+
+        public void DeleteObservation(int id)
+        {
+            var observation = dbContext.Observations.Include(x => x.Measurement)
+                .FirstOrDefault(y => y.Id.Equals(id));
+            dbContext.Observations.Remove(observation);
+            dbContext.SaveChanges();
         }
     }
     }

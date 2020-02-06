@@ -98,5 +98,11 @@ namespace Klimatkollen.Controllers
             return RedirectToAction("UserProfile");
         }
 
+        public IActionResult DeleteUserObservation(int id)
+        {
+            observationdb.DeleteObservation(id);
+            return RedirectToAction("UserProfile");
+        }
+
     }
 }

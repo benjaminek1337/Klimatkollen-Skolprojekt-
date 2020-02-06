@@ -53,6 +53,7 @@
         <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
         <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+        <input type="button" class="btn btn-danger" value="Ta bort observation" asp-action="DeleteUserObservation" asp-controller="Profile" asp-route-id="@Model.Id" />
     </form>
 </div>
 

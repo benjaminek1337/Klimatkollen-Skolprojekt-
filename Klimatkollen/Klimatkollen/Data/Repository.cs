@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +117,16 @@ namespace Klimatkollen.Data
         public Task<IEnumerable<Observation>> TestTableAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public void DeleteObservation(int id)
+        {
+            var observation = dbContext.Observations.Include(x => x.Measurement)
+                .FirstOrDefault(y => y.Id.Equals(id));
+
+            dbContext.Observations.Remove(observation);
+            dbContext.SaveChanges();
+
         }
     }
 }

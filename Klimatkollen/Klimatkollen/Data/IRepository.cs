@@ -29,6 +29,8 @@ namespace Klimatkollen.Data
         List<Observation> GetObservations(int id);
 
         Observation GetObservation(int id);
+
+        void DeleteObservation(int id);
         void PostEditedObservation(Observation observation);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
