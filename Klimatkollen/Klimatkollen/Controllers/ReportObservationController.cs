@@ -49,7 +49,6 @@ namespace Klimatkollen.Controllers
             {
                 mainCategory = db.GetMainCategoryFromId(mainCat.Id)
             };
-
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
 
             //Skickar tillbaka en vymodell
@@ -106,9 +105,11 @@ namespace Klimatkollen.Controllers
             //db.AddObjectToDb(finalOb);          
             return View();
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string testValueBox)
+        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
             if (model.measurement.thirdCategoryId == 0)
             {
@@ -129,19 +130,19 @@ namespace Klimatkollen.Controllers
             db.AddObjectToDb(model.observation);
             db.AddObjectToDb(model.measurement);
 
-            //Kod om det är två measurements (Djur och päls)
             //Lägg till en andra measurement
-            if (testValueBox != null)
+            if (secondMeasurement != null)
             {
                 int id = db.GetLastObservationIdFromUser(person);
 
                 Measurement m = new Measurement()
                 {
-                    thirdCategoryId =  Convert.ToInt32(testValueBox),
+                    thirdCategoryId =  Convert.ToInt32(secondMeasurement),
                     observationId = id
                 };
                 db.AddObjectToDb(m);
             }
+
             return View();
         }
         private bool CheckList(List<ThirdCategory> list)

@@ -16,6 +16,8 @@
 <hr />
 
 <div id="catDiv">
+    <br />
+    <h5>Kategorier:</h5>
     @foreach (var item in ViewBag.thirdCategories)
     {
         <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
@@ -44,7 +46,6 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
 
-
 <div class="form-group">
     @if (ViewBag.IsValueEnable == true)
     {
@@ -57,20 +58,17 @@
             <br />
         }
     }
-
     <div class="col-md-8">
         <h5>Välj plats:</h5>
         <div id="map" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
     </div>
 
-
     <div class="col-md-8">
         <h5>Datum:</h5>
         @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
         <br />
     </div>
-
 
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
@@ -97,7 +95,7 @@
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
     </div>
     <div style="visibility: hidden">
-         <input type="text" name="testValueBox" id="resultBoxValue" />        
+         <input type="text" name="secondMeasurement" id="resultBoxSecondMeasurement" />        
     </div>
     <div>
         @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
@@ -116,12 +114,11 @@
 
 
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
 
 <script>
     var map, marker;
     $(document).ready(function () {
-
         function myMap(lat, long) {
             var myCenter = new google.maps.LatLng(lat, long);
             var mapCanvas = document.getElementById("map");
@@ -190,8 +187,6 @@
     });
 
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
-        async defer></script>
 
 <script>
     function SetValue(y) {
@@ -199,7 +194,7 @@
         x.value = y.value;
     }
     function SetValueTwo(y) {
-        var x = document.getElementById("resultBoxValue");
+        var x = document.getElementById("resultBoxSecondMeasurement");
         x.value = y.value;
     }
     //Funktion för att sätta aktiv class på den klickade knappen
@@ -227,7 +222,6 @@
                 current[0].className = current[0].className.replace(" activeBtnTwo", "");
             }
             this.className += " activeBtnTwo";
-
         });
     }
 
