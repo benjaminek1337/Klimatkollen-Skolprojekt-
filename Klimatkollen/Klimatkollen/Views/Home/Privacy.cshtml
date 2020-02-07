@@ -8,15 +8,40 @@
     <br />
     <input class="form-control" type="text" value="" placeholder="Latitud..." id="lat" />
     <input class="form-control" type="text" value="" placeholder="Longitud..." id="long" />
+    <br />
     <input class="form-control" type="text" placeholder="Fritextsök område..." id="areaTextBox" />
+    <button class="btn btn-primary" onclick="GetLatLongFromString()">Sök</button>
     <select name="Län" id="areas" class="form-control">
         <option>Välj område att bevaka</option>
     </select>
-
-    <button onclick="GetLocation()">Kör</button>
 </div>
 
 <script>
+
+    var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+
+
+    function GetLatLongFromString() {
+        var areaString = document.getElementById("areaTextBox").value;
+        var lat, long;
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + areaString + "&region=swe&key=" + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(url);
+                console.log(data);
+                lat = data.results[0].geometry.location.lat;
+                long = data.results[0].geometry.location.lng;
+                console.log(lat, long);
+
+                GetAreasJson(lat, long);
+                TextToMap(lat, long);
+            })
+            .catch(error => console.warn(error.message));
+
+    }
+
     function removeOptions(selectbox) {
         var i;
         for (i = selectbox.options.length - 1; i >= 0; i--) {
@@ -29,7 +54,7 @@
         removeOptions(select);
         var lat = _lat;
         var lng = _lng;
-        var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+
         let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
             + key;
 
@@ -100,7 +125,6 @@
                     });
 
                     map.setCenter(marker.getPosition());
-                    GetAreasJson(latInput, longInput)
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -129,15 +153,17 @@
 
         map.addListener('click', function (event) {
             marker.setPosition(event.latLng);
-            var latInput = document.getElementById("lat").value = marker.getPosition().lat();
-            var longInput = document.getElementById("long").value = marker.getPosition().lng();
-
-            GetAreasJson(latInput, longInput)
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();
         });
+
+        function TextToMap(lat, long) {
+            var latlng = lat + "," + long;
+            marker.setPosition(latlng);
+            var latInput = document.getElementById("lat").value = lat;
+            var longInput = document.getElementById("long").value = long;
+        }
     });
-
-
-    
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
