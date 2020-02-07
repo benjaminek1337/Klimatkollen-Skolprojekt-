@@ -24,14 +24,16 @@ namespace Klimatkollen.Data
         List<MainCategory> GetMainCategoriesFromDb();
         MainCategory GetMainCategoryFromId(int id);
         List<Category> GetCategoriesFromId(MainCategory cat);
+        List<Category> GetAllCategories();
         Category GetCategoryFromId(int id);
         List<ThirdCategory> GetThirdCategories(Category cat);
-        List<Observation> GetObservations(int id);
+        List<Measurement> GetMeasurements(int id);
+        List<UserFilter> GetUserFilters(Person p);
 
-        Observation GetObservation(int id);
+        Measurement GetMeasurement(int id);
 
-        void DeleteObservation(int id);
-        void PostEditedObservation(Observation observation);
+        void DeleteMeasurement(int id);
+        void PostEditedMeasurement(Measurement measurement);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
         Task<IEnumerable<float>> ChartAsync();//TEST Chart

@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     ViewData["Title"] = "Home Page";
 }
 @model Observation
@@ -25,6 +27,7 @@
 <div>
     @await Component.InvokeAsync("SeeObservations")
 </div>
+
 <br />
 <br />
 <br />
@@ -51,6 +54,9 @@
 <br />
 <br />
 <br />
+<br />
+<br />
+
 @*<a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Ny observation</a>*@
 
 
