@@ -1,5 +1,4 @@
 ﻿using Klimatkollen.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,9 +57,9 @@ namespace Klimatkollen.Data
                 //Skicka in person-id här
                 if (observation.Person.Id == id)
                 {
-                    var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-                    observation.Measurement = measurement;
-                    observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+                    //var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
+                    //observation.Measurement = measurement;
+                    //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
 
                     observations.Add(observation);
                 }
@@ -71,25 +70,16 @@ namespace Klimatkollen.Data
         public Observation GetObservation(int id)
         {
             var observation = dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
-            observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-            observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+            //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
+            //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
 
             return observation;
         }
 
         public void PostEditedObservation(Observation observation)
         {
-            var updatedObservation = GetObservation(observation.Id);
-
-            updatedObservation.Latitude = observation.Latitude;
-            updatedObservation.Longitude = observation.Longitude;
-            updatedObservation.Date = observation.Date;
-            updatedObservation.Comment = observation.Comment;
-            updatedObservation.Measurement.Value = observation.Measurement.Value;
-
-            dbContext.Update(updatedObservation);
+            dbContext.Update(observation);
             dbContext.SaveChanges();
-
         }
 
 
@@ -128,14 +118,14 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
-        public void DeleteObservation(int id)
+        public List<UserFilter> GetUserFilters(Person p)
         {
-            var observation = dbContext.Observations.Include(x => x.Measurement)
-                .FirstOrDefault(y => y.Id.Equals(id));
+            throw new NotImplementedException();
+        }
 
-            dbContext.Observations.Remove(observation);
-            dbContext.SaveChanges();
-
+        public List<Category> GetAllCategories()
+        {
+            throw new NotImplementedException();
         }
     }
 }

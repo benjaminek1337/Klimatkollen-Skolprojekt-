@@ -24,9 +24,11 @@ namespace Klimatkollen.Data
         List<MainCategory> GetMainCategoriesFromDb();
         MainCategory GetMainCategoryFromId(int id);
         List<Category> GetCategoriesFromId(MainCategory cat);
+        List<Category> GetAllCategories();
         Category GetCategoryFromId(int id);
         List<ThirdCategory> GetThirdCategories(Category cat);
         List<Observation> GetObservations(int id);
+        List<UserFilter> GetUserFilters(Person p);
 
         Observation GetObservation(int id);
 

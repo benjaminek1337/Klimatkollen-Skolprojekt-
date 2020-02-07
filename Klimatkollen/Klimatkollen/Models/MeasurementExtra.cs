@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Models
 {
-    public class Measurement
+    public class MeasurementExtra
     {
         [Key]
         public int Id { get; set; }
         public String Value { get; set; }
-        public int observationId { get; set; }
-        [ForeignKey("observationId")]
-        [Required]
-        public virtual Observation Observation { get; set; }
         public int thirdCategoryId { get; set; }
         [ForeignKey("thirdCategoryId")]
         public ThirdCategory ThirdCategory { get; set; }
+
     }
 }

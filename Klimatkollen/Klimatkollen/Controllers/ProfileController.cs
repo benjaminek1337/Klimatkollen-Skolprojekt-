@@ -72,8 +72,7 @@ namespace Klimatkollen.Controllers
                     await userManager.SetUserNameAsync(user, person.Email);
                 }
                 return RedirectToAction("UserProfile");
-            }
-            
+            }            
         }
         [HttpGet]
         public async Task<IActionResult> EditUserObservation(Observation observation)
@@ -101,6 +100,14 @@ namespace Klimatkollen.Controllers
         {
             observationdb.DeleteObservation(id);
             return RedirectToAction("UserProfile");
+        }
+
+        public IActionResult EditUserFilters()
+        {
+            //ViewBag.mainCategories = observationdb.GetMainCategoriesFromDb();
+            ViewBag.categories = observationdb.GetAllCategories();
+
+            return View();
         }
 
     }
