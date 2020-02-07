@@ -80,45 +80,6 @@ namespace Klimatkollen.Data
 
         public List<Observation> GetObservations(int id)
         {
-            //var observations = new List<Observation>();
-            //MainCategory mc = new MainCategory()
-            //{
-            //    CategoryName = "Luft",
-            //    Id = 1,
-            //};
-            //Person person = new Person()
-            //{
-            //    Id = 1,
-            //    FirstName = "Mattias",
-            //    Lastname = "Kenttä",
-            //    Email = "miss_kicki@hotmail.com"
-            //};
-            //Category category = new Category()
-            //{
-            //    Id = 1,
-            //    Unit = "Meter per sekund",
-            //    Type = "Vindhastighet"
-            //};
-            //Measurement measurement = new Measurement()
-            //{
-            //    Id = 1,
-            //    Value = "23 m/s",
-            //    //Category = category
-
-            //};
-            //Observation observation = new Observation()
-            //{
-            //    Id = 1,
-            //    Date = DateTime.Now,
-            //    Latitude = "67.86",
-            //    Longitude = "20.23",
-            //    Comment = "Coolaste observationen öster om Norge",
-            //    MainCategory = mc,
-            //    Person = person,
-            //    Measurement = measurement
-            //}; 
-            //observations.Add(observation);
-
             var observations = new List<Observation>();
             foreach (var observation in dbContext.Observations)
             {
@@ -138,44 +99,6 @@ namespace Klimatkollen.Data
 
         public Observation GetObservation(int id)
         {
-            //MainCategory mc = new MainCategory()
-            //{
-            //    CategoryName = "Luft",
-            //    Id = 1,
-            //};
-            //Person person = new Person()
-            //{
-            //    Id = 1,
-            //    FirstName = "Mattias",
-            //    Lastname = "Kenttä",
-            //    Email = "miss_kicki@hotmail.com"
-            //};
-            //Category category = new Category()
-            //{
-            //    Id = 1,
-            //    Unit = "Meter per sekund",
-            //    Type = "Vindhastighet"
-            //};
-            //Measurement measurement = new Measurement()
-            //{
-            //    Id = 1,
-            //    Value = "23 m/s",
-            //    //Category = category
-
-            //};
-            //Observation observation = new Observation()
-            //{
-            //    Id = 1,
-            //    Date = DateTime.Now,
-            //    Latitude = "-3.3730559",
-            //    Longitude = "29.9188862",
-            //    Comment = "Coolaste observationen öster om Norge",
-            //    MainCategory = mc,
-            //    Person = person,
-            //    Measurement = measurement
-            //};
-
-
             //Här
             //var observation = dbContext.Observations.Include(x => x.Measurement)
             //    .ThenInclude(y => y.ThirdCategory)

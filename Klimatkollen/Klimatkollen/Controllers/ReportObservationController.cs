@@ -108,7 +108,7 @@ namespace Klimatkollen.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model)
+        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string testValueBox)
         {
             if (model.measurement.thirdCategoryId == 0)
             {
@@ -121,14 +121,6 @@ namespace Klimatkollen.Controllers
             string userId = user?.Id;
             var person = userDb.GetPerson(userId);
 
-
-            //Measurement newMeasurement = new Measurement()
-            //{
-            //    Value = model.measurement.Value,
-            //    Observation = model.observation,
-            //    thirdCategoryId = model.measurement.thirdCategoryId
-            //};
-
             //Sätter värden
             model.observation.Person = person;
             model.measurement.Observation = model.observation;
@@ -137,7 +129,8 @@ namespace Klimatkollen.Controllers
             db.AddObjectToDb(model.observation);
             db.AddObjectToDb(model.measurement);
 
-            //Kod om det är två measurements
+            //Kod om det är två measurements (Djur och päls)
+            //Lägg till en andra measurement
             return View();
         }
         private bool CheckList(List<ThirdCategory> list)
