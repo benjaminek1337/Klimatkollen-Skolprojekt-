@@ -132,5 +132,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public MainCategory GetMainCategoryFromCategoryObject(Category cat)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

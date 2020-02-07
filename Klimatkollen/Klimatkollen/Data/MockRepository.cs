@@ -141,6 +141,10 @@ namespace Klimatkollen.Data
         {
             return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
         }
+        public MainCategory GetMainCategoryFromCategoryObject(Category cat)
+        {
+            return dbContext.MainCategories.Where(x => x.Id.Equals(cat)).FirstOrDefault();
+        }
         public List<Category> GetCategoriesFromId(MainCategory cat)
         {
             return dbContext.Categories.Where(x => x.MainCategory.Equals(cat)).ToList();

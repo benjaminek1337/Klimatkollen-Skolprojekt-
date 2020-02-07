@@ -105,5 +105,30 @@ namespace Klimatkollen.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AddUserFilter(Category category)
+        {
+            if (category.Id == 0)
+            {
+                return RedirectToAction("EditUserFilters");
+            }
+
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPerson(userId);
+
+            category = observationdb.GetCategoryFromId(category.Id);
+
+            UserFilter filter = new UserFilter()
+            {
+                FilterName = category.Type,
+                Person = person,
+                categoryId = category.Id,
+            };
+            
+
+            observationdb.AddObjectToDb(filter);
+            return RedirectToAction("EditUserFilters");
+        }
+
     }
 }

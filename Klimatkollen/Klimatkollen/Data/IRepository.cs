@@ -23,6 +23,7 @@ namespace Klimatkollen.Data
 
         List<MainCategory> GetMainCategoriesFromDb();
         MainCategory GetMainCategoryFromId(int id);
+        MainCategory GetMainCategoryFromCategoryObject(Category cat);
         List<Category> GetCategoriesFromId(MainCategory cat);
         List<Category> GetAllCategories();
         Category GetCategoryFromId(int id);

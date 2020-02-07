@@ -3,7 +3,7 @@
     ViewData["Title"] = "EditUserFilters";
 }
 
- <br />
+<br />
 <h1>Hantera intressen</h1>
 <br />
 <div class="col-md-6">
@@ -21,23 +21,8 @@
 <button class="btn btn-outline-primary" id="launchFilters">Lägg till nytt intresse</button>
 
 <div id="filtersDiv" style="display:none" class="col-sm-6">
-    <h3>Här ska tillgänliga filter/intressen synas</h3>
-    <br />
-
-    @foreach (var item in ViewBag.categories)
-    {
-        if (item.Id != 10)
-        {
-            <button class="buttonTemp superSmallBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
-        }
-    }
-    <br />
-    <div class="col-md-8" style="visibility: hidden">
-        @Html.EditorFor(model => model.categoryId, new { htmlAttributes = new { @class = "form-control", @id = "categoryIdResult" } })
-        <br />
-    </div>
-
-    <button class="btn btn-outline-primary" id="saveFilter">Spara intresse</button>
+    @await Component.InvokeAsync("AddUserFilter")
+    
 </div>
 
 

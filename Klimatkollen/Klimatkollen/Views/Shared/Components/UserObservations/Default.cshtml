@@ -4,7 +4,7 @@
 </div>
 
 
-<div >
+<div>
     <ul style="list-style-type:none; padding: 0;">
         @foreach (var observation in Model)
         {
@@ -26,3 +26,50 @@
         }
     </ul>
 </div>
+
+<button class="btn btn-outline-primary" id="launchFilters">Lägg till nytt intresse</button>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#launchFilters").click(function () {
+            $("#launchFilters").hide();
+            $("#filtersDiv").show(100);
+            $("#saveFilter").show(100);
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#saveFilter").click(function () {
+            $("#saveFilter").hide();
+            $("#filtersDiv").hide();
+            $("#launchFilters").show(50);
+        })
+    })
+</script>
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("categoryIdResult");
+        x.value = y.value;
+    }
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var header = document.getElementById("filtersDiv");
+    var btns = header.getElementsByClassName("superSmallBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+
+        });
+    }
+</script>

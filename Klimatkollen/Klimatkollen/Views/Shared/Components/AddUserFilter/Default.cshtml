@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model Klimatkollen.Models.Category
+@{
+    ViewData["Title"] = "Default";
+}
+
+<h1>Lägg till user Filter</h1>
+
+
+<h3>Här ska tillgänliga filter/intressen synas</h3>
+<br />
+
+@foreach (var item in ViewBag.categories)
+{
+    if (item.Id != 10)
+    {
+        <button class="buttonTemp superSmallBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        @*<input type="text" value="@Model.MainCategory" asp-for="@Model.MainCategory" />*@
+    }
+}
+<br />
+
+<div id="editForm">
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div class="col-md-8" style="visibility: visible">
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @id = "categoryIdResult" } })
+        </div>
+        <input type="submit" value="Spara intresse" class="btn btn-outline-primaryy" asp-action="AddUserFilter" asp-controller="Profile" />
+        @*<button class="btn btn-outline-primary" id="saveFilter">Spara intresse</button>*@
+    </form>
+</div>
+
+
+
