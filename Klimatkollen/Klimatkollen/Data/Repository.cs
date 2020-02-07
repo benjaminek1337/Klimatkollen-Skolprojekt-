@@ -127,5 +127,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public int GetLastObservationIdFromUser(Person p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -246,8 +246,18 @@ namespace Klimatkollen.Data
 
         }
 
+        public int GetLastObservationIdFromUser (Person p)
+        {
+            var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+            return observation.Id;
+        }
         public List<UserFilter> GetUserFilters(Person p)
         {
+            //var newObservation = dbContext.Measurements.Include(x => x.Observation)
+            //    .Include(y => y.ThirdCategory)
+            //    .FirstOrDefault(o => o.Id.Equals(id));
+
+
             return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
         }
     }

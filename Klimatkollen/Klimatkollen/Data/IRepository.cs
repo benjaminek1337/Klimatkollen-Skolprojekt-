@@ -37,5 +37,6 @@ namespace Klimatkollen.Data
         Task<IEnumerable<float>> ChartAsync();//TEST Chart
 
         Task<IEnumerable<Observation>> TestTableAsync();
+        int GetLastObservationIdFromUser(Person p);
     }
 }

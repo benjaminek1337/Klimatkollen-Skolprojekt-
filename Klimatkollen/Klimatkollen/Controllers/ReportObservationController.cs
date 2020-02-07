@@ -131,6 +131,17 @@ namespace Klimatkollen.Controllers
 
             //Kod om det är två measurements (Djur och päls)
             //Lägg till en andra measurement
+            if (testValueBox != null)
+            {
+                int id = db.GetLastObservationIdFromUser(person);
+
+                Measurement m = new Measurement()
+                {
+                    thirdCategoryId =  Convert.ToInt32(testValueBox),
+                    observationId = id
+                };
+                db.AddObjectToDb(m);
+            }
             return View();
         }
         private bool CheckList(List<ThirdCategory> list)
