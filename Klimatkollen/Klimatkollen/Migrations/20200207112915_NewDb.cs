@@ -329,7 +329,8 @@ namespace Klimatkollen.Migrations
                     { 6, null, "Ripa", "Päls" },
                     { 7, null, "Fjällräv", "Päls" },
                     { 8, null, "Träd", "Annat" },
-                    { 9, null, "Hare", "Päls" }
+                    { 9, null, "Hare", "Päls" },
+                    { 10, null, null, "Annat" }
                 });
 
             migrationBuilder.InsertData(

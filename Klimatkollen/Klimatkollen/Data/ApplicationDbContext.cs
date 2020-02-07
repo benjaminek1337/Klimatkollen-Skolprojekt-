@@ -105,9 +105,7 @@ namespace Klimatkollen.Data
                 {
                     Id = 10,
                     Unit = "Annat",
-                }
-
-                );
+                });
 
             modelBuilder.Entity<ThirdCategory>().HasData(
 

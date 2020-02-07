@@ -86,7 +86,6 @@
     </div>
     <hr />
 
-
     @*Gömda element*@
     <div class="col-sm-12" style="visibility: hidden">
         @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
@@ -97,10 +96,7 @@
     <div class="col-md-8" style="visibility: hidden">
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
     </div>
-    @*<div class="col-md-8" style="visibility: visible">
-        @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
-    </div>*@
-    <div class="col-sm-12" style="visibility: hidden">
+    <div style="visibility: hidden">
          <input type="text" name="testValueBox" id="resultBoxValue" />        
     </div>
     <div>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200207094635_NewDb")]
+    [Migration("20200207112915_NewDb")]
     partial class NewDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,11 @@ namespace Klimatkollen.Migrations
                             Id = 9,
                             Type = "Hare",
                             Unit = "Päls"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Unit = "Annat"
                         });
                 });
 

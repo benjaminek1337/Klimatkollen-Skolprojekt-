@@ -91,6 +91,11 @@ namespace Klimatkollen.Migrations
                             Id = 9,
                             Type = "Hare",
                             Unit = "Päls"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Unit = "Annat"
                         });
                 });
 
