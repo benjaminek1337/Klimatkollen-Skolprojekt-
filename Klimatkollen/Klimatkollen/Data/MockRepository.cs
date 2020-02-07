@@ -264,5 +264,6 @@ namespace Klimatkollen.Data
 
             return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
         }
+
     }
     }

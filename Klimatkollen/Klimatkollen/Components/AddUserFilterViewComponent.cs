@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Data;
+using Klimatkollen.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,11 +21,31 @@ namespace Klimatkollen.Components
             userDb = userRepo;
             this.userManager = userManager;
         }
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.categories = observationDb.GetAllCategories();
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = userDb.GetPerson(userId);
+
+            var allCategories = observationDb.GetAllCategories();
+            var userFilters = observationDb.GetUserFilters(person);
+            List<Category> filteredList = observationDb.GetAllCategories();
+
+            foreach (var item in allCategories)
+            {
+                if (userFilters.Any(x => x.categoryId.Equals(item.Id)))
+                {
+                    filteredList.Remove(item);
+                }
+                //else
+                //{
+                //    filteredList.Add(item);
+                //}
+            }
+
+            ViewBag.categories = filteredList;
             return View();
         }
-
     }
 }
