@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Klimatkollen.Models.Observation>
+﻿@model IEnumerable<Klimatkollen.Models.Measurement>
 <div id="header" style="text-align:center">
     <h3>Mina observationer</h3>
 </div>
@@ -6,20 +6,20 @@
 
 <div >
     <ul style="list-style-type:none; padding: 0;">
-        @foreach (var observation in Model)
+        @foreach (var measurement in Model)
         {
             <li>
                 <div class="card">
                     <div class="card-header">
-                        @*Observation av @observation.measurementID*@
+                        Observation av @measurement.Observation.MainCategory.CategoryName
                     </div>
                     <div class="card-body">
-                        @*Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />*@
-                        Kommentar: @observation.Comment <br />
-                        Observation gjord den @observation.Date
+                        Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
+                        Kommentar: @measurement.Observation.Comment <br />
+                        Observation gjord den @measurement.Observation.Date
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-outline-primary" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
                     </div>
                 </div>
             </li>

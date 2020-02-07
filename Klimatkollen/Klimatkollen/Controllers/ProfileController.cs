@@ -75,30 +75,30 @@ namespace Klimatkollen.Controllers
             }            
         }
         [HttpGet]
-        public async Task<IActionResult> EditUserObservation(Observation observation)
+        public async Task<IActionResult> EditUserObservation(Measurement measurement)
         {
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
-            observation.Person = db.GetPerson(userId);
-            observation = observationdb.GetObservation(observation.Id);
+            measurement = observationdb.GetMeasurement(measurement.Id);
+            measurement.Observation.Person = db.GetPerson(userId);
             //Kod för att hämta vald observation
-            return View(observation);
+            return View(measurement);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PostEditUserObservation(Observation model)
+        public IActionResult PostEditUserObservation(Measurement model)
         {
             //var user = await GetCurrentUserAsync();
             //string userId = user?.Id;
             //model.Person = db.GetPerson(userId);
-            observationdb.PostEditedObservation(model);
+            observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
         }
 
-        public IActionResult DeleteUserObservation(int id)
+        public IActionResult DeleteUserMeasurement(int id)
         {
-            observationdb.DeleteObservation(id);
+            observationdb.DeleteMeasurement(id);
             return RedirectToAction("UserProfile");
         }
 

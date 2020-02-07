@@ -28,8 +28,8 @@ namespace Klimatkollen.Components
             string userId = user?.Id;
             var person = userdb.GetPerson(userId);
 
-            var observation = db.GetObservations(person.Id);
-            return View(observation);
+            var measurements = db.GetMeasurements(person.Id);
+            return View(measurements);
         }
     }
 }
