@@ -16,10 +16,13 @@ namespace Klimatkollen.Models
         public String Longitude { get; set; }
         public String Latitude { get; set; }
         public String Comment { get; set; }
-        [Required]
-        public int measurementID { get; set; }
-        [ForeignKey("measurementID")]
-        public Measurement Measurement { get; set; }
+        //public int measurementID { get; set; }
+        //[ForeignKey("measurementID")]
+        //[Required]
+        //public Measurement Measurement { get; set; }
+        //public int measurementExtraID { get; set; }
+        //[ForeignKey("measurementExtraID")]
+        //public Measurement MeasurementExtra { get; set; }
         public int maincategoryId { get; set; }
         [ForeignKey("maincategoryId")]
         public MainCategory MainCategory { get; set; }
