@@ -452,7 +452,7 @@ body {
 /*Filters*/
 .filters {
     display: inline-block;
-    border: 2px solid #ddd;
+    border: 1px solid #ddd;
     padding: 8px 10px;
     cursor: pointer;
     font-size: 16px;
@@ -463,6 +463,27 @@ body {
 
     .filters:hover {
         color: #FFF;
-        background-color: #09964f;
-        border: 2px solid #09964f;
+        background-color: #4CAF50;
+        border: 1px solid #4CAF50;
     }
+
+.box {
+    border: 1px solid #ddd;
+    padding: 15px 15px;
+    box-shadow: 0px 0px 5px 1px #ddd;
+}
+#SearchString {
+    width: 50%;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    resize: vertical;
+}
+@media only screen and (max-width: 450px) {
+    #SearchString {
+        width: 100%;
+    }
+}
