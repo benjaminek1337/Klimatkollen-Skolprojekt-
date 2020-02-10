@@ -17,10 +17,12 @@
 </div>
 
 <script>
+    var map, marker;
 
+    //API-nyckel
     var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
 
-
+    //Metod för att ta in text från textbox och ta ut latlng utifrån det
     function GetLatLongFromString() {
         var areaString = document.getElementById("areaTextBox").value;
         var lat, long;
@@ -36,12 +38,14 @@
                 console.log(lat, long);
 
                 GetAreasJson(lat, long);
-                TextToMap(lat, long);
+                GetLatLongFromTextArea(lat, long);
+
             })
             .catch(error => console.warn(error.message));
 
     }
 
+    //Metod för att tömma droplist
     function removeOptions(selectbox) {
         var i;
         for (i = selectbox.options.length - 1; i >= 0; i--) {
@@ -49,6 +53,7 @@
         }
     }
 
+    //Metod som hämtar områden kopplade till inskickad latlng och lägger dessa i droplist
     function GetAreasJson(_lat, _lng) {
         var select = document.getElementById("areas");
         removeOptions(select);
@@ -72,6 +77,8 @@
                         || part.types.includes("sublocality_level_1")
                         || part.types.includes("sublocality_level_2")
                         || part.types.includes("political")
+                        || part.types.includes("point_of_intrerest")
+                        || part.types.includes("transit_station")
                     ) {
                         var option = document.createElement("option");
                         option.setAttribute("id", "option");
@@ -84,13 +91,9 @@
     }
 
 
-
-</script>
-
-<script>
-    var map, marker;
     $(document).ready(function () {
 
+        //Metod för att dra igång kartan
         function myMap(lat, long) {
             var myCenter = new google.maps.LatLng(lat, long);
             var mapCanvas = document.getElementById("map");
@@ -104,7 +107,8 @@
                 zoomControl: false,
                 scrollwheel: true
             };
-
+            //Skapar kartan, plockar enhetens position (vid godkännande) och lägger markern på plats
+            //Kallar även på metod för att hämta områden kopplade till latlng 
             map = new google.maps.Map(mapCanvas, mapOptions);
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -125,6 +129,7 @@
                     });
 
                     map.setCenter(marker.getPosition());
+                    GetAreasJson(latInput, longInput);
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -132,13 +137,6 @@
                 // Browser doesn't support Geolocation
                 handleLocationError(false, infoWindow, map.getCenter());
             }
-
-            marker = new google.maps.Marker({
-                position: myCenter,
-                draggable: true
-            }
-            );
-            marker.setMap(map);
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -149,21 +147,28 @@
             infoWindow.open(map);
         }
 
+        //Dessa rader ser till att markern är flyttbar med klick
         google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
 
         map.addListener('click', function (event) {
             marker.setPosition(event.latLng);
-            document.getElementById("lat").value = marker.getPosition().lat();
-            document.getElementById("long").value = marker.getPosition().lng();
+            var lat = document.getElementById("lat").value = marker.getPosition().lat();
+            var long = document.getElementById("long").value = marker.getPosition().lng();
+            GetAreasJson(lat, long);
         });
 
-        function TextToMap(lat, long) {
-            var latlng = lat + "," + long;
-            marker.setPosition(latlng);
-            var latInput = document.getElementById("lat").value = lat;
-            var longInput = document.getElementById("long").value = long;
-        }
+
     });
+
+    //Kod för att flytta marker till angivet område och centrera kartan där
+    function GetLatLongFromTextArea(lat, long) {
+        var latlng;
+        latlng = new google.maps.LatLng(lat, long);
+        marker.setPosition(latlng);
+        map.setCenter(marker.getPosition());
+        document.getElementById("lat").value = lat;
+        document.getElementById("long").value = long;
+    }
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
