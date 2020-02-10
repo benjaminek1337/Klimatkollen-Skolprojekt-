@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,36 +50,57 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
-        public List<Observation> GetObservations(int id)
+        public List<Measurement> GetMeasurements(int id)
         {
-            var observations = new List<Observation>();
-            foreach (var observation in dbContext.Observations)
+            var measurements = new List<Measurement>();
+            foreach (var measurement in dbContext.Measurements)
             {
-                //Skicka in person-id här
-                if (observation.Person.Id == id)
+                if (measurement.Observation.Person != null && measurement.Observation.Person.Id == id)
                 {
-                    //var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-                    //observation.Measurement = measurement;
-                    //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+                    var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
+                    measurement.Observation = observation;
+                    measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(measurement.thirdCategoryId)).FirstOrDefault();
 
-                    observations.Add(observation);
+                    measurements.Add(measurement);
                 }
             }
-            return observations;
+
+            return measurements;
         }
 
-        public Observation GetObservation(int id)
+        public Measurement GetMeasurement(int id)
         {
-            var observation = dbContext.Observations.FirstOrDefault(o => o.Person.Id.Equals(id));
-            //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-            //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
+            //Här
+            //var observation = dbContext.Observations.Include(x => x.Measurement)
+            //    .ThenInclude(y => y.ThirdCategory)
+            //    .FirstOrDefault(o => o.Id.Equals(id));
 
-            return observation;
+            var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .Include(y => y.ThirdCategory)
+                .FirstOrDefault(m => m.Id.Equals(id));
+
+            return measurement;
         }
 
-        public void PostEditedObservation(Observation observation)
+        public void PostEditedMeasurement(Measurement measurement)
         {
-            dbContext.Update(observation);
+            var updatedMeasurement = GetMeasurement(measurement.Id);
+
+            updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
+            updatedMeasurement.Observation.Date = measurement.Observation.Date;
+            updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
+            updatedMeasurement.Value = measurement.Value;
+            updatedMeasurement.Observation.Person = measurement.Observation.Person;
+
+            dbContext.Update(updatedMeasurement);
+            dbContext.SaveChanges();
+        }
+
+        public void DeleteMeasurement(int id)
+        {
+            var measurement = GetMeasurement(id);
+            dbContext.Remove(measurement);
             dbContext.SaveChanges();
         }
 

@@ -1,4 +1,4 @@
-﻿@model Klimatkollen.Models.Observation
+﻿@model Klimatkollen.Models.Measurement
 
 @{
     ViewBag.Title = "Ändra observation";
@@ -11,26 +11,26 @@
     <form method="post">
         @Html.AntiForgeryToken()
 
-        <input id="long" type="hidden" value="@Model.Longitude" asp-for="@Model.Longitude" />
-        <input id="lat" type="hidden" value="@Model.Latitude" asp-for="@Model.Latitude" />
-        <input type="hidden" asp-for="@Model.Person" value="@Model.Person" />
+        <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
+        <input id="lat" type="hidden" value="@Model.Observation.Latitude" asp-for="@Model.Observation.Latitude" />
+        <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
 
 
 
-        <h3 style="text-align:center">Observation av @*@Model.MainCategory.CategoryName,*@ @*@Model.Measurement.ThirdCategory.Type*@ </h3>
+        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName, @Model.ThirdCategory.Type </h3>
         <br />
         <div class="form-group row">
-            <label class="col-form-label col-sm-2">@*@Model.Measurement.ThirdCategory.Unit*@ Värde:</label>
+            <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
             <div class="col-sm-10">
-                @*<input asp-for="@Model.Measurement.Value" class="form-control" value="@Model.Measurement.Value" />*@
+                <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-form-label col-sm-2">Kommentar:</label>
             <div class="col-sm-10">
-                @*<input class="form-control" required type="text" asp-for="@Model.Comment" value="@Model.Comment" />*@
-                @Html.TextAreaFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @id = "observation_Comment"} })
+                <input class="form-control" required type="text" asp-for="@Model.Observation.Comment" value="@Model.Observation.Comment" />
+                @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
             </div>
         </div>
 
@@ -39,7 +39,7 @@
             
             <div class="col-sm-10">
                 @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <div id="hiddens">
@@ -53,6 +53,8 @@
         <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
         <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+        
+        <button type="button" class="btn btn-danger" ><a  style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
     </form>
 </div>
 
