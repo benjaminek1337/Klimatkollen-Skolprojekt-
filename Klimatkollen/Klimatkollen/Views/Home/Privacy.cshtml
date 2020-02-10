@@ -70,15 +70,10 @@
                 let parts = data.results[0].address_components;
                 parts.forEach(part => {
                     if (part.types.includes("administrative_area_level_1")
-                        || part.types.includes("administrative_area_level_2")
                         || part.types.includes("locality")
                         || part.types.includes("postal_town")
-                        || part.types.includes("sublocality")
-                        || part.types.includes("sublocality_level_1")
-                        || part.types.includes("sublocality_level_2")
-                        || part.types.includes("political")
-                        || part.types.includes("point_of_intrerest")
                         || part.types.includes("transit_station")
+                        || part.types.includes("county")
                     ) {
                         var option = document.createElement("option");
                         option.setAttribute("id", "option");
