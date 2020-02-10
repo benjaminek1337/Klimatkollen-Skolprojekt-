@@ -1,0 +1,232 @@
+﻿@model Klimatkollen.Models.UsersTrackedLocations
+
+@{
+    ViewData["Title"] = "Välj områden att bevaka";
+    var locationList = ViewBag.Locations;
+}
+<h1>Välj områden att bevaka</h1>
+<label class="form-label">Peka på ett område genom kartan nedan</label>
+
+<div id="map" style="height: 550px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+<div id="inputs">
+    <form asp-action="SaveUsersTrackedLocation" asp-controller="Profile" method="post" class="col-sm-12">
+        <input class="form-control" asp-for="@Model.Latitude" type="hidden" value="" placeholder="Latitud..." id="lat" />
+        <input class="form-control" asp-for="@Model.Longitude" type="hidden" value="" placeholder="Longitud..." id="long" />
+        <input class="form-control" required type="hidden" id="locationHidden" value="" asp-for="@Model.Location" />
+        <br />
+        <div class="form-group row" id="textarea">
+            <label class="form-label">Eller ange ett område i rutan nedan</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" placeholder="Fritextsök område..." id="areaTextBox" />
+            </div>
+            <div class="col-sm-2">
+                <input type="button" value="Sök" class="btn btn-outline-info" onclick="GetLatLongFromString(), ShowDroplist()" />
+            </div>
+        </div>
+        <div class="form-group row" style="display:none" id="droplist">
+            <label class="form-label">Och välj ett område från listan</label>
+            <div class="col-sm-10">
+                <select id="areas" class="form-control" onchange="HiddenLocation()">
+                    <option>Välj område att bevaka</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <input type="button" value="Visa sökrutan" class="btn btn-outline-info" onclick="HideDroplist()" />
+            </div>
+        </div>
+        <input type="submit" style="display:none" id="submitbtn" value="Bevaka området" class="btn btn-outline-info" />
+    </form>
+
+</div>
+
+<div id="watchlist">
+    <hr />
+    <h4>Områden som följs:</h4>
+    @if(locationList != null)
+    {
+        foreach (var loc in locationList)
+        {
+            <text>@loc.Location</text>
+            <br/>
+        }
+    }
+</div>
+
+<script>
+    function ShowDroplist() {
+        HiddenLocation();
+
+        $("#droplist").show(200);
+        $("#textarea").hide()
+        $("#submitbtn").show(200)
+    }
+    function HideDroplist() {
+        $("#droplist").hide();
+        $("#textarea").show(200)
+        $("#submitbtn").hide()
+    }
+
+    function HiddenLocation() {
+        var dropdown = document.getElementById("areas");
+        var location = dropdown.options[dropdown.selectedIndex].text;
+
+        document.getElementById("locationHidden").value = location;
+    }
+</script>
+
+<script>
+    var map, marker;
+
+    //API-nyckel
+    var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+
+    //Metod för att ta in text från textbox och ta ut latlng utifrån det
+    function GetLatLongFromString() {
+        var areaString = document.getElementById("areaTextBox").value;
+        var lat, long;
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + areaString + "&region=swe&key=" + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(url);
+                console.log(data);
+                lat = data.results[0].geometry.location.lat;
+                long = data.results[0].geometry.location.lng;
+                console.log(lat, long);
+
+                GetAreasJson(lat, long);
+                GetLatLongFromTextArea(lat, long);
+
+            })
+            .catch(error => console.warn(error.message));
+
+    }
+
+    //Metod för att tömma droplist
+    function removeOptions(selectbox) {
+        var i;
+        for (i = selectbox.options.length - 1; i >= 0; i--) {
+            selectbox.remove(i);
+        }
+    }
+
+    //Metod som hämtar områden kopplade till inskickad latlng och lägger dessa i droplist
+    function GetAreasJson(_lat, _lng) {
+        var select = document.getElementById("areas");
+        removeOptions(select);
+        var lat = _lat;
+        var lng = _lng;
+
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
+            + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let parts = data.results[0].address_components;
+                parts.forEach(part => {
+                    if (part.types.includes("administrative_area_level_1")
+                        || part.types.includes("administrative_area_level_2")
+                        || part.types.includes("locality")
+                        || part.types.includes("postal_town")
+                        || part.types.includes("transit_station")
+                        || part.types.includes("county")
+                    ) {
+                        var option = document.createElement("option");
+                        option.setAttribute("id", "option");
+
+                        option.text = part.long_name;
+                        select.add(option);
+                    }
+                });
+                HiddenLocation();
+            })
+            .catch(error => console.warn(error.message));
+    }
+
+
+    $(document).ready(function () {
+
+        //Metod för att dra igång kartan
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+            var latInput, longInput;
+
+            var mapOptions = {
+                center: myCenter,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel: true
+            };
+            //Skapar kartan, plockar enhetens position (vid godkännande) och lägger markern på plats
+            //Kallar även på metod för att hämta områden kopplade till latlng
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latInput = document.getElementById("lat").value = position.coords.latitude;
+                    longInput = document.getElementById("long").value = position.coords.longitude;
+
+                    marker = new google.maps.Marker({
+                        position: { lat: latInput, lng: longInput },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+
+                    map.setCenter(marker.getPosition());
+                    GetAreasJson(latInput, longInput);
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+        //Dessa rader ser till att markern är flyttbar med klick
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
+
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            var lat = document.getElementById("lat").value = marker.getPosition().lat();
+            var long = document.getElementById("long").value = marker.getPosition().lng();
+            GetAreasJson(lat, long);
+            ShowDroplist();
+        });
+
+
+    });
+
+    //Kod för att flytta marker till angivet område och centrera kartan där
+    function GetLatLongFromTextArea(lat, long) {
+        var latlng;
+        latlng = new google.maps.LatLng(lat, long);
+        marker.setPosition(latlng);
+        map.setCenter(marker.getPosition());
+        document.getElementById("lat").value = lat;
+        document.getElementById("long").value = long;
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
+        async defer></script>
