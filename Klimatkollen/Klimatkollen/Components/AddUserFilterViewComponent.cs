@@ -14,6 +14,7 @@ namespace Klimatkollen.Components
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserRepository userDb;
         private readonly IRepository observationDb;
+        Person person;
 
         public AddUserFilterViewComponent(IRepository repository, UserManager<IdentityUser> userManager, IUserRepository userRepo)
         {
@@ -21,12 +22,16 @@ namespace Klimatkollen.Components
             userDb = userRepo;
             this.userManager = userManager;
         }
-        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
-        public async Task<IViewComponentResult> InvokeAsync()
+        private async void GetActiveUser()
         {
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
-            var person = userDb.GetPerson(userId);
+            person = userDb.GetPerson(userId);
+        }
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            GetActiveUser();
 
             var allCategories = observationDb.GetAllCategories();
             var userFilters = observationDb.GetUserFilters(person);
@@ -38,10 +43,6 @@ namespace Klimatkollen.Components
                 {
                     filteredList.Remove(item);
                 }
-                //else
-                //{
-                //    filteredList.Add(item);
-                //}
             }
 
             ViewBag.categories = filteredList;

@@ -19,7 +19,7 @@ namespace Klimatkollen.Data
         void WriteJsonToFile(String jsonString, String filePath);
 
         void AddObjectToDb(object objectToAdd);
-
+        void RemoveObjectFromDb(object objectToRemove);
 
         List<MainCategory> GetMainCategoriesFromDb();
         MainCategory GetMainCategoryFromId(int id);
@@ -30,6 +30,7 @@ namespace Klimatkollen.Data
         List<ThirdCategory> GetThirdCategories(Category cat);
         List<Observation> GetObservations(int id);
         List<UserFilter> GetUserFilters(Person p);
+        UserFilter GetUserFilter(int userFilterId);
 
         Observation GetObservation(int id);
         void PostEditedObservation(Observation observation);

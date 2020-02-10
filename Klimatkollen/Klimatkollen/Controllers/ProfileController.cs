@@ -92,6 +92,7 @@ namespace Klimatkollen.Controllers
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             model.Person = db.GetPerson(userId);
+
             observationdb.PostEditedObservation(model);
             //Kod för att skicka in den redigerade observationen
             return RedirectToAction("UserProfile");
@@ -117,7 +118,6 @@ namespace Klimatkollen.Controllers
             var person = db.GetPerson(userId);
 
             category = observationdb.GetCategoryFromId(category.Id);
-
             UserFilter filter = new UserFilter()
             {
                 FilterName = category.Type,
@@ -125,10 +125,24 @@ namespace Klimatkollen.Controllers
                 categoryId = category.Id,
             };
             
-
             observationdb.AddObjectToDb(filter);
             return RedirectToAction("EditUserFilters");
         }
+        public async Task<IActionResult> RemoveUserFilter(int userFilterId)
+        {
+            if (userFilterId == 0)
+            {
+                return RedirectToAction("EditUserFilters");
+            }
 
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPerson(userId);
+
+            UserFilter userFilter = observationdb.GetUserFilter(userFilterId);
+            observationdb.RemoveObjectFromDb(userFilter);
+
+            return RedirectToAction("EditUserFilters");
+        }
     }
 }

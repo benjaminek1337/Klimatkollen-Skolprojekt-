@@ -27,7 +27,8 @@
             <div class="col-md-8" style="visibility: hidden">
                 @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @id = "categoryIdResult" } })
             </div>
-            <input type="submit" value="Spara intresse" class="btn btn-outline-primary" asp-action="AddUserFilter" asp-controller="Profile" />
+            <input type="submit" value="Spara intresse" class="btn btn-primary" asp-action="AddUserFilter" asp-controller="Profile" />
+            <span class="btn" id="cancelNewFilter">&nbsp; Avbryt </span>
         </form>
     </div>
 }

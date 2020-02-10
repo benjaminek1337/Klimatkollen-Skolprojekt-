@@ -77,6 +77,11 @@ namespace Klimatkollen.Data
             dbContext.Add(objectToAdd);
             dbContext.SaveChanges();
         }
+        public void RemoveObjectFromDb(object objectToRemove)
+        {
+            dbContext.Remove(objectToRemove);
+            dbContext.SaveChanges();
+        }
 
         public List<Observation> GetObservations(int id)
         {
@@ -255,15 +260,23 @@ namespace Klimatkollen.Data
             var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
             return observation.Id;
         }
+        /// <summary>
+        /// Gets a list of filters for a user
+        /// </summary>
+        /// <param name="p">The user</param>
+        /// <returns></returns>
         public List<UserFilter> GetUserFilters(Person p)
         {
             //var newObservation = dbContext.Measurements.Include(x => x.Observation)
             //    .Include(y => y.ThirdCategory)
             //    .FirstOrDefault(o => o.Id.Equals(id));
 
-
             return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
         }
 
+        public UserFilter GetUserFilter (int userFilterId)
+        {
+            return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
+        }
     }
     }

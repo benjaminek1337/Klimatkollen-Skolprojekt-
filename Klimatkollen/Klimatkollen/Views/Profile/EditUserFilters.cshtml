@@ -18,7 +18,7 @@
     @await Component.InvokeAsync("UserFilter")
 </div>
 
-<button class="btn btn-outline-primary" id="launchFilters">Lägg till nytt intresse</button>
+<button class="btn btn-primary" id="launchFilters">Lägg till nytt intresse</button>
 
 <div id="filtersDiv" style="display:none" class="col-sm-6">
     @await Component.InvokeAsync("AddUserFilter")    
@@ -38,6 +38,15 @@
 <script>
     $(document).ready(function () {
         $("#saveFilter").click(function () {
+            $("#saveFilter").hide();
+            $("#filtersDiv").hide();
+            $("#launchFilters").show(50);
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#cancelNewFilter").click(function () {
             $("#saveFilter").hide();
             $("#filtersDiv").hide();
             $("#launchFilters").show(50);

@@ -137,5 +137,15 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public UserFilter GetUserFilter(int userFilterId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveObjectFromDb(object objectToRemove)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
