@@ -1,7 +1,107 @@
-﻿
+﻿@model List<Klimatkollen.ViewModels.ObservationFilterViewModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Alla observationer";
 }
 
-<h1>Index</h1>
+<h1>Alla observationer</h1>
 
+<div class="box" id="categoriesDiv" style="visibility:">
+    @*<p style="display:inline-block; float:right; margin-top:10px;">@Html.ActionLink("Sparade frilansare lista", "SavedFreelancers", "customers")*@</p>
+    <h4 style="display:inline-block;">Sök efter observationer</h4>
+
+    <input id="SearchString" name="SearchString" type="text" placeholder="Sök här" value="">
+    @*<input type="submit" value="Nollställ" onclick="changeText(this, '')" />*@
+    <br />
+    <div>
+        <button id="filterbtn" class="btn btn-primary">Visa filter</button>
+    </div>
+
+
+    <br />
+    <br />
+
+    <div id="filters" style="display:inline-block; display:none">
+        <div id="filterbuttons">
+            <h4 style="font-weight:bold;">Kategorier</h4>
+            @foreach (var item in ViewBag.MainCategories)
+            {
+                <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
+            }
+            <h4 style="font-weight:bold;">Underkategorier</h4>
+            @foreach (var item in ViewBag.Categories)
+            {
+                <p class="filters" id="@item.Type">@item.Type</p>
+            }
+        </div>
+    </div>
+    <div id="filterbtnClose" style="display:none">
+        <button class="btn btn-primary">Stäng</button>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th style="border-top:none;">
+                        Namn
+                    </th>*@
+            </tr>
+        </thead>
+        <tbody id="freelancerTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <h4 style="display:inline-block;" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h4>
+                        @Html.ActionLink("Mer info", "ObservationDetails", "Observation", new { id = item.Observation.Id }, new { @class = "btnless" })
+                        <br />
+
+                        <h6 style="display:inline-block;">Typ av mätning:</h6>
+                        @foreach (var x in item.Measurements)
+                        {
+                            <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
+                        }
+                        <br />
+
+                        <h6 style="display:inline-block;">Värde på mätning:</h6>
+                        @*@foreach (var x in item.TechnologysList)
+                        {
+                            if (x.core_technology == true) //Kärnteknologi
+                            {
+                                <span style="background-color:#2c473d; color:#FFF;" class="filterItem competence" data="@x.name">@Html.DisplayFor(modelItem => x.name)</span>
+                            }
+                            else //Ej kärnteknologi
+                            {
+                                <span class="filterItem competence" data="@x.name">@Html.DisplayFor(modelItem => x.name)</span>
+                            }
+                        }*@
+                        <br />
+                        <br />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#filterbtn").click(function () {
+            $("#filterbtn").hide();
+            $("#filters").show(200);
+            $("#filterbtnClose").show(100);
+        })
+    });
+    $(document).ready(function () {
+        $("#filterbtnClose").click(function () {
+            $("#filterbtnClose").hide();
+            $("#filterbtn").show(50);
+            $("#filters").hide(100);
+        })
+    });
+</script>

@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Klimatkollen.Data
         UserFilter GetUserFilter(int userFilterId);
 
         Measurement GetMeasurement(int id);
-
+        List<ObservationFilterViewModel> GetAllMeasurements();
         void DeleteMeasurement(int id);
         void PostEditedMeasurement(Measurement measurement);
 

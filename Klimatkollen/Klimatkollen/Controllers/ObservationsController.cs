@@ -17,7 +17,11 @@ namespace Klimatkollen.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            ViewBag.MainCategories = observationDB.GetMainCategoriesFromDb();
+            ViewBag.Categories = observationDB.GetAllCategories();
+
+            var list = observationDB.GetAllMeasurements();
+            return View(list);
         }
     }
 }

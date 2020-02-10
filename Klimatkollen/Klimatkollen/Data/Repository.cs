@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -166,6 +167,11 @@ namespace Klimatkollen.Data
         }
 
         public void RemoveObjectFromDb(object objectToRemove)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ObservationFilterViewModel> GetAllMeasurements()
         {
             throw new NotImplementedException();
         }

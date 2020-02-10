@@ -102,6 +102,33 @@ namespace Klimatkollen.Data
 
             return measurements;
         }
+        /// <summary>
+        /// Gets all the measurments with observation in DB
+        /// </summary>
+        /// <returns>a list of measurments</returns>
+        public List<ObservationFilterViewModel> GetAllMeasurements()
+        {
+            List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
+            foreach (var observation in dbContext.Observations)
+            {
+                ObservationFilterViewModel model = new ObservationFilterViewModel();
+
+                var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                    .Include(m => m.MainCategory)
+                    .Include(p => p.Person)
+                    .FirstOrDefault();
+                var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(observation.Id))
+                    .Include(y => y.ThirdCategory)
+                    .ToList();
+
+                model.Observation = newObservation;
+                model.Measurements = measurementsList;
+                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].ThirdCategory.categoryId)).FirstOrDefault();
+
+                observationsList.Add(model);
+            }
+            return observationsList;
+        }
 
         public Measurement GetMeasurement(int id)
         {
@@ -269,16 +296,19 @@ namespace Klimatkollen.Data
         /// <returns></returns>
         public List<UserFilter> GetUserFilters(Person p)
         {
-            //var newObservation = dbContext.Measurements.Include(x => x.Observation)
-            //    .Include(y => y.ThirdCategory)
-            //    .FirstOrDefault(o => o.Id.Equals(id));
-
             return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
         }
 
+        /// <summary>
+        /// Gets at specific User filter based on ID
+        /// </summary>
+        /// <param name="userFilterId">Id for the filter</param>
+        /// <returns>A User filter object</returns>
         public UserFilter GetUserFilter (int userFilterId)
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
+
+
     }
 }

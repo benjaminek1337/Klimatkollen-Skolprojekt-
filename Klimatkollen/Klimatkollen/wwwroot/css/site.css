@@ -447,3 +447,22 @@ body {
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+
+/*Filters*/
+.filters {
+    display: inline-block;
+    border: 2px solid #ddd;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    margin-right: 5px;
+}
+
+    .filters:hover {
+        color: #FFF;
+        background-color: #09964f;
+        border: 2px solid #09964f;
+    }
