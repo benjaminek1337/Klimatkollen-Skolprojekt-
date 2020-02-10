@@ -8,6 +8,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Klimatkollen.ViewModels;
 
 namespace Klimatkollen.Data
 {
@@ -123,6 +124,12 @@ namespace Klimatkollen.Data
             return null;
         }
 
+        //public List<ObservationViewModel> GetAllObservations()
+        //{
+        //    var list = dbContext.Observations
+
+
+        //}
         public void PostEditedObservation(Observation observation)
         {
             var oldobservation = GetObservation(observation.Id);
