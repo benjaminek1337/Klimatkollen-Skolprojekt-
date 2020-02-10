@@ -120,7 +120,7 @@ namespace Klimatkollen.Controllers
             model.Person = person;
             db.AddUserTrackedLocation(model);
             
-            return View("UsersTrackedLocations");
+            return RedirectToAction("UsersTrackedLocations");
         }
 
         public IActionResult EditUserFilters()

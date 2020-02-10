@@ -54,8 +54,6 @@
 
 <script>
     function ShowDroplist() {
-        HiddenLocation();
-
         $("#droplist").show(200);
         $("#textarea").hide()
         $("#submitbtn").show(200)
@@ -65,7 +63,6 @@
         $("#textarea").show(200)
         $("#submitbtn").hide()
     }
-
     function HiddenLocation() {
         var dropdown = document.getElementById("areas");
         var location = dropdown.options[dropdown.selectedIndex].text;
