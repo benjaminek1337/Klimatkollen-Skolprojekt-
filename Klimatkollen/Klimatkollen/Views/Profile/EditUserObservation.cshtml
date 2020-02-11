@@ -40,7 +40,7 @@
 
             <div class="col-sm-10">
                 @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
-                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control oso", @type = "date"  } })
             </div>
         </div>
         <div id="hiddens">
