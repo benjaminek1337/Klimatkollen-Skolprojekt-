@@ -20,13 +20,16 @@
         <div id="filterbuttons">
             <h4>Kategorier</h4>
             @foreach (var item in ViewBag.MainCategories)
-            {
+            {               
                 <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
             }
             <h4>Underkategorier</h4>
             @foreach (var item in ViewBag.Categories)
             {
-                <p class="filters" id="@item.Type">@item.Type</p>
+                if (!item.Unit.Equals("Annat"))
+                {
+                    <p class="filters" id="@item.Type">@item.Type</p>
+                }
             }
         </div>
     </div>
@@ -56,7 +59,7 @@
 
                             <br />
                             <h6 style="display:inline-block;">Plats:</h6>
-                            <span class="filterItem" data="@item.Observation.Latitude"> @item.Observation.Latitude    (friendly name)</span>
+                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea    (friendly name)</span>
                             <br />
 
                             @*(Djur)*@
