@@ -1,28 +1,76 @@
-﻿@model IEnumerable<Klimatkollen.Models.Observation>
+﻿@model IEnumerable<Klimatkollen.Models.Measurement>
 <div id="header" style="text-align:center">
     <h3>Mina observationer</h3>
 </div>
 
 
-<div >
+<div>
     <ul style="list-style-type:none; padding: 0;">
-        @foreach (var observation in Model)
+        @foreach (var measurement in Model)
         {
             <li>
                 <div class="card">
                     <div class="card-header">
-                        Observation av @observation.measurementID
+                        Observation av @measurement.Observation.MainCategory.CategoryName
                     </div>
                     <div class="card-body">
-                        Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />
-                        Kommentar: @observation.Comment <br />
-                        Observation gjord den @observation.Date
+                        Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
+                        Kommentar: @measurement.Observation.Comment <br />
+                        Observation gjord den @measurement.Observation.Date
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-outline-primary" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
                     </div>
                 </div>
             </li>
+            <br/>
         }
     </ul>
 </div>
+
+<button class="btn btn-outline-primary" id="launchFilters">Lägg till nytt intresse</button>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#launchFilters").click(function () {
+            $("#launchFilters").hide();
+            $("#filtersDiv").show(100);
+            $("#saveFilter").show(100);
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#saveFilter").click(function () {
+            $("#saveFilter").hide();
+            $("#filtersDiv").hide();
+            $("#launchFilters").show(50);
+        })
+    })
+</script>
+
+<script>
+    function SetValue(y) {
+        var x = document.getElementById("categoryIdResult");
+        x.value = y.value;
+    }
+    //Funktion för att sätta aktiv class på den klickade knappen
+    var header = document.getElementById("filtersDiv");
+    var btns = header.getElementsByClassName("superSmallBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+
+        });
+    }
+</script>

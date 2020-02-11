@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<Klimatkollen.Models.UserFilter>
+@{
+    ViewData["Title"] = "Default";
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <h3>Mina nuvarande intressen</h3>
+    <br />
+    <div>
+        @foreach (var item in Model)
+        {
+            <span>@item.FilterName</span>
+            @Html.ActionLink("Ta bort", "RemoveUserFilter", "Profile", new { userFilterId = item.Id }, new { @class = "btn btn-right"})
+            <hr />
+        }
+    </div>
+}
+else
+{
+    <p>inga filter....</p>
+}
+
+

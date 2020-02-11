@@ -1,14 +1,30 @@
-﻿<link rel="stylesheet" href="~/css/site.css" />
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<link rel="stylesheet" href="~/css/site.css" />
 
 
 <div class="colorMember">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="member">
+            <h1>Engagera dig som klimatobservatör</h1>
+            <h4>Gör något bra för forskningen och klimatet, rapportera dina observationer</h4>
+            <div>              
+                <a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Rapportera ny observation</a>
+            </div>
+        </div>
 
-<div class="member">
-    <h1>Engagera dig - <br /> bli klimatobservatör idag!</h1>
-    <h4>Gör något bra för forskningen, bli medlem gratis.</h4>
-    <div>
-    <a href="/Identity/Account/Register?returnUrl=%2F" style="font-size:20px;">Jag vill bli klimatobservatör</a>
-    </div>
-    
-</div>
+    }
+    else
+    {
+        <div class="member">
+            <h1>Engagera dig - <br /> bli klimatobservatör idag!</h1>
+            <h4>Gör något bra för forskningen, bli medlem gratis.</h4>
+            <div>
+                <a href="/Identity/Account/Register?returnUrl=%2F" style="font-size:20px;">Jag vill bli klimatobservatör</a>
+            </div>
+        </div>
+    }
 </div>

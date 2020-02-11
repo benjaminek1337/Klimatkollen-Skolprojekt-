@@ -12,12 +12,10 @@ namespace Klimatkollen.Models
         [Key]
         public int Id { get; set; }
         public String Value { get; set; }
-        //[Required]
-
-        //public int catId { get; set; }
-        //[ForeignKey("catId")]
-        public Category Category { get; set; }
-
+        public int observationId { get; set; }
+        [ForeignKey("observationId")]
+        [Required]
+        public virtual Observation Observation { get; set; }
         public int thirdCategoryId { get; set; }
         [ForeignKey("thirdCategoryId")]
         public ThirdCategory ThirdCategory { get; set; }

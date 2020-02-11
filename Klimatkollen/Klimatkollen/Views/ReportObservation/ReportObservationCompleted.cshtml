@@ -1,10 +1,23 @@
-﻿
+﻿@*@using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager*@
+
+
+
 @{
     ViewData["Title"] = "ReportObservationCompleted";
 }
 
+<br />
 <h1>Tack, din observation är nu sparad</h1>
 
-<br/>
-<a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary" >Ny observation</a>
+<br />
+<a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Ny observation</a>
+
+@*@if (SignInManager.IsSignedIn(User))
+    {
+
+         <a class="nav-link text-dark" asp-action="UserProfile" asp-controller="Profile" title="Manage">Min profil</a>
+
+    }*@
 

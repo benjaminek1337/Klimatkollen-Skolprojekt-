@@ -1,0 +1,174 @@
+﻿@model List<Klimatkollen.ViewModels.ObservationFilterViewModel>
+@{
+    ViewData["Title"] = "Alla observationer";
+}
+<br />
+
+<div class="box" id="categoriesDiv">
+    @*<p style="display:inline-block; float:right; margin-top:10px;">@Html.ActionLink("Sparade frilansare lista", "SavedFreelancers", "customers")</p>*@
+    <h3 style="display:inline-block;">Sök efter observationer</h3>
+    <br />
+    <input id="SearchString" name="SearchString" type="text" placeholder="Sök här" value="">
+    @*<input type="submit" value="Nollställ" onclick="changeText(this, '')" />*@
+    <br />
+    <div>
+        <button id="filterbtn" class="btn btn-primary">Visa filter</button>
+    </div>
+
+
+    <div id="filters" style="display:inline-block; display:none">
+        <div id="filterbuttons">
+            <h4>Kategorier</h4>
+            @foreach (var item in ViewBag.MainCategories)
+            {               
+                <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
+            }
+            <h4>Underkategorier</h4>
+            @foreach (var item in ViewBag.Categories)
+            {
+                if (!item.Unit.Equals("Annat"))
+                {
+                    <p class="filters" id="@item.Type">@item.Type</p>
+                }
+            }
+        </div>
+    </div>
+ 
+        <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
+
+</div>
+
+<div>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+            </tr>
+        </thead>
+        <tbody id="freelancerTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        
+                        <div class="col-md-12">
+                            @*<div class="card-header">
+                                <h6 style="display:inline-block;" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>   
+                            </div>*@
+                            <h6 style="display:inline-block;" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
+
+                            <br />
+                            <h6 style="display:inline-block;">Plats:</h6>
+                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea    (friendly name)</span>
+                            <br />
+
+                            @*(Djur)*@
+                            @if (item.Observation.maincategoryId == 2)
+                            {
+                                <h6 style="display:inline-block;">Djur:</h6>
+                                <span class="filterItem" data="@item.Category.Type">@Html.DisplayFor(x => item.Category.Type)</span>
+                                @foreach (var x in item.Measurements)
+                                {
+                                    <br />
+                                    if (x.ThirdCategory.Unit == "Päls")
+                                    {
+
+                                        <h6 style="display:inline-block;">Päls:</h6>
+                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                <h6 style="display:inline-block;">Typ av mätning:</h6>
+                                @foreach (var x in item.Measurements)
+                                {
+                                    <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
+
+                                    if (x.Value != null)
+                                    {
+                                        <br />
+                                        <h6 style="display:inline-block;">Värde: </h6>
+                                        <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
+                                        <span>@Html.DisplayFor(modelItem => x.Value)</span>
+                                    }
+                                }
+                                <br />
+                            }
+                        <div style="display:none" id="@item.Observation.Id">
+
+                            @if (item.Observation.maincategoryId == 2)
+                            {
+
+                                @foreach (var x in item.Measurements)
+                                {
+
+                                    @if (x.ThirdCategory.Unit == "Miljö")
+                                    {
+                                        <h6 style="display:inline-block;">Miljö:</h6>
+                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                        <br />
+                                    }
+                                }
+                                <br />
+                            }
+
+
+                            <h6 style="display:inline-block;">Datum:</h6>
+                            <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
+                            <br />
+                            <h6 style="display:inline-block;">Kommentar:</h6>
+                            <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                            <br />
+                            <h6 style="display:inline-block;">Utförd av:</h6>
+                            <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                            @Html.HiddenFor(model => @item.Observation.Person.Lastname, new { htmlAttributes = new { @class = "form-control", @data = @item.Observation.Person.Lastname } })
+                            <br />
+
+                        </div>
+
+                        </div>
+                        <a onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+            <script>
+                $(document).ready(function () {
+                    $("#filterbtn").click(function () {
+                        $("#filterbtn").hide();
+                        $("#filters").show(200);
+                        $("#filterbtnClose").show(100);
+                    })
+                });
+                $(document).ready(function () {
+                    $("#filterbtnClose").click(function () {
+                        $("#filterbtnClose").hide();
+                        $("#filterbtn").show(50);
+                        $("#filters").hide(100);
+                    })
+                });
+
+                function ShowDetailedInfo(id, btn) {
+                    var x = document.getElementById(id);
+                    if (x.style.display === 'none') {
+                        x.style.display = 'inline-block';
+                        btn.innerHTML = "Visa mindre";
+                    } else {
+                        x.style.display = 'none';
+                        btn.innerHTML = "Visa mer";
+                    }
+                };
+
+            </script>

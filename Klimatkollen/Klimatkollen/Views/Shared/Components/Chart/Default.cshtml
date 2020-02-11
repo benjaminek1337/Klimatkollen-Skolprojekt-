@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<float> 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<h1>Statistik</h1>
 
 
 <script type="text/javascript">
@@ -11,6 +10,9 @@
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'Datum');
         data.addColumn('number', 'Temperatur');
+        data.addColumn('number', 'Medeltemperatur 2020');
+        data.addColumn('number', 'Medeltemperatur 2019');
+
   
     var temperatures = [];
 
@@ -20,13 +22,22 @@
 
     }
 
-    for (i = 0; i < temperatures.length; i++) {
-        data.addRow([i, parseFloat(temperatures[i])]);
+        var medianTemperature = 0;
+
+        for (var i = 0; i < temperatures.length; i++) {
+            medianTemperature += parseFloat(temperatures[i])
+        }
+        temperatures.average
+
+        medianTemperature = medianTemperature / temperatures.length;
+
+        for (i = 0; i < temperatures.length; i++) {
+            data.addRow([i, parseFloat(temperatures[i]), medianTemperature, medianTemperature - 0.80]);
     }
 
                 var options = {
             chart: {
-                title: 'Temperaturer',
+                title: 'Senaste temperaturen'
             },
             width: 900,
             height: 500,
@@ -42,6 +53,7 @@
             chart.draw(data, google.charts.Line.convertOptions(options));
         }
 </script>
+
 
 
 <div id="line_top_x"></div>

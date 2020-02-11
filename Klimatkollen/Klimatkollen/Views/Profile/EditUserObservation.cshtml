@@ -1,4 +1,4 @@
-﻿@model Klimatkollen.Models.Observation
+﻿@model Klimatkollen.Models.Measurement
 
 @{
     ViewBag.Title = "Ändra observation";
@@ -11,43 +11,51 @@
     <form method="post">
         @Html.AntiForgeryToken()
 
-        <input id="long" type="hidden" value="@Model.Longitude" asp-for="@Model.Longitude" />
-        <input id="lat" type="hidden" value="@Model.Latitude" asp-for="@Model.Latitude" />
-        <input type="hidden" asp-for="@Model.Person" value="@Model.Person" />
+        <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
+        <input id="lat" type="hidden" value="@Model.Observation.Latitude" asp-for="@Model.Observation.Latitude" />
+        <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
+        <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="" />
+        <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="" />
 
 
-
-        <h3 style="text-align:center">Observation av @*@Model.MainCategory.CategoryName,*@ @Model.Measurement.ThirdCategory.Type </h3>
+        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName, @Model.ThirdCategory.Type </h3>
         <br />
         <div class="form-group row">
-            <label class="col-form-label col-sm-2">@Model.Measurement.ThirdCategory.Unit Värde:</label>
+            <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
             <div class="col-sm-10">
-                <input asp-for="@Model.Measurement.Value" class="form-control" value="@Model.Measurement.Value" />
+                <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-form-label col-sm-2">Kommentar:</label>
             <div class="col-sm-10">
-                <input class="form-control" required type="text" asp-for="@Model.Comment" value="@Model.Comment" />
+                <input class="form-control" required type="text" asp-for="@Model.Observation.Comment" value="@Model.Observation.Comment" />
+                @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-form-label col-sm-2">Datum:</label>
+
             <div class="col-sm-10">
-                <input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />
-
-            </div>      
+                @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
+                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
         </div>
-
-
+        <div id="hiddens">
+            <div class="col-md-10" style="visibility: hidden">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
+            </div>
+        </div>
 
         <br />
         <h5 style="text-align:center">Välj plats där observation gjordes på kartan nedan</h5>
         <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
-        <input type="submit" value="Ändra observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+        <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+
+        <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
     </form>
 </div>
 
@@ -59,6 +67,41 @@
 
 <script>
     var map, marker;
+
+    //API-nyckel
+    var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+
+    //Metod som hämtar områden i text utifrån koordinater och lägger dessa i droplist
+    function GetAreasJson(_lat, _lng) {
+        var lat = _lat;
+        var lng = _lng;
+
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
+            + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let parts = data.results[0].address_components;
+                parts.forEach(part => {
+                    if (part.types.includes("administrative_area_level_1")) {
+                        document.getElementById("hiddenAdministrativeArea").value = part.long_name;
+                    }
+                    if (part.types.includes("transit_station")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                    else if (part.types.includes("locality")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                    else if (part.types.includes("postal_town")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                });
+            })
+            .catch(error => console.warn(error.message));
+    }
+
     $(document).ready(function () {
 
         function myMap(lat, long) {
@@ -92,8 +135,9 @@
                 map.setCenter(marker.getPosition());
             });
             marker.addListener('dragend', function () {
-                document.getElementById("lat").value = marker.getPosition().lat();
-                document.getElementById("long").value = marker.getPosition().lng();
+                var lat = document.getElementById("lat").value = marker.getPosition().lat();
+                var long = document.getElementById("long").value = marker.getPosition().lng();
+                GetAreasJson(lat, long);
             });
 
             map.setCenter(marker.getPosition());
@@ -125,8 +169,9 @@
 
         map.addListener('click', function (event) {
             marker.setPosition(event.latLng);
-            document.getElementById("lat").value = marker.getPosition().lat();
-            document.getElementById("long").value = marker.getPosition().lng();
+            var lat = document.getElementById("lat").value = marker.getPosition().lat();
+            var long = document.getElementById("long").value = marker.getPosition().lng();
+            GetAreasJson(lat, long);
         });
     });
 

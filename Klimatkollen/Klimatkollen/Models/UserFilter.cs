@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Klimatkollen.Models
 {
-    public class ThirdCategory
+    public class UserFilter
     {
-        [Key]
         public int Id { get; set; }
-        public String Unit { get; set; } // Eg. Celcius, M/S 
-        public String Type { get; set; } // Eg. Vindstyrka
-        [Required]
+        
+        public Person Person { get; set; }
+        //public int mainCategoryId { get; set; }
+        //[ForeignKey("mainCategoryId")]
+        //public MainCategory MainCategory { get; set; }
         public int categoryId { get; set; }
         [ForeignKey("categoryId")]
         public Category Category { get; set; }
+        public string FilterName { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Klimatkollen.ViewModels;
 
 namespace Klimatkollen.Data
 {
@@ -77,122 +78,97 @@ namespace Klimatkollen.Data
             dbContext.Add(objectToAdd);
             dbContext.SaveChanges();
         }
-
-        public List<Observation> GetObservations(int id)
+        public void RemoveObjectFromDb(object objectToRemove)
         {
-            //var observations = new List<Observation>();
-            //MainCategory mc = new MainCategory()
-            //{
-            //    CategoryName = "Luft",
-            //    Id = 1,
-            //};
-            //Person person = new Person()
-            //{
-            //    Id = 1,
-            //    FirstName = "Mattias",
-            //    Lastname = "Kenttä",
-            //    Email = "miss_kicki@hotmail.com"
-            //};
-            //Category category = new Category()
-            //{
-            //    Id = 1,
-            //    Unit = "Meter per sekund",
-            //    Type = "Vindhastighet"
-            //};
-            //Measurement measurement = new Measurement()
-            //{
-            //    Id = 1,
-            //    Value = "23 m/s",
-            //    //Category = category
-
-            //};
-            //Observation observation = new Observation()
-            //{
-            //    Id = 1,
-            //    Date = DateTime.Now,
-            //    Latitude = "67.86",
-            //    Longitude = "20.23",
-            //    Comment = "Coolaste observationen öster om Norge",
-            //    MainCategory = mc,
-            //    Person = person,
-            //    Measurement = measurement
-            //}; 
-            //observations.Add(observation);
-
-            var observations = new List<Observation>();
-            foreach (var observation in dbContext.Observations)
-            {
-                //Skicka in person-id här
-                if (observation.Person.Id == id)
-                {
-                    var measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-                    observation.Measurement = measurement;
-                    observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
-
-                    observations.Add(observation);
-                }
-            }
-            return observations;
-        }
-
-        public Observation GetObservation(int id)
-        {
-            //MainCategory mc = new MainCategory()
-            //{
-            //    CategoryName = "Luft",
-            //    Id = 1,
-            //};
-            //Person person = new Person()
-            //{
-            //    Id = 1,
-            //    FirstName = "Mattias",
-            //    Lastname = "Kenttä",
-            //    Email = "miss_kicki@hotmail.com"
-            //};
-            //Category category = new Category()
-            //{
-            //    Id = 1,
-            //    Unit = "Meter per sekund",
-            //    Type = "Vindhastighet"
-            //};
-            //Measurement measurement = new Measurement()
-            //{
-            //    Id = 1,
-            //    Value = "23 m/s",
-            //    //Category = category
-
-            //};
-            //Observation observation = new Observation()
-            //{
-            //    Id = 1,
-            //    Date = DateTime.Now,
-            //    Latitude = "-3.3730559",
-            //    Longitude = "29.9188862",
-            //    Comment = "Coolaste observationen öster om Norge",
-            //    MainCategory = mc,
-            //    Person = person,
-            //    Measurement = measurement
-            //};
-            var observation = dbContext.Observations.Include(x => x.Measurement)
-                .ThenInclude(y => y.ThirdCategory)
-                .FirstOrDefault(o => o.Person.Id.Equals(id));
-                
-
-
-
-            //observation.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(observation.measurementID)).FirstOrDefault();
-            //observation.Measurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(observation.Measurement.thirdCategoryId)).FirstOrDefault();
-
-            return observation;
-        }
-
-        public void PostEditedObservation(Observation observation)
-        {
-            //Kod för att uppdatera den valda observationen
-            //Risken finns att VI MANUELLT MÅSTE PLOCKA TABELLER SOM OVAN HOPPAS INTE!
-            dbContext.Update(observation);
+            dbContext.Remove(objectToRemove);
             dbContext.SaveChanges();
         }
+
+        public List<Measurement> GetMeasurements(int id)
+        {
+            var measurements = new List<Measurement>();
+            foreach (var measurement in dbContext.Measurements)
+            {
+                var newMeasurement = GetMeasurement(measurement.Id);
+                if(newMeasurement.Observation.Person != null && newMeasurement.Observation.Person.Id == id)
+                {
+                    //var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
+                    //newMeasurement.Observation = observation;
+                    newMeasurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(measurement.thirdCategoryId)).FirstOrDefault();
+
+                    measurements.Add(newMeasurement);
+                }
+            }
+
+            return measurements;
+        }
+        /// <summary>
+        /// Gets all the measurments with observation in DB
+        /// </summary>
+        /// <returns>a list of measurments</returns>
+        public List<ObservationFilterViewModel> GetAllMeasurements()
+        {
+            List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
+            foreach (var observation in dbContext.Observations)
+            {
+                ObservationFilterViewModel model = new ObservationFilterViewModel();
+
+                var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                    .Include(m => m.MainCategory)
+                    .Include(p => p.Person)
+                    .FirstOrDefault();
+                var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(observation.Id))
+                    .Include(y => y.ThirdCategory)
+                    .ToList();
+
+                model.Observation = newObservation;
+                model.Measurements = measurementsList;
+                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].ThirdCategory.categoryId)).FirstOrDefault();
+
+                observationsList.Add(model);
+            }
+            return observationsList;
+        }
+
+        public Measurement GetMeasurement(int id)
+        {
+            //Här
+            //var observation = dbContext.Observations.Include(x => x.Measurement)
+            //    .ThenInclude(y => y.ThirdCategory)
+            //    .FirstOrDefault(o => o.Id.Equals(id));
+
+            var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .ThenInclude(z => z.MainCategory)
+                .Include(y => y.ThirdCategory)
+                .FirstOrDefault(m => m.Id.Equals(id));
+
+            return measurement;
+        }
+
+        public void PostEditedMeasurement(Measurement measurement)
+        {
+            var updatedMeasurement = GetMeasurement(measurement.Id);
+
+            updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
+            updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
+            updatedMeasurement.Observation.Date = measurement.Observation.Date;
+            updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
+            updatedMeasurement.Value = measurement.Value;
+            updatedMeasurement.Observation.Person = measurement.Observation.Person;
+
+            dbContext.Update(updatedMeasurement);
+            dbContext.SaveChanges();
+        }
+
+        public void DeleteMeasurement(int id)
+        {
+            var measurement = GetMeasurement(id);
+            dbContext.Remove(measurement);
+            dbContext.SaveChanges();
+        }
+
         public List<MainCategory> GetMainCategoriesFromDb()
         {
             return dbContext.MainCategories.ToList();
@@ -201,9 +177,17 @@ namespace Klimatkollen.Data
         {
             return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
         }
+        public MainCategory GetMainCategoryFromCategoryObject(Category cat)
+        {
+            return dbContext.MainCategories.Where(x => x.Id.Equals(cat)).FirstOrDefault();
+        }
         public List<Category> GetCategoriesFromId(MainCategory cat)
         {
-            return dbContext.Categories.Where(x => x.MainCategory == cat).ToList();
+            return dbContext.Categories.Where(x => x.MainCategory.Equals(cat)).ToList();
+        }
+        public List<Category> GetAllCategories()
+        {
+            return dbContext.Categories.ToList();
         }
         public Category GetCategoryFromId(int id)
         {
@@ -211,7 +195,7 @@ namespace Klimatkollen.Data
         }
         public List<ThirdCategory> GetThirdCategories(Category cat)
         {
-            return dbContext.ThirdCategories.Where(x => x.Category == cat).ToList();
+            return dbContext.ThirdCategories.Where(x => x.Category.Id.Equals(cat.Id)).ToList();
         }
         public async Task<IEnumerable<float>> ChartAsync() //TEST CHART
         {
@@ -246,7 +230,7 @@ namespace Klimatkollen.Data
             {
                 Id = 1,
                 Value = "13",
-                Category = c,
+                //Category = c,
             };
             MainCategory mc = new MainCategory()
             {
@@ -262,7 +246,7 @@ namespace Klimatkollen.Data
                 Latitude = "12",
                 Longitude = "12",
                 Person = p,
-                Measurement = m,
+                //Measurement = m,
                 MainCategory = mc
             }; AllObservations.Add(ob);
             ob = new Observation()
@@ -273,7 +257,7 @@ namespace Klimatkollen.Data
                 Latitude = "12",
                 Longitude = "12",
                 Person = p,
-                Measurement = m,
+                //Measurement = m,
                 MainCategory = mc
             }; AllObservations.Add(ob);
             ob = new Observation()
@@ -284,7 +268,7 @@ namespace Klimatkollen.Data
                 Latitude = "13",
                 Longitude = "12",
                 Person = p,
-                Measurement = m,
+                //Measurement = m,
                 MainCategory = mc
             }; AllObservations.Add(ob);
 
@@ -301,5 +285,32 @@ namespace Klimatkollen.Data
             return await Task.FromResult(observationTestList.ToList());
 
         }
+
+        public int GetLastObservationIdFromUser (Person p)
+        {
+            var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+            return observation.Id;
+        }
+        /// <summary>
+        /// Gets a list of filters for a user
+        /// </summary>
+        /// <param name="p">The user</param>
+        /// <returns></returns>
+        public List<UserFilter> GetUserFilters(Person p)
+        {
+            return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
+        }
+
+        /// <summary>
+        /// Gets at specific User filter based on ID
+        /// </summary>
+        /// <param name="userFilterId">Id for the filter</param>
+        /// <returns>A User filter object</returns>
+        public UserFilter GetUserFilter (int userFilterId)
+        {
+            return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
+        }
+
+
     }
-    }
+}

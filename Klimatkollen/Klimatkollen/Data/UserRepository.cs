@@ -46,5 +46,35 @@ namespace Klimatkollen.Data
             context.Remove(person);
             context.SaveChanges();
         }
+
+        public void AddUserTrackedLocation(UsersTrackedLocations model)
+        {
+            //Kod för att spara till databas
+            context.UserTrackedLocations.Add(model);
+            context.SaveChanges();
+        }
+
+        public List<UsersTrackedLocations> GetUsersTrackedLocations(Person person)
+        {
+            var locations = new List<UsersTrackedLocations>();
+            foreach (var loc in context.UserTrackedLocations)
+            {
+                if(loc.Person.Id == person.Id)
+                {
+                    locations.Add(loc);
+                }
+            }
+
+            return locations;
+        }
+
+        public void DeleteUsersTrackedLocation(int id)
+        {
+            var location = context.UserTrackedLocations.Where(l => l.Id.Equals(id)).FirstOrDefault();
+
+            context.UserTrackedLocations.Remove(location);
+            context.SaveChanges();
+
+        }
     }
 }
