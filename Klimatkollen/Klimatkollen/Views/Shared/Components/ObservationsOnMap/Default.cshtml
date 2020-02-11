@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Klimatkollen.Models.Measurement>
+
+<div id="map" style="height: 500px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+
+<script>
+    var map;
+    function initMap() {
+        var initPosition = { lat: 63.1826, lng: 17.2681};
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 4,
+            center: initPosition,
+            streetViewControl: false,
+            mapTypeControl: true,
+            zoomControl: false,
+            scrollwheel: true
+        });
+        if (@Model != null) {
+            @foreach (var item in Model)
+                {
+                    <text>
+                        var infocontent = "<h5>@item.Observation.Comment</h5>" +
+                        "<p>@item.Observation.MainCategory.CategoryName</p>"
+                        var marker_@item.Id = new google.maps.Marker({
+                            position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                            map: map
+                        });
+                        var infowindow_@item.Id = new google.maps.InfoWindow({
+                            content: infocontent
+                        });
+                        marker_@{@item.Id}.addListener("click", function(){
+                            infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                        });
+                    </text>
+                }
+        }
+
+
+
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap">
+</script>

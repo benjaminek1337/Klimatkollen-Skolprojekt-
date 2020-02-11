@@ -43,5 +43,6 @@ namespace Klimatkollen.Data
 
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);
+        List<Measurement> GetAllMeasurements2();
     }
 }

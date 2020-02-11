@@ -169,5 +169,6 @@ namespace Klimatkollen.Controllers
 
             return RedirectToAction("EditUserFilters");
         }
+
     }
 }

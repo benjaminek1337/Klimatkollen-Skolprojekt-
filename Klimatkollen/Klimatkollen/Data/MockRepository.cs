@@ -106,6 +106,7 @@ namespace Klimatkollen.Data
         /// Gets all the measurments with observation in DB
         /// </summary>
         /// <returns>a list of measurments</returns>
+        /// 
         public List<ObservationFilterViewModel> GetAllMeasurements()
         {
             List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
@@ -128,6 +129,20 @@ namespace Klimatkollen.Data
                 observationsList.Add(model);
             }
             return observationsList;
+        }
+
+        public List<Measurement> GetAllMeasurements2()
+        {
+            var measurements = new List<Measurement>();
+            foreach (var item in dbContext.Measurements)
+            {
+                var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .ThenInclude(z => z.MainCategory)
+                .Include(y => y.ThirdCategory)
+                .FirstOrDefault(m => m.Id.Equals(item.Id));
+                measurements.Add(measurement);
+            }
+            return measurements;
         }
 
         public Measurement GetMeasurement(int id)

@@ -177,5 +177,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public List<Measurement> GetAllMeasurements2()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
