@@ -4,14 +4,16 @@ using Klimatkollen.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200210150041_NewMigration2")]
+    partial class NewMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,11 +366,15 @@ namespace Klimatkollen.Migrations
 
                     b.Property<int>("categoryId");
 
+                    b.Property<int>("mainCategoryId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
                     b.HasIndex("categoryId");
+
+                    b.HasIndex("mainCategoryId");
 
                     b.ToTable("UserFilters");
                 });
@@ -609,6 +615,11 @@ namespace Klimatkollen.Migrations
                     b.HasOne("Klimatkollen.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("mainCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

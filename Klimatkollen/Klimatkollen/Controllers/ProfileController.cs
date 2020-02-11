@@ -102,6 +102,27 @@ namespace Klimatkollen.Controllers
             return RedirectToAction("UserProfile");
         }
 
+        public async Task<IActionResult> UsersTrackedLocations()
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPerson(userId);
+            ViewBag.Locations = db.GetUsersTrackedLocations(person);
+            return View(); 
+        }
+
+        public async Task<IActionResult> SaveUsersTrackedLocation(UsersTrackedLocations model)
+        {
+            //Skapa metod för att spara till databas
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPerson(userId);
+            model.Person = person;
+            db.AddUserTrackedLocation(model);
+            
+            return RedirectToAction("UsersTrackedLocations");
+        }
+
         public IActionResult EditUserFilters()
         {
             //ViewBag.mainCategories = observationdb.GetMainCategoriesFromDb();
