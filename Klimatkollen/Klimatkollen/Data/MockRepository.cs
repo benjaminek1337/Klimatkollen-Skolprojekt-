@@ -150,6 +150,8 @@ namespace Klimatkollen.Data
             var updatedMeasurement = GetMeasurement(measurement.Id);
 
             updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
             updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
             updatedMeasurement.Observation.Date = measurement.Observation.Date;
             updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
