@@ -13,17 +13,35 @@ namespace Klimatkollen.Components
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IRepository db;
+        private readonly IUserRepository userdb;
 
-        public ObservationsOnMapViewComponent(UserManager<IdentityUser> userManager, IRepository db)
+        public ObservationsOnMapViewComponent(UserManager<IdentityUser> userManager, IRepository db, IUserRepository userdb)
         {
             this.db = db;
             this.userManager = userManager;
+            this.userdb = userdb;
 
         }
-
+        private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+        private async Task<Person> GetPerson()
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = userdb.GetPerson(userId);
+            return person;
+        }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = userdb.GetPerson(userId);
+            ViewBag.User = person;
+
+            var locations = userdb.GetUsersTrackedLocations(person);
+            ViewBag.Locations = locations;
+
+
             var measurements = db.GetAllMeasurements2();
             return View(measurements);
         }
