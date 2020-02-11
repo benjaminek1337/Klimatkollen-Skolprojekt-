@@ -95,7 +95,7 @@
         @Html.EditorFor(model => model.observation.Latitude, new { htmlAttributes = new { @class = "form-control", @id = "lat" } })
     </div>
     <div style="visibility: hidden">
-         <input type="text" name="secondMeasurement" id="resultBoxSecondMeasurement" />        
+        <input type="text" name="secondMeasurement" id="resultBoxSecondMeasurement" />
     </div>
     <div>
         @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
@@ -109,6 +109,8 @@
     <div>
         @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
     </div>
+    <input id="hiddenPlace" type="hidden" asp-for="@Model.observation.Place" value="" />
+    <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.observation.AdministrativeArea" value="" />
 </div>
 }
 
@@ -118,6 +120,41 @@
 
 <script>
     var map, marker;
+
+    //API-nyckel
+    var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+
+    //Metod som hämtar områden i text utifrån koordinater och lägger dessa i droplist
+    function GetAreasJson(_lat, _lng) {
+        var lat = _lat;
+        var lng = _lng;
+
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
+            + key;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let parts = data.results[0].address_components;
+                parts.forEach(part => {
+                    if (part.types.includes("administrative_area_level_1")) {
+                        document.getElementById("hiddenAdministrativeArea").value = part.long_name;
+                    }
+                    if (part.types.includes("transit_station")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                    else if (part.types.includes("locality")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                    else if (part.types.includes("postal_town")) {
+                        document.getElementById("hiddenPlace").value = part.long_name;
+                    }
+                });
+            })
+            .catch(error => console.warn(error.message));
+    }
+
     $(document).ready(function () {
         function myMap(lat, long) {
             var myCenter = new google.maps.LatLng(lat, long);
@@ -148,10 +185,11 @@
                         map.setCenter(marker.getPosition());
                     });
                     marker.addListener('dragend', function () {
-                        document.getElementById("lat").value = marker.getPosition().lat();
-                        document.getElementById("long").value = marker.getPosition().lng();
+                        var lat = document.getElementById("lat").value = marker.getPosition().lat();
+                        var long = document.getElementById("long").value = marker.getPosition().lng();
+                        GetAreasJson(lat, long);
                     });
-
+                    GetAreasJson(latInput, longInput);
                     map.setCenter(marker.getPosition());
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
@@ -181,8 +219,9 @@
 
         map.addListener('click', function (event) {
             marker.setPosition(event.latLng);
-            document.getElementById("lat").value = marker.getPosition().lat();
-            document.getElementById("long").value = marker.getPosition().lng();
+            var lat = document.getElementById("lat").value = marker.getPosition().lat();
+            var long = document.getElementById("long").value = marker.getPosition().lng();
+            GetAreasJson(lat, long);
         });
     });
 

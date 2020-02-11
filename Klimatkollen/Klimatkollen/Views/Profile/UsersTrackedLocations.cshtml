@@ -95,7 +95,7 @@
     //API-nyckel
     var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
 
-    //Metod för att ta in text från textbox och ta ut latlng utifrån det
+    //Metod för att ta in text från textbox och ta ut koordinater utifrån det
     function GetLatLongFromString() {
         var areaString = document.getElementById("areaTextBox").value;
         var lat, long;
@@ -126,7 +126,7 @@
         }
     }
 
-    //Metod som hämtar områden kopplade till inskickad latlng och lägger dessa i droplist
+    //Metod som hämtar områden i text utifrån koordinater och lägger dessa i droplist
     function GetAreasJson(_lat, _lng) {
         var select = document.getElementById("areas");
         removeOptions(select);
