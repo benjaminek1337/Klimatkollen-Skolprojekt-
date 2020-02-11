@@ -5,7 +5,9 @@
     var locationList = ViewBag.Locations;
 }
 <h1>Välj områden att bevaka</h1>
-<label class="form-label">Peka på ett område genom kartan nedan</label>
+<hr />
+<h5>Peka på ett område på kartan nedan</h5>
+<br />
 
 <div id="map" style="height: 550px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
 <div id="inputs">
@@ -15,22 +17,22 @@
         <input class="form-control" required type="hidden" id="locationHidden" value="" asp-for="@Model.Location" />
         <br />
         <div class="form-group row" id="textarea">
-            <label class="form-label">Eller ange ett område i rutan nedan</label>
+            <h5>Eller ange ett område i rutan nedan</h5>
             <div class="col-sm-10">
                 <input class="form-control" type="text" placeholder="Fritextsök område..." id="areaTextBox" />
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2" style="text-align:right">
                 <input type="button" value="Sök" class="btn btn-outline-info" onclick="GetLatLongFromString(), ShowDroplist()" />
             </div>
         </div>
         <div class="form-group row" style="display:none" id="droplist">
-            <label class="form-label">Och välj ett område från listan</label>
+            <h5>Och välj ett område från listan</h5>
             <div class="col-sm-10">
                 <select id="areas" class="form-control" onchange="HiddenLocation()">
                     <option>Välj område att bevaka</option>
                 </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2" style="text-align:right">
                 <input type="button" value="Visa sökrutan" class="btn btn-outline-info" onclick="HideDroplist()" />
             </div>
         </div>
@@ -40,14 +42,23 @@
 </div>
 
 <div id="watchlist">
-    <hr />
-    <h4>Områden som följs:</h4>
-    @if(locationList != null)
+    <br />
+    <h4>Områden som bevakas:</h4>
+    @if (locationList != null)
     {
         foreach (var loc in locationList)
         {
-            <text>@loc.Location</text>
-            <br/>
+            <div class="form-group row">
+                <div class="col-sm-9">
+                    <text>@loc.Location<text>
+                </div>
+                <div class="col-sm-2">
+                    <a asp-action="DeleteUsersTrackedLocation" asp-controller="Profile" asp-route-id="@loc.Id">
+                        Sluta bevaka område
+                    </a>
+                </div>
+            </div>
+            <hr />
         }
     }
 </div>
@@ -69,6 +80,13 @@
 
         document.getElementById("locationHidden").value = location;
     }
+
+    $(document).keypress(
+        function (event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }
+        });
 </script>
 
 <script>

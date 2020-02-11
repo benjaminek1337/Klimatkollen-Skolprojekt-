@@ -18,6 +18,11 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
+        public void DeleteUsersTrackedLocation(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Person EditPerson(Person model)
         {
             var person = GetPerson(model.IdentityId);

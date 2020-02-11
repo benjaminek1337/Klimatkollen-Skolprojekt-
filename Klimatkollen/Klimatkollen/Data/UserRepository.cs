@@ -67,5 +67,14 @@ namespace Klimatkollen.Data
 
             return locations;
         }
+
+        public void DeleteUsersTrackedLocation(int id)
+        {
+            var location = context.UserTrackedLocations.Where(l => l.Id.Equals(id)).FirstOrDefault();
+
+            context.UserTrackedLocations.Remove(location);
+            context.SaveChanges();
+
+        }
     }
 }

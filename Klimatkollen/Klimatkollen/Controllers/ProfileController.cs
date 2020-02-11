@@ -24,13 +24,19 @@ namespace Klimatkollen.Controllers
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+        private async Task<Person> GetPerson()
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPerson(userId);
+            return person;
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> UserProfile(Person person)
         {
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            person = db.GetPerson(userId);
+            person = await GetPerson();
             if (person == null)
             {  
                 return RedirectToAction("Home", "Index");
@@ -89,9 +95,6 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult PostEditUserObservation(Measurement model)
         {
-            //var user = await GetCurrentUserAsync();
-            //string userId = user?.Id;
-            //model.Person = db.GetPerson(userId);
             observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
         }
@@ -104,22 +107,23 @@ namespace Klimatkollen.Controllers
 
         public async Task<IActionResult> UsersTrackedLocations()
         {
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            var person = db.GetPerson(userId);
+            var person = await GetPerson();
             ViewBag.Locations = db.GetUsersTrackedLocations(person);
             return View(); 
         }
 
         public async Task<IActionResult> SaveUsersTrackedLocation(UsersTrackedLocations model)
         {
-            //Skapa metod för att spara till databas
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            var person = db.GetPerson(userId);
+            var person = await GetPerson();
             model.Person = person;
             db.AddUserTrackedLocation(model);
             
+            return RedirectToAction("UsersTrackedLocations");
+        }
+
+        public IActionResult DeleteUsersTrackedLocation(int id)
+        {
+            db.DeleteUsersTrackedLocation(id);
             return RedirectToAction("UsersTrackedLocations");
         }
 
@@ -138,9 +142,7 @@ namespace Klimatkollen.Controllers
                 return RedirectToAction("EditUserFilters");
             }
 
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            var person = db.GetPerson(userId);
+            var person = await GetPerson();
 
             category = observationdb.GetCategoryFromId(category.Id);
             UserFilter filter = new UserFilter()
@@ -160,9 +162,7 @@ namespace Klimatkollen.Controllers
                 return RedirectToAction("EditUserFilters");
             }
 
-            var user = await GetCurrentUserAsync();
-            string userId = user?.Id;
-            var person = db.GetPerson(userId);
+            var person = await GetPerson();
 
             UserFilter userFilter = observationdb.GetUserFilter(userFilterId);
             observationdb.RemoveObjectFromDb(userFilter);
