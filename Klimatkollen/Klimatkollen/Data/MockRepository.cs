@@ -92,8 +92,8 @@ namespace Klimatkollen.Data
                 var newMeasurement = GetMeasurement(measurement.Id);
                 if(newMeasurement.Observation.Person != null && newMeasurement.Observation.Person.Id == id)
                 {
-                    var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
-                    newMeasurement.Observation = observation;
+                    //var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
+                    //newMeasurement.Observation = observation;
                     newMeasurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(measurement.thirdCategoryId)).FirstOrDefault();
 
                     measurements.Add(newMeasurement);

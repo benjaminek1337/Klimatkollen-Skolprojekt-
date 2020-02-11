@@ -15,6 +15,8 @@ namespace Klimatkollen.Models
         public DateTime Date { get; set; }
         public String Longitude { get; set; }
         public String Latitude { get; set; }
+        public String Place { get; set; }
+        public String AdministrativeArea { get; set; }
         public String Comment { get; set; }
         public int maincategoryId { get; set; }
         [ForeignKey("maincategoryId")]
