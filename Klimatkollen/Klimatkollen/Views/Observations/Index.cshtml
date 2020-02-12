@@ -27,7 +27,7 @@
     
     <div id="filterbuttons">
         <div id="areaDiv">
-            <h4>Områden</h4>
+            <h4>Populära områden</h4>
             @foreach (var item in ViewBag.Areas)
             {
                 <p class="filters areaBtn" id="@item">@item</p>
@@ -120,38 +120,41 @@
                                 }
                                 <br />
                             }
-                            <div style="display:none" id="@item.Observation.Id">
+                        <div style="display:none" id="@item.Observation.Id">
 
-                                @if (item.Observation.maincategoryId == 2)
+                            @if (item.Observation.maincategoryId == 2)
+                            {
+
+                                @foreach (var x in item.Measurements)
                                 {
 
-                                    @foreach (var x in item.Measurements)
+                                    @if (x.ThirdCategory.Unit == "Miljö")
                                     {
-
-                                        @if (x.ThirdCategory.Unit == "Miljö")
-                                        {
-                                            <h6 style="display:inline-block;">Miljö:</h6>
-                                            <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                            <br />
-                                        }
+                                        <h6 style="display:inline-block;">Miljö:</h6>
+                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                        <br />
                                     }
-                                    <br />
                                 }
+                                <br />
+                            }
 
 
-                                <h6 style="display:inline-block;">Datum:</h6>
-                                <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
-                                <br />
-                                <h6 style="display:inline-block;">Kommentar:</h6>
-                                <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                                <br />
-                                <h6 style="display:inline-block;">Utförd av:</h6>
-                                <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
-                                @Html.HiddenFor(model => @item.Observation.Person.Lastname, new { htmlAttributes = new { @class = "form-control", @data = @item.Observation.Person.Lastname } })
-                                <br />
+                            <h6 style="display:inline-block;">Datum:</h6>
+                            <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
+                            <br />
+                            <h6 style="display:inline-block;">Kommentar:</h6>
+                            <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                            <br />
+                            <h6 style="display:inline-block;">Utförd av:</h6>
+                            <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                            <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
+                           
+                            <br />
+                            <br />
 
-                            </div>
-                            <a onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
+                        </div>
+                            
+                            <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
                         </div>
                         
                     </td>
@@ -171,7 +174,7 @@
       $(document).ready(function () {
             $("#filterbtn").click(function () {
                 $("#filterbtn").hide();
-                $("#filters").show(200);
+                $("#filters").show(100);
                 $("#filterbtnClose").show(100);
                 $("#ClearFilterBtn").show(100);               
             })
@@ -183,7 +186,7 @@
                 $("#filterbtnClose").hide();
                 $("#ClearFilterBtn").hide();   
                 $("#filterbtn").show(50);
-                $("#filters").hide(200);
+                $("#filters").hide(100);
              })
       });
 
@@ -275,11 +278,6 @@
   </script>
 
 <script>
-    //document.getElementById('AdministrativeArea').onchange = function () {
-    //    $(this).toggleClass('active');
-    //        filter();
-    ////document.getElementById("message").innerHTML = "Test";
-    //};
     var header = document.getElementById("areaDiv");
     var btns = header.getElementsByClassName("areaBtn");
     for (var i = 0; i < btns.length; i++) {
