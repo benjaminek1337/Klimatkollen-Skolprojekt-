@@ -9,32 +9,52 @@
     <h3 style="display:inline-block;">Sök efter observationer</h3>
     <br />
     <input id="SearchString" name="SearchString" type="text" placeholder="Fritext sök" value="">
-    @*<input type="submit" value="Nollställ" onclick="changeText(this, '')" />*@
+
     <br />
     <div>
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
     </div>
 
 
-    <div id="filters" style="display:inline-block; display:none">
-        <div id="filterbuttons">
+
+
+
+
+
+
+
+<div id="filters" style="display:inline-block; display:none">
+    
+    <div id="filterbuttons">
+        <div id="areaDiv">
+            <h4>Populära områden</h4>
+            @foreach (var item in ViewBag.Areas)
+            {
+                <p class="filters areaBtn" id="@item">@item</p>
+            }
+        </div>
+        <div id="mainCategoriesDiv">
             <h4>Kategorier</h4>
             @foreach (var item in ViewBag.MainCategories)
-            {               
-                <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
+            {
+                <p class="filters mainCatBtn" id="@item.CategoryName">@item.CategoryName</p>
             }
+        </div>
+        <div id="catgoriesDiv">
             <h4>Underkategorier</h4>
             @foreach (var item in ViewBag.Categories)
             {
                 if (!item.Unit.Equals("Annat"))
                 {
-                    <p class="filters" id="@item.Type">@item.Type</p>
+                    <p class="filters catBtn" id="@item.Type">@item.Type</p>
                 }
             }
         </div>
     </div>
- 
-        <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
+</div>
+
+    <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
+    <input style="display:none; padding: 10px 0px; min-width: 80px" id="ClearFilterBtn" type="submit" class="btn btn-sec" value="Nollställ" />
 
 </div>
 
@@ -59,7 +79,7 @@
 
                             <br />
                             <h6 style="display:inline-block;">Plats:</h6>
-                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea    (friendly name)</span>
+                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
                             <br />
 
                             @*(Djur)*@
@@ -75,7 +95,6 @@
 
                                         <h6 style="display:inline-block;">Päls:</h6>
                                         <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-
                                     }
                                 }
 
@@ -101,38 +120,41 @@
                                 }
                                 <br />
                             }
-                            <div style="display:none" id="@item.Observation.Id">
+                        <div style="display:none" id="@item.Observation.Id">
 
-                                @if (item.Observation.maincategoryId == 2)
+                            @if (item.Observation.maincategoryId == 2)
+                            {
+
+                                @foreach (var x in item.Measurements)
                                 {
 
-                                    @foreach (var x in item.Measurements)
+                                    @if (x.ThirdCategory.Unit == "Miljö")
                                     {
-
-                                        @if (x.ThirdCategory.Unit == "Miljö")
-                                        {
-                                            <h6 style="display:inline-block;">Miljö:</h6>
-                                            <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                            <br />
-                                        }
+                                        <h6 style="display:inline-block;">Miljö:</h6>
+                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                        <br />
                                     }
-                                    <br />
                                 }
+                                <br />
+                            }
 
 
-                                <h6 style="display:inline-block;">Datum:</h6>
-                                <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
-                                <br />
-                                <h6 style="display:inline-block;">Kommentar:</h6>
-                                <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                                <br />
-                                <h6 style="display:inline-block;">Utförd av:</h6>
-                                <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
-                                @Html.HiddenFor(model => @item.Observation.Person.Lastname, new { htmlAttributes = new { @class = "form-control", @data = @item.Observation.Person.Lastname } })
-                                <br />
+                            <h6 style="display:inline-block;">Datum:</h6>
+                            <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
+                            <br />
+                            <h6 style="display:inline-block;">Kommentar:</h6>
+                            <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                            <br />
+                            <h6 style="display:inline-block;">Utförd av:</h6>
+                            <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                            <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
+                           
+                            <br />
+                            <br />
 
-                            </div>
-                            <a onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
+                        </div>
+                            
+                            <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
                         </div>
                         
                     </td>
@@ -148,48 +170,63 @@
 
 
 <script>
-                $(document).ready(function () {
-                    $("#filterbtn").click(function () {
-                        $("#filterbtn").hide();
-                        $("#filters").show(200);
-                        $("#filterbtnClose").show(100);
-                    })
-                });
-                $(document).ready(function () {
-                    $("#filterbtnClose").click(function () {
-                        $("#filterbtnClose").hide();
-                        $("#filterbtn").show(50);
-                        $("#filters").hide(100);
-                    })
-                });
+    //Visa filter
+      $(document).ready(function () {
+            $("#filterbtn").click(function () {
+                $("#filterbtn").hide();
+                $("#filters").show(100);
+                $("#filterbtnClose").show(100);
+                $("#ClearFilterBtn").show(100);               
+            })
+      });
 
-                function ShowDetailedInfo(id, btn) {
-                    var x = document.getElementById(id);
-                    if (x.style.display === 'none') {
-                        x.style.display = 'inline-block';
-                        btn.innerHTML = "Visa mindre";
-                    } else {
-                        x.style.display = 'none';
-                        btn.innerHTML = "Visa mer";
-                    }
-                };
-            </script>
+    //Göm filter
+      $(document).ready(function () {
+            $("#filterbtnClose").click(function () {
+                $("#filterbtnClose").hide();
+                $("#ClearFilterBtn").hide();   
+                $("#filterbtn").show(50);
+                $("#filters").hide(100);
+             })
+      });
+
+    //Visa mer info på klickad observation
+     function ShowDetailedInfo(id, btn) {
+         var x = document.getElementById(id);
+            if (x.style.display === 'none') {
+                x.style.display = 'inline-block';
+                btn.innerHTML = "Visa mindre";
+            } else {
+                x.style.display = 'none';
+                btn.innerHTML = "Visa mer";
+            }
+    };
+
+    //När "Nollställ filter"-knappen klickas
+    $(document).ready(function () {
+        $("#ClearFilterBtn").click(function () {
+            $("#SearchString").val(null);
+            filter();
+            })
+          });
+ </script>
 
 <script>
-                //Filtreringsfunktionen
+   //Filtreringsfunktionen
    $(function () {
     //Källa: https://caveofcode.com/2016/02/jquery-tutorial-how-to-filter-data-using-multiple-parameters/
        //Fritextsök
        $('#SearchString').keyup(filter);
 
-                    //När man klickar på en knapp, = toggleClass <-> active
+       //När man klickar på en knapp som har klassen filter, = toggleClass <-> active
        $('.filters').click(function () {
-            $(this).toggleClass('active');
+            //$(this).toggleClass('active');
             filter();
-            });
+            });                 
+   });
 
-             //Funktion för att filtrera tabellen
-             function filter() {
+    function filter() {
+            //Funktion för att filtrera tabellen
              var rex = new RegExp($('#SearchString').val(), 'i');
              var rows = $('#ObservationsTable tr');
 
@@ -205,21 +242,80 @@
 
              return tester;
              }).show();
-             }
-
-                    //Kollar vilka items som har värdet för vilka filter som är aktiva
-                    function filterCombos(selector) {
+    };
+    function filterCombos(selector) {
+                        //Kollar vilka items som har värdet för vilka filter som är aktiva
                         var tester = true;
-                        var all = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
+                        var activeOne = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
+                        var activeTwo = $('#filterbuttons .filters.activeTwo'); //Sparar alla filterknappar som har klassen active
+                        var activeThree = $('#filterbuttons .filters.activeThree'); //Sparar alla filterknappar som har klassen active
 
-                        for (var i = 0; i < all.length; i++) {
-                            var item = $(selector).find('[data="' + all[i].id + '"]'); //(if item.name == filterbutton.name)
+                        for (var i = 0; i < activeOne.length; i++) {
+                            var item = $(selector).find('[data="' + activeOne[i].id + '"]'); //(if item.name == filterbutton.name)
 
                             if (!item.hasClass('filterItem')) {
                                 tester = false;
                             }
                         }
+                        for (var i = 0; i < activeTwo.length; i++) {
+                            var item = $(selector).find('[data="' + activeTwo[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
+                        for (var i = 0; i < activeThree.length; i++) {
+                            var item = $(selector).find('[data="' + activeThree[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
+
                         return tester;
-                    }
-                });
-            </script>
+    };
+
+  </script>
+
+<script>
+    var header = document.getElementById("areaDiv");
+    var btns = header.getElementsByClassName("areaBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+        });
+    };
+    var header = document.getElementById("mainCategoriesDiv");
+    var btns = header.getElementsByClassName("mainCatBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeTwo");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeTwo", "");
+            }
+            this.className += " activeTwo";
+        });
+    };
+
+    var header = document.getElementById("catgoriesDiv");
+    var btns = header.getElementsByClassName("catBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeThree");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeThree", "");
+            }
+            this.className += " activeThree";
+        });
+    };
+
+
+
+</script>
+<script>
+    
+</script>
