@@ -9,7 +9,7 @@
     <h3 style="display:inline-block;">Sök efter observationer</h3>
     <br />
     <input id="SearchString" name="SearchString" type="text" placeholder="Fritext sök" value="">
-    @*<input type="submit" value="Nollställ" onclick="changeText(this, '')" />*@
+    <input id="ClearFilterBtn" type="submit" class="btn btn-primary" value="Nollställ" onclick="changeText(this, '')" />
     <br />
     <div>
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
@@ -148,48 +148,64 @@
 
 
 <script>
-                $(document).ready(function () {
-                    $("#filterbtn").click(function () {
-                        $("#filterbtn").hide();
-                        $("#filters").show(200);
-                        $("#filterbtnClose").show(100);
-                    })
-                });
-                $(document).ready(function () {
-                    $("#filterbtnClose").click(function () {
-                        $("#filterbtnClose").hide();
-                        $("#filterbtn").show(50);
-                        $("#filters").hide(100);
-                    })
-                });
+    //Visa filter
+      $(document).ready(function () {
+            $("#filterbtn").click(function () {
+                $("#filterbtn").hide();
+                $("#filters").show(200);
+                $("#filterbtnClose").show(100);
+            })
+      });
 
-                function ShowDetailedInfo(id, btn) {
-                    var x = document.getElementById(id);
-                    if (x.style.display === 'none') {
-                        x.style.display = 'inline-block';
-                        btn.innerHTML = "Visa mindre";
-                    } else {
-                        x.style.display = 'none';
-                        btn.innerHTML = "Visa mer";
-                    }
-                };
-            </script>
+    //Göm filter
+      $(document).ready(function () {
+            $("#filterbtnClose").click(function () {
+                $("#filterbtnClose").hide();
+                $("#filterbtn").show(50);
+                $("#filters").hide(100);
+             })
+      });
+
+    //Visa mer info på klickad observation
+     function ShowDetailedInfo(id, btn) {
+         var x = document.getElementById(id);
+            if (x.style.display === 'none') {
+                x.style.display = 'inline-block';
+                btn.innerHTML = "Visa mindre";
+            } else {
+                x.style.display = 'none';
+                btn.innerHTML = "Visa mer";
+            }
+    };
+
+    //När "Nollställ filter"-knappen klickas
+    $(document).ready(function () {
+        $("#ClearFilterBtn").click(function () {
+            $("#SearchString").val(null);
+            filter();
+            })
+          });
+ </script>
 
 <script>
-                //Filtreringsfunktionen
+   //Filtreringsfunktionen
    $(function () {
     //Källa: https://caveofcode.com/2016/02/jquery-tutorial-how-to-filter-data-using-multiple-parameters/
        //Fritextsök
        $('#SearchString').keyup(filter);
 
-                    //När man klickar på en knapp, = toggleClass <-> active
+       //När man klickar på en knapp, = toggleClass <-> active
        $('.filters').click(function () {
             $(this).toggleClass('active');
             filter();
             });
 
-             //Funktion för att filtrera tabellen
-             function filter() {
+       //Anropar filter-funktionen
+       filter();                   
+   });
+
+    function filter() {
+            //Funktion för att filtrera tabellen
              var rex = new RegExp($('#SearchString').val(), 'i');
              var rows = $('#ObservationsTable tr');
 
@@ -205,10 +221,9 @@
 
              return tester;
              }).show();
-             }
-
-                    //Kollar vilka items som har värdet för vilka filter som är aktiva
-                    function filterCombos(selector) {
+    };
+    function filterCombos(selector) {
+                        //Kollar vilka items som har värdet för vilka filter som är aktiva
                         var tester = true;
                         var all = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
 
@@ -220,6 +235,6 @@
                             }
                         }
                         return tester;
-                    }
-                });
-            </script>
+    };
+
+  </script>
