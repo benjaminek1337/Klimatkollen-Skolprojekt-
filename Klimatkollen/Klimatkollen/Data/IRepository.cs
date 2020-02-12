@@ -44,6 +44,6 @@ namespace Klimatkollen.Data
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
-        List<ObservationFilterViewModel> GetAllObservationsBasedOnFilter(int id);
+        List<LandingPageFiltersViewModel> GetAllObservationsBasedOnFilter(List<UserFilter> filters);
     }
 }

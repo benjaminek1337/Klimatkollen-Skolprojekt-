@@ -5,3 +5,12 @@
 
 <h1>Detta är ett test</h1>
 
+@foreach (var item in ViewBag.Observations)
+{
+    foreach (var o in item.observations)
+    {
+            
+            <p>@o.Observation.Comment</p>
+    }
+
+}

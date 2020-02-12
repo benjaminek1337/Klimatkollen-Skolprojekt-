@@ -193,7 +193,7 @@ namespace Klimatkollen.Data
             return measurements;
         }
 
-        public List<ObservationFilterViewModel> GetAllObservationsBasedOnFilter(int id)
+        public List<LandingPageFiltersViewModel> GetAllObservationsBasedOnFilter(List<UserFilter> filters)
         {
             throw new NotImplementedException();
         }

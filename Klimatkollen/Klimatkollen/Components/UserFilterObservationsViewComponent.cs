@@ -1,8 +1,10 @@
 ﻿using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,7 +46,23 @@ namespace Klimatkollen.Components
             var filters = db.GetUserFilters(person);
             //ViewBag.Filters = filters;
 
-            db.GetAllObservationsBasedOnFilter(filters[0].categoryId);
+
+            var all = db.GetAllMeasurements();
+            
+
+
+
+            var observations = new LandingPageFiltersViewModel();
+            //var temp = new List<LandingPageFiltersViewModel>();
+            //var x = new List<IEnumerable>();
+
+
+            var q = db.GetAllObservationsBasedOnFilter(filters);
+
+
+
+            ViewBag.Observations = q;
+ 
 
             return View();
         }

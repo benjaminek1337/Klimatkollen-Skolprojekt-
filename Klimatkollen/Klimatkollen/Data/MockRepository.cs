@@ -328,28 +328,33 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
-        public List<ObservationFilterViewModel> GetAllObservationsBasedOnFilter(int id)
+        public List<LandingPageFiltersViewModel> GetAllObservationsBasedOnFilter(List<UserFilter> filters)
         {
-            var filteredList = new List<ObservationFilterViewModel>();
+            //List<ObservationFilterViewModel> filteredList = new List<ObservationFilterViewModel>();
+            //var temp = new LandingPageFiltersViewModel();
+            var list = new List<LandingPageFiltersViewModel>();
+
+
             var all = GetAllMeasurements();
 
-            foreach (var ob in all)
+            foreach (var filter in filters)
             {
-                var model = new ObservationFilterViewModel();
-                if (ob.Measurements.Any(x => x.categoryId.Equals(id)))
+                //var list = new List<ObservationFilterViewModel>();
+                var temp = new LandingPageFiltersViewModel();
+                foreach (var item in all)
                 {
-                    model.Category = ob.Category;
-                    model.Observation = ob.Observation;
-                    model.Measurements = ob.Measurements;
-
-                    filteredList.Add(model);
+                    if (item.Measurements.Any(i => i.categoryId.Equals(filter.categoryId)))
+                    {
+                        var model = new ObservationFilterViewModel();
+                        model.Category = item.Category;
+                        model.Measurements = item.Measurements;
+                        model.Observation = item.Observation;
+                        temp.observations.Add(model);
+                    }
                 }
-
+                list.Add(temp);
             }
-
-
-                return filteredList;
+            return list;
         }
-
     }
 }
