@@ -26,7 +26,7 @@
                 {
                     foreach(var location in locations)
                     {
-                        if (location.Location == item.Observation.AdministrativeArea)
+                        if (location.Location == item.Observation.AdministrativeArea || location.Location == item.Observation.Place)
                         {
                             foreach (var filter in filters)
                             {
@@ -56,7 +56,7 @@
                 {
                     foreach(var location in locations)
                     {
-                        if (location.Location == item.Observation.AdministrativeArea)
+                        if (location.Location == item.Observation.AdministrativeArea || location.Location == item.Observation.Place)
                         {
 
                             <text>
