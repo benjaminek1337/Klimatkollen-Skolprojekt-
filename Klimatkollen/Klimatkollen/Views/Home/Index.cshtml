@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 @model Observation
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 @*class="text-center">*@
 @*<h1 class="display-4">Välkommen till klimatkollen!</h1>
     <div class="slider">
@@ -46,6 +47,7 @@
 <div>
     @await Component.InvokeAsync("Chart")
 </div>
+
 
 
 <br />

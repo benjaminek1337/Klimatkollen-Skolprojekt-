@@ -256,7 +256,9 @@ body {
 
 @media only screen and (max-width: 400px) {
     #slideOne, #slideTwo {
-        display: none;
+        width:100%;
+        height:auto;
+        /*display: none;*/
         
     }
 }
@@ -442,4 +444,11 @@ body {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+.row {
+    margin: 0 !important;
 }
