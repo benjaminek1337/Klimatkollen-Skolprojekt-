@@ -95,9 +95,8 @@
     <div style="visibility: hidden">
         <input type="text" name="secondMeasurement" id="resultBoxSecondMeasurement" />
     </div>
-    <div style="visibility: visible">
+    <div style="visibility: hidden">
         @Html.EditorFor(m => @Model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-        @*@Html.EditorFor(m => @Model.measurement.categoryId, new { htmlAttributes = new { @class = "form-control" } })*@
         @Html.EditorFor(m => @Model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(m => @Model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(m => @Model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
@@ -105,29 +104,7 @@
         @Html.EditorFor(model => @Model.category.MainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(model => @Model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
     </div>
-    <div>
-        
-        @*@Html.HiddenFor(model => model.category.MainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })*@
-    </div>
-    <div>
-        @*@Html.HiddenFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })*@
-        
-    </div>
-    @*<div>
-        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-    </div>*@
-    @*<div>
-        @Html.HiddenFor(model => model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>*@
-    @*<div>
-        @Html.HiddenFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>*@
-    @*<div>
-        @Html.HiddenFor(model => @Model.measurement.categoryId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>*@
-    @*<div>
-        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
-    </div>*@
+
     <input id="hiddenPlace" type="hidden" asp-for="@Model.observation.Place" value="" />
     <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.observation.AdministrativeArea" value="" />
     <input id="hiddenCountry" type="hidden" asp-for="@Model.observation.Country" value="" />
