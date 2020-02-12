@@ -9,7 +9,7 @@
     <h3 style="display:inline-block;">Sök efter observationer</h3>
     <br />
     <input id="SearchString" name="SearchString" type="text" placeholder="Fritext sök" value="">
-    <input id="ClearFilterBtn" type="submit" class="btn btn-primary" value="Nollställ" onclick="changeText(this, '')" />
+
     <br />
     <div>
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
@@ -20,7 +20,7 @@
         <div id="filterbuttons">
             <h4>Kategorier</h4>
             @foreach (var item in ViewBag.MainCategories)
-            {               
+            {
                 <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
             }
             <h4>Underkategorier</h4>
@@ -33,8 +33,9 @@
             }
         </div>
     </div>
- 
-        <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
+
+    <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
+    <input style="display:none; padding: 10px 0px; min-width: 80px" id="ClearFilterBtn" type="submit" class="btn btn-sec" value="Nollställ" />
 
 </div>
 
@@ -154,6 +155,7 @@
                 $("#filterbtn").hide();
                 $("#filters").show(200);
                 $("#filterbtnClose").show(100);
+                $("#ClearFilterBtn").show(100);               
             })
       });
 
@@ -161,8 +163,9 @@
       $(document).ready(function () {
             $("#filterbtnClose").click(function () {
                 $("#filterbtnClose").hide();
+                $("#ClearFilterBtn").hide();   
                 $("#filterbtn").show(50);
-                $("#filters").hide(100);
+                $("#filters").hide(200);
              })
       });
 
@@ -201,7 +204,7 @@
             });
 
        //Anropar filter-funktionen
-       filter();                   
+       //filter();                   
    });
 
     function filter() {
