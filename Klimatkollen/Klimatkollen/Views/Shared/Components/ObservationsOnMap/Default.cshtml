@@ -26,8 +26,9 @@
                     if (location.Location == item.Observation.AdministrativeArea)
                     {
                             <text>
-                                var infocontent = "<h5>@item.Observation.Comment</h5>" +
-                                "<p>@item.Observation.MainCategory.CategoryName</p>"
+                                var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                "<p>Kommentar: @item.Observation.Comment</p>"
                                 var marker_@item.Id = new google.maps.Marker({
                                     position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
                                     map: map
