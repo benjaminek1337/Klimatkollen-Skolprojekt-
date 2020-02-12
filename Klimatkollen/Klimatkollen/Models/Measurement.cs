@@ -16,8 +16,9 @@ namespace Klimatkollen.Models
         [ForeignKey("observationId")]
         [Required]
         public virtual Observation Observation { get; set; }
-        public int thirdCategoryId { get; set; }
+        public int? thirdCategoryId { get; set; }
         [ForeignKey("thirdCategoryId")]
         public ThirdCategory ThirdCategory { get; set; }
+        public int? categoryId { get; set; }
     }
 }

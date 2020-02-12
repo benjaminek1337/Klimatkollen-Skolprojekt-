@@ -17,6 +17,14 @@
         @await  Component.InvokeAsync("ObservationViewComponent")
     </div>*@
 
+
+
+    <div class="viewcomponentmap">
+        @await Component.InvokeAsync("ObservationsOnMap")
+    </div>
+    <div>
+        @await Component.InvokeAsync("UserFilterObservations")
+    </div>
 <div>
     @await Component.InvokeAsync("SliderOne")
 </div>

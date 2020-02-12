@@ -124,7 +124,8 @@ namespace Klimatkollen.Data
 
                 model.Observation = newObservation;
                 model.Measurements = measurementsList;
-                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].ThirdCategory.categoryId)).FirstOrDefault();
+                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+                //model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].ThirdCategory.categoryId)).FirstOrDefault();
 
                 observationsList.Add(model);
             }
@@ -327,6 +328,28 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
+        public List<ObservationFilterViewModel> GetAllObservationsBasedOnFilter(int id)
+        {
+            var filteredList = new List<ObservationFilterViewModel>();
+            var all = GetAllMeasurements();
+
+            foreach (var ob in all)
+            {
+                var model = new ObservationFilterViewModel();
+                if (ob.Measurements.Any(x => x.categoryId.Equals(id)))
+                {
+                    model.Category = ob.Category;
+                    model.Observation = ob.Observation;
+                    model.Measurements = ob.Measurements;
+
+                    filteredList.Add(model);
+                }
+
+            }
+
+
+                return filteredList;
+        }
 
     }
 }

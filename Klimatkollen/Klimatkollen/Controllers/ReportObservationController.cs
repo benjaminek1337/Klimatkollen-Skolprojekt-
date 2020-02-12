@@ -111,11 +111,11 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            if (model.measurement.thirdCategoryId == 0)
-            {
-                //TODO: Fixa fullösning
-                model.measurement.thirdCategoryId = 11;
-            }
+            //if (model.measurement.thirdCategoryId == 0)
+            //{
+            //    //TODO: Fixa fullösning
+            //    model.measurement.thirdCategoryId = 11;
+            //}
 
             //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
@@ -125,9 +125,10 @@ namespace Klimatkollen.Controllers
             //Sätter värden
             model.observation.Person = person;
             model.measurement.Observation = model.observation;
+            model.measurement.categoryId = model.category.Id;
             
             //Sparar i DB
-            db.AddObjectToDb(model.observation);
+            //db.AddObjectToDb(model.observation);
             db.AddObjectToDb(model.measurement);
 
             //Lägg till en andra measurement

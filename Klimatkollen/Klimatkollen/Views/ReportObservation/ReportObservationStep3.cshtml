@@ -85,7 +85,7 @@
     <hr />
 
     @*Gömda element*@
-    <div class="col-sm-12" style="visibility: hidden">
+    <div class="col-sm-12" style="visibility: visible">
         @Html.EditorFor(model => model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
     </div>
     <div class="col-md-8" style="visibility: hidden">
@@ -97,20 +97,38 @@
     <div style="visibility: hidden">
         <input type="text" name="secondMeasurement" id="resultBoxSecondMeasurement" />
     </div>
-    <div>
-        @Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div>
-        @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <input id="hiddenPlace" type="hidden" asp-for="@Model.observation.Place" value="" />
-    <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.observation.AdministrativeArea" value="" />
+    
+        @*@Html.HiddenFor(model => model.category.MainCategory, new { htmlAttributes = new { @class = "form-control" } })*@
+
+<div>
+    @Html.HiddenFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
+</div>
+<div>
+    @Html.HiddenFor(model => model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
+
+</div>
+<div>
+
+    @Html.HiddenFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
+</div>
+
+
+    <input type="text" asp-for="@Model.category.Type" value="" />
+    <input type="text" asp-for="@Model.category.MainCategory.Id" value="" />
+    <input type="text" asp-for="@Model.mainCategory.CategoryName" value="" />
+    <input type="text" asp-for="@Model.mainCategory.Id" value="" />
+
+
+
+
+    <input id="hiddenPlace" type="text" asp-for="@Model.observation.Place" value="" />
+    <input id="hiddenAdministrativeArea" type="text" asp-for="@Model.observation.AdministrativeArea" value="" />
+    
 </div>
 }
 
