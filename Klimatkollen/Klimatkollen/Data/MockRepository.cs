@@ -168,6 +168,7 @@ namespace Klimatkollen.Data
             updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
             updatedMeasurement.Observation.Place = measurement.Observation.Place;
             updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
+            updatedMeasurement.Observation.Country = measurement.Observation.Country;
             updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
             updatedMeasurement.Observation.Date = measurement.Observation.Date;
             updatedMeasurement.Observation.Comment = measurement.Observation.Comment;

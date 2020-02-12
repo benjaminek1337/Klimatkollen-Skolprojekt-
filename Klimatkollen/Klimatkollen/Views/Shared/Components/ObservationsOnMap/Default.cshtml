@@ -26,7 +26,9 @@
                 {
                     foreach(var location in locations)
                     {
-                        if (location.Location == item.Observation.AdministrativeArea || location.Location == item.Observation.Place)
+                        if (location.Location == item.Observation.AdministrativeArea
+                            || location.Location == item.Observation.Place
+                            || location.Location == item.Observation.Country)
                         {
                             foreach (var filter in filters)
                             {
@@ -56,7 +58,9 @@
                 {
                     foreach(var location in locations)
                     {
-                        if (location.Location == item.Observation.AdministrativeArea || location.Location == item.Observation.Place)
+                        if (location.Location == item.Observation.AdministrativeArea 
+                            || location.Location == item.Observation.Place
+                            || location.Location == item.Observation.Country)
                         {
 
                             <text>
