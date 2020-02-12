@@ -16,6 +16,7 @@
         <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
         <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="" />
         <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="" />
+        <input id="hiddenCountry" type="hidden" asp-for="@Model.Observation.Country" value="" />
 
 
         <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName, @Model.ThirdCategory.Type </h3>
@@ -85,6 +86,9 @@
                 console.log(data);
                 let parts = data.results[0].address_components;
                 parts.forEach(part => {
+                    if (part.types.includes("country")) {
+                        document.getElementById("hiddenCountry").value = part.long_name;
+                    }
                     if (part.types.includes("administrative_area_level_1")) {
                         document.getElementById("hiddenAdministrativeArea").value = part.long_name;
                     }

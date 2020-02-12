@@ -111,6 +111,7 @@
     </div>
     <input id="hiddenPlace" type="hidden" asp-for="@Model.observation.Place" value="" />
     <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.observation.AdministrativeArea" value="" />
+    <input id="hiddenCountry" type="hidden" asp-for="@Model.observation.Country" value="" />
 </div>
 }
 
@@ -138,6 +139,9 @@
                 console.log(data);
                 let parts = data.results[0].address_components;
                 parts.forEach(part => {
+                    if (part.types.includes("country")) {
+                        document.getElementById("hiddenCountry").value = part.long_name;
+                    }
                     if (part.types.includes("administrative_area_level_1")) {
                         document.getElementById("hiddenAdministrativeArea").value = part.long_name;
                     }
