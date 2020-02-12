@@ -180,7 +180,17 @@ namespace Klimatkollen.Data
 
         public List<Measurement> GetAllMeasurements2()
         {
-            throw new NotImplementedException();
+            var measurements = new List<Measurement>();
+            foreach (var item in dbContext.Measurements)
+            {
+                var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .ThenInclude(z => z.MainCategory)
+                .Include(y => y.ThirdCategory)
+                .ThenInclude(a => a.Category)
+                .FirstOrDefault(m => m.Id.Equals(item.Id));
+                measurements.Add(measurement);
+            }
+            return measurements;
         }
     }
 }

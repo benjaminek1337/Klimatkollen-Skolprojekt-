@@ -41,6 +41,8 @@ namespace Klimatkollen.Components
             var locations = userdb.GetUsersTrackedLocations(person);
             ViewBag.Locations = locations;
 
+            var filters = db.GetUserFilters(person);
+            ViewBag.Filters = filters;
 
             var measurements = db.GetAllMeasurements2();
             return View(measurements);

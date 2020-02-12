@@ -2,6 +2,7 @@
 @{ 
     var user = ViewBag.User;
     var locations = ViewBag.Locations;
+    var filters = ViewBag.Filters;
 }
 
 <div id="map" style="height: 500px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
@@ -21,10 +22,69 @@
         @if (Model != null) {
             @foreach (var item in Model)
             {
-                foreach(var location in locations)
+                if(locations.Count > 0 && filters.Count > 0)
                 {
-                    if (location.Location == item.Observation.AdministrativeArea)
+                    foreach(var location in locations)
                     {
+                        if (location.Location == item.Observation.AdministrativeArea)
+                        {
+                            foreach (var filter in filters)
+                            {
+                                if(filter.FilterName == item.ThirdCategory.Category.Type)
+                                {
+                                    <text>
+                                        var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                        "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                        "<p>Kommentar: @item.Observation.Comment</p>"
+                                        var marker_@item.Id = new google.maps.Marker({
+                                            position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                                            map: map
+                                        });
+                                        var infowindow_@item.Id = new google.maps.InfoWindow({
+                                            content: infocontent
+                                        });
+                                        marker_@{@item.Id}.addListener("click", function(){
+                                            infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                                        });
+                                    </text>
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(locations.Count > 0 && filters.Count == 0)
+                {
+                    foreach(var location in locations)
+                    {
+                        if (location.Location == item.Observation.AdministrativeArea)
+                        {
+
+                            <text>
+                                var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                "<p>Kommentar: @item.Observation.Comment</p>"
+                                var marker_@item.Id = new google.maps.Marker({
+                                    position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                                    map: map
+                                });
+                                var infowindow_@item.Id = new google.maps.InfoWindow({
+                                            content: infocontent
+                                });
+                                marker_@{@item.Id}.addListener("click", function(){
+                                    infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                                });
+                            </text>
+
+                        }
+                    }
+                }
+                else if(locations.Count == 0 && filters.Count > 0)
+                {
+                    foreach(var filter in filters)
+                    {
+                        if (filter.FilterName == item.ThirdCategory.Category.Type)
+                        {
+
                             <text>
                                 var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
                                 "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
@@ -40,9 +100,30 @@
                                     infowindow_@{@item.Id}.open(map, marker_@item.Id );
                                 });
                             </text>
+
+                        }
                     }
                 }
-             }
+                else
+                {
+                    <text>
+                        var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                        "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                        "<p>Kommentar: @item.Observation.Comment</p>"
+                        var marker_@item.Id = new google.maps.Marker({
+                            position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                            map: map
+                        });
+                        var infowindow_@item.Id = new google.maps.InfoWindow({
+                            content: infocontent
+                        });
+                        marker_@{@item.Id}.addListener("click", function(){
+                            infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                        });
+                    </text>
+                }
+
+            }
         }
     }
 </script>
