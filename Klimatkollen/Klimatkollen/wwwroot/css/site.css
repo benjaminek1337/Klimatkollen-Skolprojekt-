@@ -82,7 +82,7 @@ body {
     width: 120px;
     height: 90px;
 }
-    .active, .buttonTemp:hover {
+    .active, .activeTwo, .activeThree, .buttonTemp:hover {
         background-color: #4CAF50;
         color: white;
     }

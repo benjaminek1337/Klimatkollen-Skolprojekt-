@@ -26,25 +26,30 @@
 <div id="filters" style="display:inline-block; display:none">
     
     <div id="filterbuttons">
-        <h4>Områden</h4>
-        @foreach (var item in ViewBag.Areas)
-        {
-            <p class="filters" id="@item">@item</p>
-        }
-        <h4>Kategorier</h4>
-        @foreach (var item in ViewBag.MainCategories)
-        {
-            <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
-        }
-        <h4>Underkategorier</h4>
-        @foreach (var item in ViewBag.Categories)
-        {
-            if (!item.Unit.Equals("Annat"))
+        <div id="areaDiv">
+            <h4>Områden</h4>
+            @foreach (var item in ViewBag.Areas)
             {
-                <p class="filters" id="@item.Type">@item.Type</p>
+                <p class="filters areaBtn" id="@item">@item</p>
             }
-        }
-
+        </div>
+        <div id="mainCategoriesDiv">
+            <h4>Kategorier</h4>
+            @foreach (var item in ViewBag.MainCategories)
+            {
+                <p class="filters mainCatBtn" id="@item.CategoryName">@item.CategoryName</p>
+            }
+        </div>
+        <div id="catgoriesDiv">
+            <h4>Underkategorier</h4>
+            @foreach (var item in ViewBag.Categories)
+            {
+                if (!item.Unit.Equals("Annat"))
+                {
+                    <p class="filters catBtn" id="@item.Type">@item.Type</p>
+                }
+            }
+        </div>
     </div>
 </div>
 
@@ -210,14 +215,11 @@
        //Fritextsök
        $('#SearchString').keyup(filter);
 
-       //När man klickar på en knapp, = toggleClass <-> active
+       //När man klickar på en knapp som har klassen filter, = toggleClass <-> active
        $('.filters').click(function () {
-            $(this).toggleClass('active');
+            //$(this).toggleClass('active');
             filter();
-            });
-
-       //Anropar filter-funktionen
-       //filter();                   
+            });                 
    });
 
     function filter() {
@@ -241,15 +243,32 @@
     function filterCombos(selector) {
                         //Kollar vilka items som har värdet för vilka filter som är aktiva
                         var tester = true;
-                        var all = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
+                        var activeOne = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
+                        var activeTwo = $('#filterbuttons .filters.activeTwo'); //Sparar alla filterknappar som har klassen active
+                        var activeThree = $('#filterbuttons .filters.activeThree'); //Sparar alla filterknappar som har klassen active
 
-                        for (var i = 0; i < all.length; i++) {
-                            var item = $(selector).find('[data="' + all[i].id + '"]'); //(if item.name == filterbutton.name)
+                        for (var i = 0; i < activeOne.length; i++) {
+                            var item = $(selector).find('[data="' + activeOne[i].id + '"]'); //(if item.name == filterbutton.name)
 
                             if (!item.hasClass('filterItem')) {
                                 tester = false;
                             }
                         }
+                        for (var i = 0; i < activeTwo.length; i++) {
+                            var item = $(selector).find('[data="' + activeTwo[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
+                        for (var i = 0; i < activeThree.length; i++) {
+                            var item = $(selector).find('[data="' + activeThree[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
+
                         return tester;
     };
 
@@ -259,6 +278,46 @@
     //document.getElementById('AdministrativeArea').onchange = function () {
     //    $(this).toggleClass('active');
     //        filter();
-    ////document.getElementById("message").innerHTML = "Having a Baby!!";
+    ////document.getElementById("message").innerHTML = "Test";
     //};
+    var header = document.getElementById("areaDiv");
+    var btns = header.getElementsByClassName("areaBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+        });
+    };
+    var header = document.getElementById("mainCategoriesDiv");
+    var btns = header.getElementsByClassName("mainCatBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeTwo");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeTwo", "");
+            }
+            this.className += " activeTwo";
+        });
+    };
+
+    var header = document.getElementById("catgoriesDiv");
+    var btns = header.getElementsByClassName("catBtn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeThree");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeThree", "");
+            }
+            this.className += " activeThree";
+        });
+    };
+
+
+
+</script>
+<script>
+    
 </script>
