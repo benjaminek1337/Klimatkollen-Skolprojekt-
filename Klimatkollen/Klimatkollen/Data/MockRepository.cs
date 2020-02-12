@@ -124,7 +124,7 @@ namespace Klimatkollen.Data
 
                 model.Observation = newObservation;
                 model.Measurements = measurementsList;
-                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].ThirdCategory.categoryId)).FirstOrDefault();
+                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
 
                 observationsList.Add(model);
             }

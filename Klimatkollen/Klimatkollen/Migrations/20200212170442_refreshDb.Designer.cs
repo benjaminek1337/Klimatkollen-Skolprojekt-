@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200212124222_updatedtableobservation")]
-    partial class updatedtableobservation
+    [Migration("20200212170442_refreshDb")]
+    partial class refreshDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,9 +139,11 @@ namespace Klimatkollen.Migrations
 
                     b.Property<string>("Value");
 
+                    b.Property<int>("categoryId");
+
                     b.Property<int>("observationId");
 
-                    b.Property<int>("thirdCategoryId");
+                    b.Property<int?>("thirdCategoryId");
 
                     b.HasKey("Id");
 
@@ -583,8 +585,7 @@ namespace Klimatkollen.Migrations
 
                     b.HasOne("Klimatkollen.Models.ThirdCategory", "ThirdCategory")
                         .WithMany()
-                        .HasForeignKey("thirdCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("thirdCategoryId");
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
