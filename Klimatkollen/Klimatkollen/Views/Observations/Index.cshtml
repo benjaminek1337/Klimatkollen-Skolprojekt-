@@ -16,23 +16,37 @@
     </div>
 
 
-    <div id="filters" style="display:inline-block; display:none">
-        <div id="filterbuttons">
-            <h4>Kategorier</h4>
-            @foreach (var item in ViewBag.MainCategories)
+
+
+
+
+
+
+
+<div id="filters" style="display:inline-block; display:none">
+    
+    <div id="filterbuttons">
+        <h4>Områden</h4>
+        @foreach (var item in ViewBag.Areas)
+        {
+            <p class="filters" id="@item">@item</p>
+        }
+        <h4>Kategorier</h4>
+        @foreach (var item in ViewBag.MainCategories)
+        {
+            <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
+        }
+        <h4>Underkategorier</h4>
+        @foreach (var item in ViewBag.Categories)
+        {
+            if (!item.Unit.Equals("Annat"))
             {
-                <p class="filters" id="@item.CategoryName">@item.CategoryName</p>
+                <p class="filters" id="@item.Type">@item.Type</p>
             }
-            <h4>Underkategorier</h4>
-            @foreach (var item in ViewBag.Categories)
-            {
-                if (!item.Unit.Equals("Annat"))
-                {
-                    <p class="filters" id="@item.Type">@item.Type</p>
-                }
-            }
-        </div>
+        }
+
     </div>
+</div>
 
     <button style="display:none" id="filterbtnClose" class="btn btn-primary">Stäng</button>
     <input style="display:none; padding: 10px 0px; min-width: 80px" id="ClearFilterBtn" type="submit" class="btn btn-sec" value="Nollställ" />
@@ -60,7 +74,7 @@
 
                             <br />
                             <h6 style="display:inline-block;">Plats:</h6>
-                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea    (friendly name)</span>
+                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
                             <br />
 
                             @*(Djur)*@
@@ -76,7 +90,6 @@
 
                                         <h6 style="display:inline-block;">Päls:</h6>
                                         <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-
                                     }
                                 }
 
@@ -241,3 +254,11 @@
     };
 
   </script>
+
+<script>
+    //document.getElementById('AdministrativeArea').onchange = function () {
+    //    $(this).toggleClass('active');
+    //        filter();
+    ////document.getElementById("message").innerHTML = "Having a Baby!!";
+    //};
+</script>
