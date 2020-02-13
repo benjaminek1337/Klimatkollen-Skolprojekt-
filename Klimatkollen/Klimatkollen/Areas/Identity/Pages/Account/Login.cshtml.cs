@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Klimatkollen.Areas.Identity.Pages.Account
 {
@@ -22,18 +23,21 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly IUserRepository userDb;
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IdentityDbContext identityDbContext;
 
         public LoginModel(SignInManager<IdentityUser> signInManager
             , ILogger<LoginModel> logger
             , IUserRepository userDb
             , UserManager<IdentityUser> userManager
-            , RoleManager<IdentityRole> roleManager)
+            , RoleManager<IdentityRole> roleManager
+            , IdentityDbContext identityDbContext)
         {
             _signInManager = signInManager;
             _logger = logger;
             this.userDb = userDb;
             this.userManager = userManager;
             this._roleManager = roleManager;
+            this.identityDbContext = identityDbContext;
         }
 
         [BindProperty]
