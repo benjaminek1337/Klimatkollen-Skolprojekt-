@@ -79,7 +79,14 @@
 
                             <br />
                             <h6 style="display:inline-block;">Plats:</h6>
+                            @if (!item.Observation.maincategoryId.Equals(2))
+                            {
+                                //Om kategori inte är djur så visas stad också
+                                <span class="filterItem" data="@item.Observation.Place"> @item.Observation.Place, </span>
+                            }
                             <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
+                            
+
                             <br />
 
                             @*(Djur)*@
@@ -90,7 +97,7 @@
                                 @foreach (var x in item.Measurements)
                                 {
                                     <br />
-                                    if (x.ThirdCategory.Unit == "Päls")
+                                    if (x.ThirdCategory.Unit == "Päls" || x.ThirdCategory == null)
                                     {
 
                                         <h6 style="display:inline-block;">Päls:</h6>
@@ -106,9 +113,6 @@
                                 {
                                     <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
 
-
-                                    //@Html.HiddenFor(model => x.ThirdCategory.Category.Type, new { htmlAttributes = new { @class = "form-control filterItem", @data = x.ThirdCategory.Category.Type } })
-
                                     if (x.Value != null)
                                     {
                                         <br />
@@ -116,7 +120,7 @@
                                         <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
                                         <span>@Html.DisplayFor(modelItem => x.Value)</span>
                                     }
-                                <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
+                                    <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
                                 }
                                 <br />
                             }
@@ -148,12 +152,13 @@
                             <h6 style="display:inline-block;">Utförd av:</h6>
                             <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
                             <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
-                           
+                            <span class="filterItem" style="visibility:visible" data="@item.Observation.Country"> @item.Observation.Country</span>
+
                             <br />
                             <br />
 
                         </div>
-                            
+
                             <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
                         </div>
                         
@@ -206,9 +211,10 @@
     $(document).ready(function () {
         $("#ClearFilterBtn").click(function () {
             $("#SearchString").val(null);
+            resetFilters();
             filter();
-            })
-          });
+        })
+    });
  </script>
 
 <script>
@@ -218,12 +224,38 @@
        //Fritextsök
        $('#SearchString').keyup(filter);
 
-       //När man klickar på en knapp som har klassen filter, = toggleClass <-> active
+       
+       //När man klickar på en knapp som har klassen filter
        $('.filters').click(function () {
-            //$(this).toggleClass('active');
             filter();
-            });                 
+       });       
    });
+
+
+    function resetFilters() {
+        resetAreaFilters();
+        resetMainCatFilters();
+        resetCatFilters();
+    };
+
+    function resetAreaFilters() {
+        var current = document.getElementsByClassName("active");
+                if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+                }
+    };
+    function resetMainCatFilters() {
+        var current = document.getElementsByClassName("activeTwo");
+                if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeTwo", "");
+                }
+    };
+    function resetCatFilters() {
+        var current = document.getElementsByClassName("activeThree");
+                if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeThree", "");
+                }
+    };
 
     function filter() {
             //Funktion för att filtrera tabellen
@@ -289,6 +321,7 @@
             this.className += " active";
         });
     };
+
     var header = document.getElementById("mainCategoriesDiv");
     var btns = header.getElementsByClassName("mainCatBtn");
     for (var i = 0; i < btns.length; i++) {
@@ -312,10 +345,4 @@
             this.className += " activeThree";
         });
     };
-
-
-
-</script>
-<script>
-    
 </script>

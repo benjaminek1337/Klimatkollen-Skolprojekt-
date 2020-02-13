@@ -126,6 +126,12 @@ namespace Klimatkollen.Data
                 model.Measurements = measurementsList;
                 model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
 
+                if (model.Measurements[0].ThirdCategory == null)
+                {
+                    //Tomt objekt för att slippa få "null reference"
+                    model.Measurements[0].ThirdCategory = new ThirdCategory();
+                }
+
                 observationsList.Add(model);
             }
             return observationsList;
