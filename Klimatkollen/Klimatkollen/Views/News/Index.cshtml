@@ -11,16 +11,17 @@
         @foreach (var News in Model)
         {
             <li>
-                <div id="NewsCard" class="card">
-                    <div id="NewsHeader" class="card-header">
+                <div id="NewsSiteCard" class="cardSite">
+                    <div id="NewsSiteHeader" class="card-header">
                         @News.Title
                     </div>
-                    <div id="NewsBody" class="card-body">
+                    <div id="NewsSiteBody" class="card-body">
                         @News.Content
                         <br />
-                        Publicerades: @News.Date.ToShortDateString()
+                        
                     </div>
-                    <div id="NewsFooter" class="card-footer">
+                    <div id="NewsSiteFooter" class="card-footer">
+                        Publicerades: @News.Date.ToShortDateString()
                         @*<a class="btn btn-outline-primary" asp-route-id="@News.NewsID" asp-action="EditNews" asp-controller="News">Ändra nyhet</a>*@
                     </div>
                 </div>

@@ -318,7 +318,22 @@ namespace Klimatkollen.Data
             {
                 allNews.Add(item);
             }
+
+            allNews.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+
             return allNews;
         }
+
+        //public List<News> SortNewsByDate()
+        //{
+        //    List<News> sortNewsByDate = new List<News>();
+        //    foreach (var item in dbContext.News)
+        //    {
+        //        sortNewsByDate.Add(item);
+        //    }
+        //    sortNewsByDate.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+        //    return sortNewsByDate;
+        //}
     }
 }
