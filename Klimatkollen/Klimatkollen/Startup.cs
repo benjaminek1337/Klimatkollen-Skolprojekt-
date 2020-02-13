@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Klimatkollen.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Klimatkollen
 {
@@ -38,9 +39,8 @@ namespace Klimatkollen
             services.AddTransient<IRepository, MockRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("Skolan")));
+            services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityDb")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Skolan")));
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Password.RequiredLength = 8;

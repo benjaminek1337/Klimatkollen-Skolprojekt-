@@ -7,6 +7,7 @@ using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,6 +24,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IdentityDbContext _identityDbContext;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -30,7 +32,8 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext,
+            IdentityDbContext identityDbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -38,6 +41,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _dbContext = dbContext;
+            _identityDbContext = identityDbContext;
         }
 
         [BindProperty]
