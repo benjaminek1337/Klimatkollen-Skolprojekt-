@@ -14,11 +14,16 @@ namespace Klimatkollen.Components
         {
             db = repository;
         }
+        //public async Task<IViewComponentResult> InvokeAsync()
+        //{
+             
+        //    var test = await db.ChartAsync();
+        //    return View(test);
+        //}
         public async Task<IViewComponentResult> InvokeAsync()
         {
-             
-            var test = await db.ChartAsync();
-            return View(test);
+            var temperatures = await db.GetTemperatureObservationsAsync();
+            return View(temperatures);
         }
     }
 }

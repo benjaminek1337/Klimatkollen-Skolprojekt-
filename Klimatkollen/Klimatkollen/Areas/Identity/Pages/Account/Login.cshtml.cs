@@ -128,7 +128,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                         }; userDb.AddPerson(person);
                     }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("UserProfile", "Profile");
                 }
                 if (result.RequiresTwoFactor)
                 {

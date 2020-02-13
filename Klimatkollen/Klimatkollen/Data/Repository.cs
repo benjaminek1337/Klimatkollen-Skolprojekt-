@@ -197,5 +197,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Measurement>> GetTemperatureObservationsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
