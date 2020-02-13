@@ -24,7 +24,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _dbContext;
-        private readonly IdentityDbContext _identityDbContext;
+        private readonly IdDbContext _identityDbContext;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -33,7 +33,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             ApplicationDbContext dbContext,
-            IdentityDbContext identityDbContext)
+            IdDbContext identityDbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
