@@ -8,6 +8,11 @@ namespace Klimatkollen.Data
 {
     public class MockUserRepository : IUserRepository
     {
+        public void AddPerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddUserTrackedLocation(UsersTrackedLocations model)
         {
             throw new NotImplementedException();

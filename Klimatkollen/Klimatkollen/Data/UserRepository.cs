@@ -17,6 +17,12 @@ namespace Klimatkollen.Data
             return context.Persons.FirstOrDefault(p => p.IdentityId.Equals(id));
         }
 
+        public void AddPerson(Person person)
+        {
+            context.Add(person);
+            context.SaveChanges();
+        }
+
         public List<Person> GetPeople()
         {
             return context.Persons.ToList();
