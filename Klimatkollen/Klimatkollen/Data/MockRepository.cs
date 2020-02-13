@@ -180,6 +180,15 @@ namespace Klimatkollen.Data
                 .Include(y => y.ThirdCategory)
                 .ThenInclude(a => a.Category)
                 .FirstOrDefault(m => m.Id.Equals(item.Id));
+
+                if (measurement.ThirdCategory == null)
+                {
+                    //Tomt objekt för att slippa få "null reference"
+                    measurement.ThirdCategory = new ThirdCategory()
+                    {
+                        Category = new Category()
+                    };
+                }
                 measurements.Add(measurement);
             }
             return measurements;
