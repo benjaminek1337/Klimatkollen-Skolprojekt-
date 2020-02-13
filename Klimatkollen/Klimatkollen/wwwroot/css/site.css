@@ -386,7 +386,22 @@ body {
         margin-right: 100px;
     }
 }
+/*NEWS*/
 
+#NewsHeader, #NewsFooter{
+    background-color: #cadbce;
+}
+
+#NewsBody {
+    background-color: #e9f7ec;
+}
+
+#NewsCard {
+    box-shadow: 10px 10px 5px grey;
+    border-radius: 10px;
+    margin: 15px;
+    left: 38%;
+}
 /*SEE OBSERVATIONS*/
 
 .box1 {

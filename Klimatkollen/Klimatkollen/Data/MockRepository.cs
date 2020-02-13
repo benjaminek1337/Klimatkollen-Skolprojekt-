@@ -311,6 +311,14 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
-
+        public List<News> GetNews()
+        {
+            List<News> allNews = new List<News>();
+            foreach (var item in dbContext.News)
+            {
+                allNews.Add(item);
+            }
+            return allNews;
+        }
     }
 }

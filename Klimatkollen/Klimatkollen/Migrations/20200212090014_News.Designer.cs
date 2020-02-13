@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200210142602_newmigration")]
-    partial class newmigration
+    [Migration("20200212090014_News")]
+    partial class News
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,11 +152,26 @@ namespace Klimatkollen.Migrations
                     b.ToTable("Measurements");
                 });
 
+            modelBuilder.Entity("Klimatkollen.Models.News", b =>
+                {
+                    b.Property<int>("NewsID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("NewsID");
+
+                    b.ToTable("News");
+                });
+
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdministrativeArea");
 
                     b.Property<string>("Comment");
 
@@ -167,6 +182,8 @@ namespace Klimatkollen.Migrations
                     b.Property<string>("Longitude");
 
                     b.Property<int>("PersonId");
+
+                    b.Property<string>("Place");
 
                     b.Property<int>("maincategoryId");
 
@@ -366,17 +383,34 @@ namespace Klimatkollen.Migrations
 
                     b.Property<int>("categoryId");
 
-                    b.Property<int>("mainCategoryId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
                     b.HasIndex("categoryId");
 
-                    b.HasIndex("mainCategoryId");
-
                     b.ToTable("UserFilters");
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.UsersTrackedLocations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("Longitude");
+
+                    b.Property<int?>("PersonId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("UserTrackedLocations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -595,11 +629,13 @@ namespace Klimatkollen.Migrations
                         .WithMany()
                         .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("Klimatkollen.Models.MainCategory", "MainCategory")
+            modelBuilder.Entity("Klimatkollen.Models.UsersTrackedLocations", b =>
+                {
+                    b.HasOne("Klimatkollen.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("mainCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
