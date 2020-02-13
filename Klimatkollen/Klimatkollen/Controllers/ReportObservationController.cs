@@ -79,6 +79,8 @@ namespace Klimatkollen.Controllers
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
 
+            model.measurement.categoryId = model.category.Id;
+
             return View(model);
         }
 
@@ -111,12 +113,13 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            if (model.measurement.thirdCategoryId == 0)
-            {
-                //TODO: Fixa fullösning
-                model.measurement.thirdCategoryId = 11;
-            }
+            //if (model.measurement.thirdCategoryId == 0)
+            //{
+            //    //TODO: Fixa fullösning
+            //    model.measurement.thirdCategoryId = 11;
+            //}
 
+            model.measurement.categoryId = model.category.Id;
             //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
@@ -127,7 +130,7 @@ namespace Klimatkollen.Controllers
             model.measurement.Observation = model.observation;
             
             //Sparar i DB
-            db.AddObjectToDb(model.observation);
+            //db.AddObjectToDb(model.observation);
             db.AddObjectToDb(model.measurement);
 
             //Lägg till en andra measurement
@@ -138,7 +141,8 @@ namespace Klimatkollen.Controllers
                 Measurement m = new Measurement()
                 {
                     thirdCategoryId =  Convert.ToInt32(secondMeasurement),
-                    observationId = id
+                    observationId = id,
+                    categoryId = model.category.Id
                 };
                 db.AddObjectToDb(m);
             }
