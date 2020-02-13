@@ -20,7 +20,7 @@ namespace Klimatkollen.Controllers
             ViewBag.MainCategories = observationDB.GetMainCategoriesFromDb();
             ViewBag.Categories = observationDB.GetAllCategories();
 
-            //TODO: Hämta vanliga områdena ell liknande från DB
+            //TODO: Hämta vanliga områdena eller liknande från DB
             ViewBag.Areas = new List<string>(){"Västernorrlands län", "Jämtlands län", "Lapplands län"};
 
             var list = observationDB.GetAllMeasurements();

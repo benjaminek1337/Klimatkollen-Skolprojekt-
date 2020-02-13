@@ -136,6 +136,39 @@ namespace Klimatkollen.Data
             }
             return observationsList;
         }
+        public List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person person)
+        {
+            List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
+            foreach (var observation in dbContext.Observations)
+            {
+                if (observation.Person == person)
+                {
+                    ObservationFilterViewModel model = new ObservationFilterViewModel();
+
+                    var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                        .Include(m => m.MainCategory)
+                        .Include(p => p.Person)
+                        .FirstOrDefault();
+                    var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(observation.Id))
+                        .Include(y => y.ThirdCategory)
+                        .ToList();
+
+                    model.Observation = newObservation;
+                    model.Measurements = measurementsList;
+                    model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+
+                    if (model.Measurements[0].ThirdCategory == null)
+                    {
+                        //Tomt objekt för att slippa få "null reference"
+                        model.Measurements[0].ThirdCategory = new ThirdCategory();
+                    }
+
+                    observationsList.Add(model);
+                }
+                
+            }
+            return observationsList;
+        }
 
         public List<Measurement> GetAllMeasurements2()
         {
