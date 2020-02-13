@@ -8,6 +8,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Klimatkollen.ViewModels;
 
 namespace Klimatkollen.Data
 {
@@ -77,6 +78,11 @@ namespace Klimatkollen.Data
             dbContext.Add(objectToAdd);
             dbContext.SaveChanges();
         }
+        public void RemoveObjectFromDb(object objectToRemove)
+        {
+            dbContext.Remove(objectToRemove);
+            dbContext.SaveChanges();
+        }
 
         public List<Measurement> GetMeasurements(int id)
         {
@@ -86,14 +92,63 @@ namespace Klimatkollen.Data
                 var newMeasurement = GetMeasurement(measurement.Id);
                 if(newMeasurement.Observation.Person != null && newMeasurement.Observation.Person.Id == id)
                 {
-                    var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
-                    newMeasurement.Observation = observation;
+                    //var observation = dbContext.Observations.Where(o => o.Id.Equals(measurement.Id)).FirstOrDefault();
+                    //newMeasurement.Observation = observation;
                     newMeasurement.ThirdCategory = dbContext.ThirdCategories.Where(x => x.Id.Equals(measurement.thirdCategoryId)).FirstOrDefault();
 
                     measurements.Add(newMeasurement);
                 }
             }
 
+            return measurements;
+        }
+        /// <summary>
+        /// Gets all the measurments with observation in DB
+        /// </summary>
+        /// <returns>a list of measurments</returns>
+        /// 
+        public List<ObservationFilterViewModel> GetAllMeasurements()
+        {
+            List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
+            foreach (var observation in dbContext.Observations)
+            {
+                ObservationFilterViewModel model = new ObservationFilterViewModel();
+
+                var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                    .Include(m => m.MainCategory)
+                    .Include(p => p.Person)
+                    .FirstOrDefault();
+                var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(observation.Id))
+                    .Include(y => y.ThirdCategory)
+                    .ToList();
+
+                model.Observation = newObservation;
+                model.Measurements = measurementsList;
+                model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+
+                if (model.Measurements[0].ThirdCategory == null)
+                {
+                    //Tomt objekt för att slippa få "null reference"
+                    model.Measurements[0].ThirdCategory = new ThirdCategory();
+                }
+
+                observationsList.Add(model);
+            }
+            return observationsList;
+        }
+
+        public List<Measurement> GetAllMeasurements2()
+        {
+            var measurements = new List<Measurement>();
+            foreach (var item in dbContext.Measurements)
+            {
+                var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .ThenInclude(z => z.MainCategory)
+                .Include(y => y.ThirdCategory)
+                .ThenInclude(a => a.Category)
+                .FirstOrDefault(m => m.Id.Equals(item.Id));
+                measurements.Add(measurement);
+            }
             return measurements;
         }
 
@@ -117,6 +172,9 @@ namespace Klimatkollen.Data
             var updatedMeasurement = GetMeasurement(measurement.Id);
 
             updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
+            updatedMeasurement.Observation.Country = measurement.Observation.Country;
             updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
             updatedMeasurement.Observation.Date = measurement.Observation.Date;
             updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
@@ -141,6 +199,10 @@ namespace Klimatkollen.Data
         public MainCategory GetMainCategoryFromId(int id)
         {
             return dbContext.MainCategories.Where(x => x.Id == id).FirstOrDefault();
+        }
+        public MainCategory GetMainCategoryFromCategoryObject(Category cat)
+        {
+            return dbContext.MainCategories.Where(x => x.Id.Equals(cat)).FirstOrDefault();
         }
         public List<Category> GetCategoriesFromId(MainCategory cat)
         {
@@ -247,9 +309,29 @@ namespace Klimatkollen.Data
 
         }
 
+        public int GetLastObservationIdFromUser (Person p)
+        {
+            var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+            return observation.Id;
+        }
+        /// <summary>
+        /// Gets a list of filters for a user
+        /// </summary>
+        /// <param name="p">The user</param>
+        /// <returns></returns>
         public List<UserFilter> GetUserFilters(Person p)
         {
             return dbContext.UserFilters.Where(x => x.Person.Equals(p)).ToList();
+        }
+
+        /// <summary>
+        /// Gets at specific User filter based on ID
+        /// </summary>
+        /// <param name="userFilterId">Id for the filter</param>
+        /// <returns>A User filter object</returns>
+        public UserFilter GetUserFilter (int userFilterId)
+        {
+            return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
 

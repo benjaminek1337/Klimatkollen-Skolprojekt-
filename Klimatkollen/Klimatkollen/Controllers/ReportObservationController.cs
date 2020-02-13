@@ -49,7 +49,6 @@ namespace Klimatkollen.Controllers
             {
                 mainCategory = db.GetMainCategoryFromId(mainCat.Id)
             };
-
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
 
             //Skickar tillbaka en vymodell
@@ -80,6 +79,8 @@ namespace Klimatkollen.Controllers
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
 
+            model.measurement.categoryId = model.category.Id;
+
             return View(model);
         }
 
@@ -106,16 +107,19 @@ namespace Klimatkollen.Controllers
             //db.AddObjectToDb(finalOb);          
             return View();
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string testValueBox)
+        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            if (model.measurement.thirdCategoryId == 0)
-            {
-                //TODO: Fixa fullösning
-                model.measurement.thirdCategoryId = 11;
-            }
+            //if (model.measurement.thirdCategoryId == 0)
+            //{
+            //    //TODO: Fixa fullösning
+            //    model.measurement.thirdCategoryId = 11;
+            //}
 
+            model.measurement.categoryId = model.category.Id;
             //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
@@ -126,11 +130,23 @@ namespace Klimatkollen.Controllers
             model.measurement.Observation = model.observation;
             
             //Sparar i DB
-            db.AddObjectToDb(model.observation);
+            //db.AddObjectToDb(model.observation);
             db.AddObjectToDb(model.measurement);
 
-            //Kod om det är två measurements (Djur och päls)
             //Lägg till en andra measurement
+            if (secondMeasurement != null)
+            {
+                int id = db.GetLastObservationIdFromUser(person);
+
+                Measurement m = new Measurement()
+                {
+                    thirdCategoryId =  Convert.ToInt32(secondMeasurement),
+                    observationId = id,
+                    categoryId = model.category.Id
+                };
+                db.AddObjectToDb(m);
+            }
+
             return View();
         }
         private bool CheckList(List<ThirdCategory> list)

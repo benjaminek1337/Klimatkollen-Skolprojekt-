@@ -13,6 +13,7 @@ namespace Klimatkollen.Models
         public int Id { get; set; }
         public String Unit { get; set; } // Eg. Celcius, M/S 
         public String Type { get; set; } // Eg. Vindstyrka
+        [Required]
         public int categoryId { get; set; }
         [ForeignKey("categoryId")]
         public Category Category { get; set; }

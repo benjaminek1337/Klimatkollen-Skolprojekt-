@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Klimatkollen.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,8 @@ namespace Klimatkollen.Data
             var updatedMeasurement = GetMeasurement(measurement.Id);
 
             updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
             updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
             updatedMeasurement.Observation.Date = measurement.Observation.Date;
             updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
@@ -150,6 +153,44 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
+        public int GetLastObservationIdFromUser(Person p)
+        {
+            throw new NotImplementedException();
+        }
 
+        public MainCategory GetMainCategoryFromCategoryObject(Category cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserFilter GetUserFilter(int userFilterId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveObjectFromDb(object objectToRemove)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ObservationFilterViewModel> GetAllMeasurements()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Measurement> GetAllMeasurements2()
+        {
+            var measurements = new List<Measurement>();
+            foreach (var item in dbContext.Measurements)
+            {
+                var measurement = dbContext.Measurements.Include(x => x.Observation)
+                .ThenInclude(z => z.MainCategory)
+                .Include(y => y.ThirdCategory)
+                .ThenInclude(a => a.Category)
+                .FirstOrDefault(m => m.Id.Equals(item.Id));
+                measurements.Add(measurement);
+            }
+            return measurements;
+        }
     }
 }

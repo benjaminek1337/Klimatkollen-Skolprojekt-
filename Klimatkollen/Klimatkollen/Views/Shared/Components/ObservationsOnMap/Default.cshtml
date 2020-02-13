@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Klimatkollen.Models.Measurement>
+@{ 
+    var user = ViewBag.User;
+    var locations = ViewBag.Locations;
+    var filters = ViewBag.Filters;
+}
+
+<div id="map" style="height: 500px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+
+<script>
+    var map;
+    function initMap() {
+        var initPosition = { lat: 63.1826, lng: 17.2681};
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 4,
+            center: initPosition,
+            streetViewControl: false,
+            mapTypeControl: true,
+            zoomControl: false,
+            scrollwheel: true
+        });
+        @if (Model != null) {
+            @foreach (var item in Model)
+            {
+                if(locations.Count > 0 && filters.Count > 0)
+                {
+                    foreach(var location in locations)
+                    {
+                        if (location.Location == item.Observation.AdministrativeArea
+                            || location.Location == item.Observation.Place
+                            || location.Location == item.Observation.Country)
+                        {
+                            foreach (var filter in filters)
+                            {
+                                if(filter.FilterName == item.ThirdCategory.Category.Type)
+                                {
+                                    <text>
+                                        var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                        "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                        "<p>Kommentar: @item.Observation.Comment</p>"
+                                        var marker_@item.Id = new google.maps.Marker({
+                                            position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                                            map: map
+                                        });
+                                        var infowindow_@item.Id = new google.maps.InfoWindow({
+                                            content: infocontent
+                                        });
+                                        marker_@{@item.Id}.addListener("click", function(){
+                                            infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                                        });
+                                    </text>
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(locations.Count > 0 && filters.Count == 0)
+                {
+                    foreach(var location in locations)
+                    {
+                        if (location.Location == item.Observation.AdministrativeArea 
+                            || location.Location == item.Observation.Place
+                            || location.Location == item.Observation.Country)
+                        {
+
+                            <text>
+                                var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                "<p>Kommentar: @item.Observation.Comment</p>"
+                                var marker_@item.Id = new google.maps.Marker({
+                                    position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                                    map: map
+                                });
+                                var infowindow_@item.Id = new google.maps.InfoWindow({
+                                            content: infocontent
+                                });
+                                marker_@{@item.Id}.addListener("click", function(){
+                                    infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                                });
+                            </text>
+
+                        }
+                    }
+                }
+                else if(locations.Count == 0 && filters.Count > 0)
+                {
+                    foreach(var filter in filters)
+                    {
+                        if (filter.FilterName == item.ThirdCategory.Category.Type)
+                        {
+
+                            <text>
+                                var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                                "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                                "<p>Kommentar: @item.Observation.Comment</p>"
+                                var marker_@item.Id = new google.maps.Marker({
+                                    position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                                    map: map
+                                });
+                                var infowindow_@item.Id = new google.maps.InfoWindow({
+                                    content: infocontent
+                                });
+                                marker_@{@item.Id}.addListener("click", function(){
+                                    infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                                });
+                            </text>
+
+                        }
+                    }
+                }
+                else
+                {
+                    <text>
+                        var infocontent = "<h5>Observation av @item.Observation.MainCategory.CategoryName</h5>" +
+                        "<p>Mätning av @item.ThirdCategory.Type, Värde: @item.Value @item.ThirdCategory.Unit</p>" +
+                        "<p>Kommentar: @item.Observation.Comment</p>"
+                        var marker_@item.Id = new google.maps.Marker({
+                            position: { lat: @item.Observation.Latitude, lng: @item.Observation.Longitude},
+                            map: map
+                        });
+                        var infowindow_@item.Id = new google.maps.InfoWindow({
+                            content: infocontent
+                        });
+                        marker_@{@item.Id}.addListener("click", function(){
+                            infowindow_@{@item.Id}.open(map, marker_@item.Id );
+                        });
+                    </text>
+                }
+
+            }
+        }
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap">
+</script>
