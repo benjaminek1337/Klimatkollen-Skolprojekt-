@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Data;
+using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,10 @@ namespace Klimatkollen.Components
         //    var test = await db.ChartAsync();
         //    return View(test);
         //}
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(MeasurementDatesViewModel model)
         {
-            var temperatures = await db.GetTemperatureObservationsAsync();
+
+            var temperatures = await db.GetTemperatureObservationsAsync(model);
             return View(temperatures);
         }
     }

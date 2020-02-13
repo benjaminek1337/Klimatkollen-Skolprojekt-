@@ -375,16 +375,10 @@ namespace Klimatkollen.Data
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
-        public async Task<IEnumerable<Measurement>> GetTemperatureObservationsAsync()
-        {
-            List<Measurement> temperaturelist = new List<Measurement>();
-            List<MeasurementDatesViewModel> measurementDatesList = new List<MeasurementDatesViewModel>();
-            temperaturelist = dbContext.Measurements.Where(m => m.ThirdCategory.Type.Equals("Lufttemperatur"))
+        public async Task<IEnumerable<Measurement>> GetTemperatureObservationsAsync(MeasurementDatesViewModel viewmodel)
+        {   
+            var temperaturelist = dbContext.Measurements.Where(m => m.ThirdCategory.Type.Equals("Lufttemperatur"))
                 .Include(n=>n.Observation).ToList();
-            foreach(var mu in temperaturelist)
-            {
-                measurementDatesList.Add(mu);
-            }
 
             return await Task.FromResult(temperaturelist.ToList());
         }

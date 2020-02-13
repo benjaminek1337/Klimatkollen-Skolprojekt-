@@ -2,8 +2,15 @@
 @model IEnumerable<Measurement>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<form>
+    <input type="date" class="form-control" value="2020-01-01" id="startDate"/>
+    <input type="date" class="form-control" value="2020-02-13" id="endDate" />
+</form>
 
 <script type="text/javascript">
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -14,14 +21,37 @@
         data.addColumn('number', 'Medeltemperatur 2020');
         data.addColumn('number', 'Medeltemperatur 2019');
 
-  
+
     var temperatures = [];
+    var model = [];
 
-    @foreach (var m in Model)
+    @foreach(var m in Model)
     {
-        @:temperatures.push("@m.Value");
-
+        @:model.push({
+        @:ID = '@m.Id',
+        @:Date = '@m.Observation.Date',
+        @:Value = '@m.Value',
+        @:});
     }
+
+        console.log(model);
+
+        for (var i = 0; i < model.length; i++) {
+            if (model[i].Date >= startDate && model[i].Date <= endDate) {
+                temperatures.push(model[i].Value);
+            }
+        }
+
+    @*@foreach (var m in Model)
+    {
+        if (m.Observation.Date <= )
+        {
+            
+            @:temperatures.push("@m.Value");
+        }
+
+
+    }*@
 
         var medianTemperature = 0;
 

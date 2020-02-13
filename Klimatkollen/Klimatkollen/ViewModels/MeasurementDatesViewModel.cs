@@ -8,8 +8,8 @@ namespace Klimatkollen.ViewModels
 {
     public class MeasurementDatesViewModel
     {
-        DateTime startDate { get; set; }
-        DateTime endDate { get; set; }
-        Measurement measurement { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+        public Measurement measurement { get; set; }
     }
 }
