@@ -3,13 +3,12 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <form>
-    <input type="date" class="form-control" value="2020-01-01" id="startDate"/>
-    <input type="date" class="form-control" value="2020-02-13" id="endDate" />
+    <input type="date" class="form-control" value="2018-01-01" id="startDate" onchange="drawChart()"/>
+    <input type="date" class="form-control" value="2020-02-11" id="endDate" onchange="drawChart()"/>
 </form>
 
 <script type="text/javascript">
-    var startDate = document.getElementById("startDate").value;
-    var endDate = document.getElementById("endDate").value;
+
 
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
@@ -21,32 +20,37 @@
         data.addColumn('number', 'Medeltemperatur 2020');
         data.addColumn('number', 'Medeltemperatur 2019');
 
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
 
     var temperatures = [];
     var model = [];
 
     @foreach(var m in Model)
     {
+        @*@:model.push("@m");*@
         @:model.push({
-        @:ID = '@m.Id',
-        @:Date = '@m.Observation.Date',
-        @:Value = '@m.Value',
+        @:ID: '@m.Id',
+        @:Date: new Date('@m.Observation.Date'),
+        @:Value : '@m.Value',
         @:});
     }
 
-        console.log(model);
+        alert(Date.parse(model[4].Date))
+
 
         for (var i = 0; i < model.length; i++) {
-            if (model[i].Date >= startDate && model[i].Date <= endDate) {
+            if (Date.parse(model[i].Date) >= Date.parse(startDate) && Date.parse(model[i].Date) <= Date.parse(endDate)) {
                 temperatures.push(model[i].Value);
             }
         }
-
+        
+        alert(temperatures);
     @*@foreach (var m in Model)
     {
         if (m.Observation.Date <= )
         {
-            
+
             @:temperatures.push("@m.Value");
         }
 
