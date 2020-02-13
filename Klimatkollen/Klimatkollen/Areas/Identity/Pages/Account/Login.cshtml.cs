@@ -23,21 +23,18 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly IUserRepository userDb;
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IdentityDbContext identityDbContext;
 
         public LoginModel(SignInManager<IdentityUser> signInManager
             , ILogger<LoginModel> logger
             , IUserRepository userDb
             , UserManager<IdentityUser> userManager
-            , RoleManager<IdentityRole> roleManager
-            , IdentityDbContext identityDbContext)
+            , RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             this.userDb = userDb;
             this.userManager = userManager;
             this._roleManager = roleManager;
-            this.identityDbContext = identityDbContext;
         }
 
         [BindProperty]
@@ -75,6 +72,30 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            if(await userManager.FindByNameAsync("grupp1superadmin@cool.se") == null)
+            {
+                var superadmin = new IdentityUser
+                {
+                    Email = "grupp1superadmin@cool.se",
+                    UserName = "grupp1superadmin@cool.se"
+                };
+                var result = await userManager.CreateAsync(superadmin, "superadminärcool");
+                if(result.Succeeded)
+                {
+                    var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                    if (role == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "grupp1superadmin" });
+                    }
+                    await userManager.AddToRoleAsync(superadmin, role.Name);
+                    Person person = new Person
+                    {
+                        IdentityId = superadmin.Id,
+                        Email = superadmin.Email
+                    }; userDb.AddPerson(person);
+                }
+            }
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

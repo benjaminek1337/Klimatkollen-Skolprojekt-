@@ -1,6 +1,7 @@
 ﻿using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Klimatkollen.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;

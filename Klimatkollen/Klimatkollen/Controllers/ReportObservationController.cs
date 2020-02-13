@@ -8,9 +8,11 @@ using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
 using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Klimatkollen.Controllers
 {
+    [Authorize(Roles = "Klimatobservatör,Admin,Superadmin")]
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
@@ -28,7 +30,6 @@ namespace Klimatkollen.Controllers
         {
             return View();
         }
-
         public IActionResult ReportObservationStep1()
         {
             //Hämtar MainCategories från db

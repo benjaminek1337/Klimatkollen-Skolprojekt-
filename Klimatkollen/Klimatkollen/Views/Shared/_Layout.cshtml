@@ -37,7 +37,7 @@
                         @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hem (sätta logga här)</a>
                         </li>*@
-                        @if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("grupp1superadmin"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"

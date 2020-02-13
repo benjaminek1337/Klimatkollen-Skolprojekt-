@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Controllers
 {
-    //[Authorize (Roles = "Admin,Superadmin")]
+    [Authorize (Roles = "Admin,grupp1superadmin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
