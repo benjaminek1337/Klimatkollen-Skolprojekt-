@@ -461,10 +461,10 @@ namespace Klimatkollen.Data
         public List<String> GetTopAreas(int num)
         {
             var test = dbContext.Observations
-                                    .GroupBy(q => q.AdministrativeArea)
-                                    .OrderByDescending(gp => gp.Count())
-                                    .Take(num)
-                                    .Select(g => g.Key).ToList();
+                   .GroupBy(q => q.AdministrativeArea)
+                   .OrderByDescending(gp => gp.Count())
+                   .Take(num)
+                   .Select(g => g.Key).ToList();
             return test;
         }
     }
