@@ -3,8 +3,8 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <form>
-    <input type="date" class="form-control" value="2018-01-01" id="startDate" onchange="drawChart()"/>
-    <input type="date" class="form-control" value="2020-02-11" id="endDate" onchange="drawChart()"/>
+    <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()"/>
+    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()"/>
 </form>
 
 <script type="text/javascript">
@@ -66,7 +66,6 @@
             }
         }
         
-        alert(dates);
 
         var medianTemperature = 0;
 
