@@ -15,11 +15,10 @@ namespace Klimatkollen.Models
         public DateTime Date { get; set; }
         public String Longitude { get; set; }
         public String Latitude { get; set; }
+        public String Place { get; set; }
+        public String AdministrativeArea { get; set; }
+        public String Country { get; set; }
         public String Comment { get; set; }
-        [Required]
-        public int measurementID { get; set; }
-        [ForeignKey("measurementID")]
-        public Measurement Measurement { get; set; }
         public int maincategoryId { get; set; }
         [ForeignKey("maincategoryId")]
         public MainCategory MainCategory { get; set; }

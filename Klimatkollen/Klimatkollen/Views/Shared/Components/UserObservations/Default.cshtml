@@ -1,29 +1,85 @@
-﻿@model IEnumerable<Klimatkollen.Models.Observation>
+﻿@*@model IEnumerable<Klimatkollen.Models.Measurement>*@
+@model List<Klimatkollen.ViewModels.ObservationFilterViewModel>
 <div id="header" style="text-align:center">
     <h3>Mina observationer</h3>
 </div>
 
 
-<div >
+<div>
     <ul style="list-style-type:none; padding: 0;">
-        @foreach (var observation in Model)
+        @foreach (var item in Model)
         {
             <li>
                 <div class="card">
                     <div class="card-header">
-                        Observation av @observation.measurementID
+                        <h5>Observation av @item.Observation.MainCategory.CategoryName</h5>
                     </div>
                     <div class="card-body">
-                        Mätvärde: @observation.Measurement.Value, @observation.Measurement.ThirdCategory.Type <br /><br />
-                        Kommentar: @observation.Comment <br />
-                        Observation gjord den @observation.Date
+                        @if (item.Observation.maincategoryId == 2)
+                        {
+                            <h6 style="display:inline-block;">Djur:</h6>
+                            <span>@Html.DisplayFor(z => @item.Category.Type)</span>
+
+                            @foreach (var x in item.Measurements)
+                            {
+                                <br />
+                                if (x.ThirdCategory.Unit == "Päls")
+                                {
+                                    <h6 style="display:inline-block;">Päls:</h6>
+                                    <span>@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                }
+                                @if (x.ThirdCategory.Unit == "Miljö")
+                                {
+                                    <h6 style="display:inline-block;">Miljö:</h6>
+                                    <span>@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                    <br />
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <h6 style="display:inline-block;">Typ av mätning:</h6>
+                            @foreach (var x in item.Measurements)
+                            {
+                                <span>@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
+
+                                if (x.Value != null)
+                                {
+                                    <br />
+                                    <h6 style="display:inline-block;">Värde: </h6>
+                                    <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
+                                    <span style="display: inline-block">@Html.DisplayFor(modelItem => x.Value)</span>
+                                }
+
+                            }
+                            <br />
+                        }
+                        <h6 style="display:inline-block;">Plats:</h6>
+                        <span> @item.Observation.Place, @item.Observation.AdministrativeArea</span>
+                        <br />
+                        <h6 style="display:inline-block;">Datum:</h6>
+                        <span> @item.Observation.Date</span>
+                        <br />
+                        @if (item.Observation.Comment != "" && item.Observation.Comment != null)
+                        {
+                            <h6 style="display:inline-block;">Kommentar:</h6>
+                            <span> @item.Observation.Comment</span>
+                            <br />
+                        }
+
+
+
+
+
+                        @*Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
+        Kommentar: @measurement.Observation.Comment <br />
+        Observation gjord den @measurement.Observation.Date*@
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-outline-primary" asp-route-id="@observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
                     </div>
                 </div>
             </li>
-            <br/>
         }
     </ul>
 </div>

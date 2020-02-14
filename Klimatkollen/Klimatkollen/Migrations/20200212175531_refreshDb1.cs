@@ -2,41 +2,32 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class FreshDb3 : Migration
+    public partial class refreshDb1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "CategoryId",
-                table: "Measurements",
-                nullable: true);
-
             migrationBuilder.CreateIndex(
-                name: "IX_Measurements_CategoryId",
+                name: "IX_Measurements_categoryId",
                 table: "Measurements",
-                column: "CategoryId");
+                column: "categoryId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Measurements_Categories_CategoryId",
+                name: "FK_Measurements_Categories_categoryId",
                 table: "Measurements",
-                column: "CategoryId",
+                column: "categoryId",
                 principalTable: "Categories",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Measurements_Categories_CategoryId",
+                name: "FK_Measurements_Categories_categoryId",
                 table: "Measurements");
 
             migrationBuilder.DropIndex(
-                name: "IX_Measurements_CategoryId",
-                table: "Measurements");
-
-            migrationBuilder.DropColumn(
-                name: "CategoryId",
+                name: "IX_Measurements_categoryId",
                 table: "Measurements");
         }
     }

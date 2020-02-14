@@ -1,5 +1,4 @@
 ﻿using Klimatkollen.Data;
-using Klimatkollen.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Components
 {
-    public class UserObservationsViewComponent : ViewComponent
+    public class UserFilterViewComponent : ViewComponent
     {
         private readonly IRepository db;
         private readonly IUserRepository userdb;
         private readonly UserManager<IdentityUser> userManager;
-
-        public UserObservationsViewComponent(UserManager<IdentityUser> userManager, IUserRepository userRepo, IRepository repo)
+        public UserFilterViewComponent(IRepository repository, UserManager<IdentityUser> userManager, IUserRepository userRepo)
         {
-            db = repo;
+            db = repository;
             userdb = userRepo;
             this.userManager = userManager;
         }
+
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         public async Task<IViewComponentResult> InvokeAsync()
         {
@@ -28,11 +27,14 @@ namespace Klimatkollen.Components
             string userId = user?.Id;
             var person = userdb.GetPerson(userId);
 
-            //var measurements = db.GetMeasurements(person.Id);
-            var list = db.GetAllMeasurementsFromPerson(person);
-
-
-            return View(list);
+            if (person != null)
+            {
+                var filterList = db.GetUserFilters(person);
+                return View(filterList);
+            }
+            return null;           
         }
+
+
     }
 }

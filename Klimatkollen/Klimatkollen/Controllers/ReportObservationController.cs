@@ -8,9 +8,11 @@ using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
 using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Klimatkollen.Controllers
 {
+    [Authorize(Roles = "Klimatobservatör,Admin,Superadmin")]
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
@@ -28,7 +30,6 @@ namespace Klimatkollen.Controllers
         {
             return View();
         }
-
         public IActionResult ReportObservationStep1()
         {
             //Hämtar MainCategories från db
@@ -44,12 +45,11 @@ namespace Klimatkollen.Controllers
                 return RedirectToAction("ReportObservationStep1");
             }
 
-            mainCat = db.GetMainCategoryFromId(mainCat.Id); //Hämtar Namn på MainCat
+            //mainCat = db.GetMainCategoryFromId(mainCat.Id); //Hämtar Namn på MainCat Kan tas bort??
             ObservationViewModel ob = new ObservationViewModel() //Skapar ViewModel
             {
                 mainCategory = db.GetMainCategoryFromId(mainCat.Id)
             };
-
             ViewBag.newList = db.GetCategoriesFromId(mainCat);
 
             //Skickar tillbaka en vymodell
@@ -63,6 +63,7 @@ namespace Klimatkollen.Controllers
             {
                 //Laddar dagens datum som default
                 Date = DateTime.Today,
+                maincategoryId = model.mainCategory.Id
             };
             model.observation = o;
 
@@ -78,6 +79,8 @@ namespace Klimatkollen.Controllers
                 ViewBag.thirdCategories = list.Where(x => x.Unit.Equals("Päls"));
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
+
+            model.measurement.categoryId = model.category.Id;
 
             return View(model);
         }
@@ -99,48 +102,52 @@ namespace Klimatkollen.Controllers
                 Longitude = model.observation.Longitude,
                 Latitude = model.observation.Latitude,
                 MainCategory = model.mainCategory,
-                Measurement = m
+                //Measurement = m
             };
 
             //db.AddObjectToDb(finalOb);          
             return View();
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model)
+        public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            if (model.measurement.thirdCategoryId == 0)
-            {
-                //TODO: Fixa fullösning
-                model.measurement.thirdCategoryId = 11;
-            }
-            Measurement newMeasurement = new Measurement()
-            {
-                //Category = model.category,
-                Value = model.measurement.Value,
-                //CategoryId = model.category.Id,
-                thirdCategoryId = model.measurement.thirdCategoryId
-            };
+            //if (model.measurement.thirdCategoryId == 0)
+            //{
+            //    //TODO: Fixa fullösning
+            //    model.measurement.thirdCategoryId = 11;
+            //}
 
+            model.measurement.categoryId = model.category.Id;
+            //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             var person = userDb.GetPerson(userId);
 
-            //Konverterar ViewModel till ett objekt av Observation
-            Observation finalObservation = new Observation()
-            {
-                Person = person,
-                Comment = model.observation.Comment,
-                Date = model.observation.Date,
-                Longitude = model.observation.Longitude,
-                Latitude = model.observation.Latitude,
-                Measurement = newMeasurement,
-                maincategoryId = model.mainCategory.Id
-            };
+            //Sätter värden
+            model.observation.Person = person;
+            model.measurement.Observation = model.observation;
+            
+            //Sparar i DB
+            //db.AddObjectToDb(model.observation);
+            db.AddObjectToDb(model.measurement);
 
-            //Kod för att spara i DB
-            db.AddObjectToDb(newMeasurement);
-            db.AddObjectToDb(finalObservation);
+            //Lägg till en andra measurement
+            if (secondMeasurement != null)
+            {
+                int id = db.GetLastObservationIdFromUser(person);
+
+                Measurement m = new Measurement()
+                {
+                    thirdCategoryId =  Convert.ToInt32(secondMeasurement),
+                    observationId = id,
+                    categoryId = model.category.Id
+                };
+                db.AddObjectToDb(m);
+            }
+
             return View();
         }
         private bool CheckList(List<ThirdCategory> list)

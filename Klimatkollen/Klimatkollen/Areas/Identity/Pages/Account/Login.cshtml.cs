@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Klimatkollen.Data;
+using Klimatkollen.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Klimatkollen.Areas.Identity.Pages.Account
 {
@@ -17,11 +20,21 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUserRepository userDb;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager
+            , ILogger<LoginModel> logger
+            , IUserRepository userDb
+            , UserManager<IdentityUser> userManager
+            , RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this.userDb = userDb;
+            this.userManager = userManager;
+            this._roleManager = roleManager;
         }
 
         [BindProperty]
@@ -60,6 +73,30 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
+            if(await userManager.FindByNameAsync("grupp1superadmin@cool.se") == null)
+            {
+                var superadmin = new IdentityUser
+                {
+                    Email = "grupp1superadmin@cool.se",
+                    UserName = "grupp1superadmin@cool.se"
+                };
+                var result = await userManager.CreateAsync(superadmin, "superadminärcool");
+                if(result.Succeeded)
+                {
+                    var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                    if (role == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "grupp1superadmin" });
+                    }
+                    await userManager.AddToRoleAsync(superadmin, role.Name);
+                    Person person = new Person
+                    {
+                        IdentityId = superadmin.Id,
+                        Email = superadmin.Email
+                    }; userDb.AddPerson(person);
+                }
+            }
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
@@ -76,6 +113,20 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    var user = await userManager.FindByEmailAsync(Input.Email);
+                    if (!await userManager.IsInRoleAsync(user, "Klimatobservatör"))
+                    {
+                        await userManager.AddToRoleAsync(user, "Klimatobservatör");
+                    }
+
+                    if (userDb.GetPerson(user.Id) == null)
+                    {
+                        Person person = new Person
+                        {
+                            IdentityId = user.Id,
+                            Email = user.Email
+                        }; userDb.AddPerson(person);
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

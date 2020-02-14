@@ -33,6 +33,7 @@
         </div>
         <div>
             @Html.HiddenFor(model => model.mainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.measurement.categoryId, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
         <hr />

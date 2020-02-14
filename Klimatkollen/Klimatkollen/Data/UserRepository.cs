@@ -14,18 +14,18 @@ namespace Klimatkollen.Data
 
         public Person GetPerson(string id)
         {
-            var person = context.Persons.FirstOrDefault(p => p.IdentityId.Equals(id));
-            return person;
+            return context.Persons.FirstOrDefault(p => p.IdentityId.Equals(id));
+        }
+
+        public void AddPerson(Person person)
+        {
+            context.Add(person);
+            context.SaveChanges();
         }
 
         public List<Person> GetPeople()
         {
-            var people = new List<Person>();
-            foreach (var person in context.Persons)
-            {
-                people.Add(person);
-            }
-            return people;
+            return context.Persons.ToList();
         }
 
         public Person EditPerson(Person model)
@@ -45,6 +45,24 @@ namespace Klimatkollen.Data
             var person = GetPerson(model.IdentityId);
             context.Remove(person);
             context.SaveChanges();
+        }
+
+        public void AddUserTrackedLocation(UsersTrackedLocations model)
+        {
+            context.UserTrackedLocations.Add(model);
+            context.SaveChanges();
+        }
+
+        public List<UsersTrackedLocations> GetUsersTrackedLocations(Person person)
+        {
+            return context.UserTrackedLocations.Where(x => x.Person.Equals(person)).ToList();
+        }
+
+        public void DeleteUsersTrackedLocation(int id)
+        {
+            context.UserTrackedLocations.Remove(context.UserTrackedLocations.Where(l => l.Id.Equals(id)).FirstOrDefault());
+            context.SaveChanges();
+
         }
     }
 }

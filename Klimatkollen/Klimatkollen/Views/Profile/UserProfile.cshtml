@@ -13,11 +13,15 @@
         @await Component.InvokeAsync("UserObservations")
     </div>
 
+    
     <div class="col-sm-5">
         <br />
         <div id="displayUserInfo" style="text-align:center">
-            <button class="btn btn-outline-primary" id="launchEdit">Ändra personlig information</button>
+            <button class="btn btn-primary" id="launchEdit">Ändra personlig information</button>
         </div>
+        <br />
+
+
 
         <div id="editUserInfo" style="display:none">
             <form method="post">
@@ -38,7 +42,7 @@
                         <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
                     </div>
                 </div>
-                <div class="form-group row" >
+                <div class="form-group row">
                     <label class="col-form-label col-sm-3">E-postadress:</label>
                     <div class="col-sm-9">
                         <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required asp-for="@Model.Email" value="@Model.Email" />
@@ -50,8 +54,16 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-primary"><a style="color:white" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a></button>
                 <button type="button" class="btn btn-primary" id="abortEdit">Avbryt</button>
+                <br />
             </form>
-
+            <br />
+        </div>
+        <div id="userFiltersDiv" style="text-align:center">
+            <a class="btn btn-primary" asp-action="EditUserFilters" asp-controller="Profile">Mina intressen</a>
+        </div>
+        <br />
+        <div id="userFilterAreaDiv" style="text-align:center">
+            <a class="btn btn-primary" asp-action="UsersTrackedLocations" asp-controller="Profile">Mina bevakade områden</a>
         </div>
     </div>
 

@@ -8,7 +8,22 @@ namespace Klimatkollen.Data
 {
     public class MockUserRepository : IUserRepository
     {
+        public void AddPerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddUserTrackedLocation(UsersTrackedLocations model)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeletePerson(Person model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteUsersTrackedLocation(int id)
         {
             throw new NotImplementedException();
         }
@@ -39,6 +54,11 @@ namespace Klimatkollen.Data
                 FirstName = "Mattias",
                 Lastname = "Kenttä"
             }; return person;
+        }
+
+        public List<UsersTrackedLocations> GetUsersTrackedLocations(Person person)
+        {
+            throw new NotImplementedException();
         }
     }
 }

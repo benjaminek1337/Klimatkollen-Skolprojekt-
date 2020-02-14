@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Controllers
 {
-    //[Authorize (Roles = "Admin,Superadmin")]
+    [Authorize (Roles = "Admin,grupp1superadmin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -231,8 +231,8 @@ namespace Klimatkollen.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
             var person = db.GetPerson(id);
-            var observations = repo.GetObservations(person.Id);
-            ViewBag.Observations = observations;
+            var measurements = repo.GetMeasurements(person.Id);
+            ViewBag.Observations = measurements;
             if(user == null)
             {
                 ViewBag.ErrorMessage = $"Systemroll ID: {id} kan inte hittas.";
