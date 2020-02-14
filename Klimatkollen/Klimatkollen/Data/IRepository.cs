@@ -34,10 +34,13 @@ namespace Klimatkollen.Data
         UserFilter GetUserFilter(int userFilterId);
 
         Measurement GetMeasurement(int id);
+        ObservationFilterViewModel GetObservationWithMeasurement(int id);
         List<ObservationFilterViewModel> GetAllMeasurements();
         List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person p);
         void DeleteMeasurement(int id);
         void PostEditedMeasurement(Measurement measurement);
+        void UpdateObservation(Observation observation);
+        void UpdateMeasurmentValue(int id, string value);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
         Task<IEnumerable<float>> ChartAsync();//TEST Chart

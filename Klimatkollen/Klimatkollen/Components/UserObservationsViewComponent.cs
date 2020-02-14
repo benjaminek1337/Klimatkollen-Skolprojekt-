@@ -31,7 +31,6 @@ namespace Klimatkollen.Components
             //var measurements = db.GetMeasurements(person.Id);
             var list = db.GetAllMeasurementsFromPerson(person);
 
-
             return View(list);
         }
     }

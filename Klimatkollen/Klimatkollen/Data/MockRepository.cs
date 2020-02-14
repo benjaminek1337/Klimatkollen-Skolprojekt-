@@ -226,6 +226,51 @@ namespace Klimatkollen.Data
             dbContext.Update(updatedMeasurement);
             dbContext.SaveChanges();
         }
+        public void UpdateObservation(Observation observation)
+        {
+            var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                .Include(p => p.Person)
+                .Include(m => m.MainCategory)
+                .FirstOrDefault();
+
+            newObservation.Date = observation.Date;
+            if (observation.Latitude != null || observation.Latitude != null)
+            {
+                newObservation.Longitude = observation.Longitude;
+                newObservation.Latitude = observation.Latitude;
+                newObservation.Place = observation.Place;
+                newObservation.AdministrativeArea = observation.AdministrativeArea;
+                newObservation.Country = observation.Country;
+            }
+
+            newObservation.Comment = observation.Comment;
+
+            dbContext.Update(newObservation);
+            dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Updates the value in a measurement
+        /// </summary>
+        /// <param name="id">Id of measurement</param>
+        /// <param name="value">New value</param>
+        public void UpdateMeasurmentValue(int id, string value)
+        {
+            if (!id.Equals(0) && !string.IsNullOrEmpty(value))
+            {
+                var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+                .Include(o => o.Observation)
+                .Include(t => t.ThirdCategory)
+                .Include(c => c.Category)
+                .FirstOrDefault();
+
+                measurement.Value = value;
+
+                dbContext.Update(measurement);
+                dbContext.SaveChanges();
+            }
+            
+        }
 
         public void DeleteMeasurement(int id)
         {
@@ -376,6 +421,29 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
+        public ObservationFilterViewModel GetObservationWithMeasurement(int id)
+        {
+            var model = new ObservationFilterViewModel();
 
+            var newObservation = dbContext.Observations.Where(o => o.Id.Equals(id))
+                        .Include(m => m.MainCategory)
+                        .Include(p => p.Person)
+                        .FirstOrDefault();
+            var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(id))
+                        .Include(y => y.ThirdCategory)
+                        .ToList();
+
+            model.Observation = newObservation;
+            model.Measurements = measurementsList;
+            model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+
+            if (model.Measurements[0].ThirdCategory == null)
+            {
+                //Tomt objekt för att slippa få "null reference"
+                model.Measurements[0].ThirdCategory = new ThirdCategory();
+            }
+
+            return model;
+        }
     }
 }

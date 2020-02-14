@@ -1,4 +1,5 @@
-﻿@model Klimatkollen.Models.Measurement
+﻿@*@model Klimatkollen.Models.Measurement*@
+@model Klimatkollen.ViewModels.ObservationFilterViewModel
 
 @{
     ViewBag.Title = "Ändra observation";
@@ -11,53 +12,93 @@
     <form method="post">
         @Html.AntiForgeryToken()
 
-        <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
-        <input id="lat" type="hidden" value="@Model.Observation.Latitude" asp-for="@Model.Observation.Latitude" />
-        <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
-        <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="" />
-        <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="" />
-        <input id="hiddenCountry" type="hidden" asp-for="@Model.Observation.Country" value="" />
-
-
-        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName, @Model.ThirdCategory.Type </h3>
+        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName@*, @Model.ThirdCategory.Type*@ </h3>
         <br />
-        <div class="form-group row">
+        @if (@Model.Observation.maincategoryId == 2)
+        {
+            <h6 style="display:inline-block;">Djur:</h6>
+            <span> @Model.Category.Type</span>
+            <br />
+            foreach (var item in @Model.Measurements)
+            {
+                if (item.ThirdCategory.Unit == "Päls")
+                {
+                    <h6 style="display:inline-block;">Päls:</h6>
+                }
+                else if (item.ThirdCategory.Unit == "Miljö")
+                {
+                    <br />
+                    <h6 style="display:inline-block;">Sågs i:</h6>
+                }
+                <span> @item.ThirdCategory.Type</span>
+            }
+
+        }
+        @if (@Model.Observation.maincategoryId != 2)
+        {
+            <h6 style="display:inline-block;">Typ av mätning:</h6>
+            <span> @Model.Category.Type</span>
+
+            foreach (var item in @Model.Measurements)
+            {
+                if (item.Value != null)
+                {
+                    <br />
+                    @*<label class="col-form-label col-sm-2">Värde: (@item.ThirdCategory.Unit)</label>*@
+                    <h6 style="display:inline-block;">Värde:</h6><span> (@item.ThirdCategory.Unit)</span>
+                    <div class="col-sm-4">
+                        <input asp-for="@item.Value" class="form-control" type="number" value="@item.Value" name="measurmentValue" id="measurmentValue" />
+                        <input asp-for="@item.Id" class="form-control" type="hidden" value="@item.Id" name="measurmentId" id="measurmentId" />
+
+                    </div>
+                }
+            }
+        }
+
+        @*<div class="form-group row">
             <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
             <div class="col-sm-10">
                 <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
             </div>
+        </div>*@
+
+
+        @*<label class="col-form-label col-sm-2">Kommentar:</label>*@
+        <h6>Kommentar:</h6>
+        <div class="col-sm-10">
+            @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
         </div>
 
-        <div class="form-group row">
-            <label class="col-form-label col-sm-2">Kommentar:</label>
-            <div class="col-sm-10">
-                @*<input class="form-control CommentTextBox" required type="text" asp-for="@Model.Observation.Comment" value="@Model.Observation.Comment" />*@
-                @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
-            </div>
+
+
+        @*<label class="col-form-label col-sm-2">Datum:</label>*@
+
+        <h6>Datum:</h6>
+        <div class="col-sm-4">
+            @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
-        <div class="form-group row">
-            <label class="col-form-label col-sm-2">Datum:</label>
 
-            <div class="col-sm-10">
-                @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
-                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div id="hiddens">
-            <div class="col-md-10" style="visibility: hidden">
-                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-            </div>
-        </div>
+       <div style="visibility: hidden"></div>
 
-        <br />
-        <h5 style="text-align:center">Välj plats där observation gjordes på kartan nedan</h5>
-        <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
-        <br />
-        <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+            <input type="hidden" value="@Model.Observation.Id" asp-for="@Model.Observation.Id" />
+            <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
+            <input id="lat" type="hidden" value="@Model.Observation.Latitude" asp-for="@Model.Observation.Latitude" />
+            <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
+            <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="@Model.Observation.Place" />
+            <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="@Model.Observation.AdministrativeArea" />
+            <input id="hiddenCountry" type="hidden" asp-for="@Model.Observation.Country" value="@Model.Observation.Country" />
+            <input type="hidden" asp-for="@Model.Measurements" value="@Model.Measurements" />
 
-        <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
-    </form>
+
+
+            <h5 style="text-align:center">Välj plats där observation gjordes på kartan nedan</h5>
+            <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
+            <br />
+            <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
+
+            <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Observation.Id">Ta bort observation</a></button>
+</form>
 </div>
 
 <script>
