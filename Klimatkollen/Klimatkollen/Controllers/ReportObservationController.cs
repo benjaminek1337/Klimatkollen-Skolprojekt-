@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Klimatkollen.Controllers
 {
@@ -17,13 +19,15 @@ namespace Klimatkollen.Controllers
     {
         private readonly IRepository db;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IHostingEnvironment hostingenv;
         private readonly IUserRepository userDb;
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
-        public ReportObservationController(IRepository repository, IUserRepository userRepository, UserManager<IdentityUser> userManager)
+        public ReportObservationController(IRepository repository, IUserRepository userRepository, UserManager<IdentityUser> userManager, IHostingEnvironment hostingenv)
         {
             this.db = repository;
             this.userManager = userManager;
+            this.hostingenv = hostingenv;
             this.userDb = userRepository;
         }
         public IActionResult Index()
@@ -100,6 +104,15 @@ namespace Klimatkollen.Controllers
             //Sätter värden
             model.observation.Person = person;
             model.measurement.Observation = model.observation;
+            string fileName = null;
+            if(model.CreateMeasurementViewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+                fileName = Guid.NewGuid().ToString() + "_" + model.CreateMeasurementViewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                model.CreateMeasurementViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.measurement.PhotoPath = fileName;
+            }
             
             //Sparar i DB
             //db.AddObjectToDb(model.observation);
@@ -114,7 +127,8 @@ namespace Klimatkollen.Controllers
                 {
                     thirdCategoryId =  Convert.ToInt32(secondMeasurement),
                     observationId = id,
-                    categoryId = model.category.Id
+                    categoryId = model.category.Id,
+                    PhotoPath = fileName
                 };
                 db.AddObjectToDb(m);
             }

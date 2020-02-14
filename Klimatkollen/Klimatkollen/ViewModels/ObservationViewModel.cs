@@ -12,5 +12,6 @@ namespace Klimatkollen.ViewModels
         public Measurement measurement { get; set; }
         public MainCategory mainCategory { get; set; }
         public Category category { get; set; }
+        public CreateMeasurementViewModel CreateMeasurementViewModel { get; set; }
     }
 }

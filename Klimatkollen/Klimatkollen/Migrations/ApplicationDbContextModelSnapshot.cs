@@ -135,6 +135,8 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("PhotoPath");
+
                     b.Property<string>("Value");
 
                     b.Property<int>("categoryId");
