@@ -38,6 +38,7 @@ namespace Klimatkollen.Data
         List<ObservationFilterViewModel> GetAllMeasurements();
         List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person p);
         void DeleteMeasurement(int id);
+        void DeleteObservation(int id);
         void PostEditedMeasurement(Measurement measurement);
         void UpdateObservation(Observation observation);
         void UpdateMeasurmentValue(int id, string value);

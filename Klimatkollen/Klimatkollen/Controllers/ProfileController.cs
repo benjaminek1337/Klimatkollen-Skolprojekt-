@@ -115,6 +115,11 @@ namespace Klimatkollen.Controllers
             observationdb.DeleteMeasurement(id);
             return RedirectToAction("UserProfile");
         }
+        public IActionResult DeleteObservation(int id)
+        {
+            observationdb.DeleteObservation(id);
+            return RedirectToAction("UserProfile");
+        }
 
         public async Task<IActionResult> UsersTrackedLocations()
         {

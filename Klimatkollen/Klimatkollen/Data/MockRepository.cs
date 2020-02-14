@@ -278,6 +278,18 @@ namespace Klimatkollen.Data
             dbContext.Remove(measurement);
             dbContext.SaveChanges();
         }
+        public void DeleteObservation(int id)
+        {
+            var observation = dbContext.Observations.Where(o => o.Id.Equals(id)).FirstOrDefault();
+            var measurements = dbContext.Measurements.Where(o => o.observationId.Equals(observation.Id)).ToList();
+
+            foreach (var item in measurements)
+            {
+                dbContext.Remove(item);
+            }
+            dbContext.Remove(observation);
+            dbContext.SaveChanges();
+        }
 
         public List<MainCategory> GetMainCategoriesFromDb()
         {

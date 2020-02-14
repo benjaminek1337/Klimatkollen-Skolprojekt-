@@ -72,6 +72,8 @@ namespace Klimatkollen.Controllers
             ViewBag.IsValueEnable = CheckList(list);
 
             ViewBag.thirdCategories = list;
+            int thirdCategoriesCount = list.Count();
+            ViewBag.thirdCategoriesCount = thirdCategoriesCount;
 
             if (model.category.Unit.Equals("Päls"))
             {

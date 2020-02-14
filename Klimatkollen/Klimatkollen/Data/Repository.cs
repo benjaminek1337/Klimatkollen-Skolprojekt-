@@ -212,5 +212,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteObservation(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
