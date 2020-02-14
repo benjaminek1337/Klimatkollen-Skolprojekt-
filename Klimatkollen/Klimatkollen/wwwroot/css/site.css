@@ -497,3 +497,7 @@ body {
         width: 100%;
     }
 }
+.table td {
+    border-top: none;
+    border-bottom: none;
+}
