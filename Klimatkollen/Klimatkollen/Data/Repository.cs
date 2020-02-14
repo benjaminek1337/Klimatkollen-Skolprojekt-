@@ -217,5 +217,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public List<string> GetTopAreas(int num)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

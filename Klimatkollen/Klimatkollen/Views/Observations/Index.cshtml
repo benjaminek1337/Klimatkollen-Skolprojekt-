@@ -103,6 +103,7 @@
 
                                                 <h6 style="display:inline-block;">Päls:</h6>
                                                 <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                                
                                             }
                                         }
 
@@ -125,37 +126,38 @@
                                         }
                                         <br />
                                     }
-                                    <div style="display:none" id="@item.Observation.Id">
+                                <div style="display:none" id="@item.Observation.Id">
 
-                                        @if (item.Observation.maincategoryId == 2)
+                                    @if (item.Observation.maincategoryId == 2)
+                                    {
+
+                                        @foreach (var x in item.Measurements)
                                         {
 
-                                            @foreach (var x in item.Measurements)
+                                            @if (x.ThirdCategory.Unit == "Miljö")
                                             {
-
-                                                @if (x.ThirdCategory.Unit == "Miljö")
-                                                {
-                                                    <h6 style="display:inline-block;">Miljö:</h6>
-                                                    <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                                    <br />
-                                                }
+                                                <h6 style="display:inline-block;">Miljö:</h6>
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                                
                                             }
-                                            <br />
+
                                         }
-
-
-                                        <h6 style="display:inline-block;">Datum:</h6>
-                                        <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
                                         <br />
-                                        <h6 style="display:inline-block;">Kommentar:</h6>
-                                        <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                                        <br />
-                                        <h6 style="display:inline-block;">Utförd av:</h6>
-                                        <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
-                                        <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
-                                        <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
+                                    }
 
-                                    </div>
+
+                                    <h6 style="display:inline-block;">Datum:</h6>
+                                    <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
+                                    <br />
+                                    <h6 style="display:inline-block;">Kommentar:</h6>
+                                    <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                                    <br />
+                                    <h6 style="display:inline-block;">Utförd av:</h6>
+                                    <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
+
+                                </div>
 
                                 </div>
                             <div class="card-footer">
@@ -205,7 +207,7 @@
      function ShowDetailedInfo(id, btn) {
          var x = document.getElementById(id);
             if (x.style.display === 'none') {
-                x.style.display = 'inline-block';
+                x.style.display = 'block';
                 btn.innerHTML = "Visa mindre";
             } else {
                 x.style.display = 'none';
