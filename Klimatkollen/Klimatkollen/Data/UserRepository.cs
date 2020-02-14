@@ -58,5 +58,11 @@ namespace Klimatkollen.Data
             context.SaveChanges();
 
         }
+
+        public void AddPerson(Person person)
+        {
+            context.Add(person);
+            context.SaveChanges();
+        }
     }
 }

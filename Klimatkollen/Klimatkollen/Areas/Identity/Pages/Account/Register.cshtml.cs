@@ -25,6 +25,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _dbContext;
         private readonly IdDbContext _identityDbContext;
+        private readonly IUserRepository userRepo;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -33,7 +34,8 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             ApplicationDbContext dbContext,
-            IdDbContext identityDbContext)
+            IdDbContext identityDbContext,
+            IUserRepository userRepo)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -42,6 +44,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _dbContext = dbContext;
             _identityDbContext = identityDbContext;
+            this.userRepo = userRepo;
         }
 
         [BindProperty]
@@ -105,8 +108,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                     {
                         IdentityId = user.Id,
                         Email = user.Email
-                    }; _dbContext.Persons.Add(person);
-                    _dbContext.SaveChanges();
+                    }; userRepo.AddPerson(person);
                     await _signInManager.SignInAsync(user, isPersistent: true);
                     return LocalRedirect(returnUrl);
                 }

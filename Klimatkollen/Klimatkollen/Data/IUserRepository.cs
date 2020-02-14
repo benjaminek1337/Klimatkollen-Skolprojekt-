@@ -15,5 +15,6 @@ namespace Klimatkollen.Data
         void AddUserTrackedLocation(UsersTrackedLocations model);
         List<UsersTrackedLocations> GetUsersTrackedLocations(Person person);
         void DeleteUsersTrackedLocation(int id);
+        void AddPerson(Person person);
     }
 }
