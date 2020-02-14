@@ -86,40 +86,9 @@ namespace Klimatkollen.Controllers
         }
 
         [HttpPost]
-        //[AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddObservation(ObservationViewModel model)
-        {
-            Measurement m = new Measurement()
-            {
-                //Category = model.category
-            };
-            //Konverterar ViewModel till ett objekt av Observation
-            Observation finalObservation = new Observation()
-            {
-                Comment = model.observation.Comment,
-                Date = model.observation.Date,
-                Longitude = model.observation.Longitude,
-                Latitude = model.observation.Latitude,
-                MainCategory = model.mainCategory,
-                //Measurement = m
-            };
-
-            //db.AddObjectToDb(finalOb);          
-            return View();
-        }
-
-
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            //if (model.measurement.thirdCategoryId == 0)
-            //{
-            //    //TODO: Fixa fullösning
-            //    model.measurement.thirdCategoryId = 11;
-            //}
-
             model.measurement.categoryId = model.category.Id;
             //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
