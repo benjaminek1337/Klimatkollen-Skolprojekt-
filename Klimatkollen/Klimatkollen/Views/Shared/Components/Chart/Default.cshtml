@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<float>*@ 
-@model IEnumerable<Measurement>
+@model IEnumerable<Klimatkollen.ViewModels.MeasurementDatesViewModel>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <form>
@@ -52,14 +52,12 @@
     {
         @*@:model.push("@m");*@
         @:model.push({
-        @:ID: '@m.Id',
-        @:Date: new Date('@m.Observation.Date'),
-        @:Value : '@m.Value',
+        @:Date: new Date('@m.Date'),
+        @:Value : '@m.AvgTemp',
         @:});
     }
 
-        alert(model[4].Date.customFormat("#DD#/#MM#/#YYYY#"));
-
+       
 
         for (var i = 0; i < model.length; i++) {
             if (Date.parse(model[i].Date) >= Date.parse(startDate) && Date.parse(model[i].Date) <= Date.parse(endDate)) {

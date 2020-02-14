@@ -375,26 +375,21 @@ namespace Klimatkollen.Data
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
-        public async Task<IEnumerable<Measurement>> GetTemperatureObservationsAsync(MeasurementDatesViewModel viewmodel)
+        public async Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync()
         {   
             var temperaturelist = dbContext.Measurements.Where(m => m.ThirdCategory.Type.Equals("Lufttemperatur"))
                 .Include(n=>n.Observation).ToList();
-            var dates = new List<DateTime>();
 
-            var groupList= temperaturelist.GroupBy(n => n.Observation.Date).Where(c => c.Count() > 1)
-                .SelectMany(y=>y).ToList();
-            for (int i = 0; i < temperaturelist.Count; i++)
-            {
+            var avgtemps = from post in temperaturelist
+                           group post by post.Observation.Date into dateGroup
+                           select new MeasurementDatesViewModel
+                           {
+                               Date = dateGroup.Key,
+                               AvgTemp = dateGroup.Average(x => float.Parse(x.Value))
+                           };
 
-            }
-            var myDate = DateTime.Now;
-            var newDate = myDate.AddYears(-1);
-            for (var dt = newDate; dt <= myDate; dt = dt.AddDays(1))
-            {
-                dates.Add(dt);
-            }
-
-            return await Task.FromResult(temperaturelist.ToList());
+   
+            return await Task.FromResult(avgtemps);
         }
 
 

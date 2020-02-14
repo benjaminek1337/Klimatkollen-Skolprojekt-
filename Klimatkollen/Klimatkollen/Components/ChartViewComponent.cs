@@ -24,7 +24,7 @@ namespace Klimatkollen.Components
         public async Task<IViewComponentResult> InvokeAsync(MeasurementDatesViewModel model)
         {
 
-            var temperatures = await db.GetTemperatureObservationsAsync(model);
+            var temperatures = await db.GetTemperatureObservationsAsync();
             return View(temperatures);
         }
     }
