@@ -9,7 +9,7 @@
 <hr />
 
 <div id="editForm">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
         <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName@*, @Model.ThirdCategory.Type*@ </h3>
@@ -56,11 +56,11 @@
         }
 
         @*<div class="form-group row">
-            <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
-            <div class="col-sm-10">
-                <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
-            </div>
-        </div>*@
+                <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
+                <div class="col-sm-10">
+                    <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
+                </div>
+            </div>*@
 
 
         @*<label class="col-form-label col-sm-2">Kommentar:</label>*@
@@ -78,8 +78,13 @@
             @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
+        <h6>Bild:</h6>
+        <div class="col-md-8 custom-file" style="visibility: visible">
+            <input asp-for="@Model.CreateMeasurementViewModel.Photo" class="form-control custom-file-input" />
+            <label class="custom-file-label">Välj bild...</label>
+            <input asp-for="@Model.Measurement.Id" class="form-control" type="hidden" value="@Model.Measurement.Id" name="measurmentId" id="measurmentId" />
+        </div>
 
-        <div style="visibility: hidden"></div>
 
         <input type="hidden" value="@Model.Observation.Id" asp-for="@Model.Observation.Id" />
         <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
@@ -100,12 +105,23 @@
         <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteObservation" asp-controller="Profile" asp-route-id="@Model.Observation.Id">Ta bort observation</a></button>
     </form>
 </div>
-
 <script>
-    $(document).ready( function() {
-        $( "#datepicker" ).datepicker();
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+
+        $("#datepicker").datepicker();
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker();
+    });
+</script>
+
 
 <script>
     var map, marker;
