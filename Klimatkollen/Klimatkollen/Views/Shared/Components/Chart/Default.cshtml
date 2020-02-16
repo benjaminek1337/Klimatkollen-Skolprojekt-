@@ -1,39 +1,110 @@
-﻿@model IEnumerable<float> 
+﻿@model IEnumerable<float>
+@*@model IEnumerable<Measurement>*@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<form>
+    <input type="date" class="form-control" value="2018-01-01" id="startDate" onchange="drawChart()" />
+    <input type="date" class="form-control" value="2020-02-11" id="endDate" onchange="drawChart()" />
+</form>
 
 <script type="text/javascript">
-    google.charts.load('current', { 'packages': ['line'] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Datum');
-        data.addColumn('number', 'Temperatur');
-        data.addColumn('number', 'Medeltemperatur 2020');
-        data.addColumn('number', 'Medeltemperatur 2019');
+</script>
 
-  
-    var temperatures = [];
 
-    @foreach (var m in Model)
+
+<div class="col-md-8">
+    <h5>Välj plats:</h5>
+    <div id="map" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+    <div id="lat"></div>
+    <div id="long"></div>
+
+    <br />
+</div>
+
+<div id="line_top_x"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
+
+<script>
+    var temperatures = []
+     google.charts.load('current', { 'packages': ['line'] });
+
+
+    //google.charts.load('current', { 'packages': ['line'] });
+    //google.charts.setOnLoadCallback(drawChart);
+    //@foreach (var m in Model)
     {
         @:temperatures.push("@m");
 
     }
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Datum');
+        data.addColumn('number', 'Temperatur');
+        data.addColumn('number', 'Medeltemperatur 2020');
+        data.addColumn('number', 'Medeltemperatur 2019');
+
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        //https://stackoverflow.com/questions/4673527/converting-milliseconds-to-a-date-jquery-javascript
+        Date.prototype.customFormat = function(formatString){
+        var YYYY,YY,MMMM,MMM,MM,M,DDDD,DDD,DD,D,hhhh,hhh,hh,h,mm,m,ss,s,ampm,AMPM,dMod,th;
+        YY = ((YYYY=this.getFullYear())+"").slice(-2);
+        MM = (M=this.getMonth()+1)<10?('0'+M):M;
+        MMM = (MMMM=["January","February","March","April","May","June","July","August","September","October","November","December"][M-1]).substring(0,3);
+        DD = (D=this.getDate())<10?('0'+D):D;
+        DDD = (DDDD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][this.getDay()]).substring(0,3);
+        th=(D>=10&&D<=20)?'th':((dMod=D%10)==1)?'st':(dMod==2)?'nd':(dMod==3)?'rd':'th';
+        formatString = formatString.replace("#YYYY#",YYYY).replace("#YY#",YY).replace("#MMMM#",MMMM).replace("#MMM#",MMM).replace("#MM#",MM).replace("#M#",M).replace("#DDDD#",DDDD).replace("#DDD#",DDD).replace("#DD#",DD).replace("#D#",D).replace("#th#",th);
+        h=(hhh=this.getHours());
+        if (h==0) h=24;
+        if (h>12) h-=12;
+        hh = h<10?('0'+h):h;
+        hhhh = hhh<10?('0'+hhh):hhh;
+        AMPM=(ampm=hhh<12?'am':'pm').toUpperCase();
+        mm=(m=this.getMinutes())<10?('0'+m):m;
+        ss=(s=this.getSeconds())<10?('0'+s):s;
+        return formatString.replace("#hhhh#",hhhh).replace("#hhh#",hhh).replace("#hh#",hh).replace("#h#",h).replace("#mm#",mm).replace("#m#",m).replace("#ss#",ss).replace("#s#",s).replace("#ampm#",ampm).replace("#AMPM#",AMPM);
+        };
+
+        var temperatures = [];
+        var dates = [];
+        var model = [];
+
+
+    
+
+    
+
+        alert(model[4].Date.customFormat("#DD#/#MM#/#YYYY#"));
+
+
+        for (var i = 0; i < model.length; i++) {
+            if (Date.parse(model[i].Date) >= Date.parse(startDate) && Date.parse(model[i].Date) <= Date.parse(endDate)) {
+                temperatures.push({ temp: model[i].Value, date:model[i].Date.customFormat("#DD#/#MM#/#YYYY#") });
+                dates.push(model[i].Date.customFormat("#DD#/#MM#/#YYYY#"));
+            }
+        }
+
+        alert(dates);
 
         var medianTemperature = 0;
 
         for (var i = 0; i < temperatures.length; i++) {
-            medianTemperature += parseFloat(temperatures[i])
+            medianTemperature += parseFloat(temperatures[i].temp)
         }
         temperatures.average
 
         medianTemperature = medianTemperature / temperatures.length;
 
-        for (i = 0; i < temperatures.length; i++) {
-            data.addRow([i, parseFloat(temperatures[i]), medianTemperature, medianTemperature - 0.80]);
-    }
+
+        for (y = 0; y < temperatures.length; y++) {
+            data.addRow([temperatures[y].date, parseFloat(temperatures[y].temp), medianTemperature, medianTemperature - 0.80]);
+            }
+
 
                 var options = {
             chart: {
@@ -52,9 +123,131 @@
 
             chart.draw(data, google.charts.Line.convertOptions(options));
         }
+
+
+    var map, marker, latInput, longInput;
+    $(document).ready(function () {
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+
+            var mapOptions = {
+                center: myCenter,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel: true
+            };
+
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latInput = document.getElementById("lat").value = position.coords.latitude;
+                    longInput = document.getElementById("long").value = position.coords.longitude;
+
+
+
+                    marker = new google.maps.Marker({
+                        position: { lat: latInput, lng: longInput },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+
+                    map.setCenter(marker.getPosition());
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+
+            marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            }
+            );
+            marker.setMap(map);
+
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+        //const userAction = async () => {
+        //    const response = await fetch("https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + marker.getPosition().lng().toFixed(3) + "/lat/" + marker.getPosition().lat().toFixed(3) + "/data.json",
+        //        {
+        //            mode: 'no-cors'
+        //        });
+
+
+        function findTemperaturesFromLocation(lon, lat) {
+
+
+           temperatures = []
+            var url = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + lon.toFixed(2) + "/lat/" + lat.toFixed(2) + "/data.json"
+
+            fetch(url)
+                    .then(response => response.json())
+                .then(data => {
+                    var data1 = data
+
+                    for (var i = 0; i < data1.timeSeries[0].parameters.length; i++) {
+                        if (data1.timeSeries[0].parameters[i].unit[0] == "c") {
+                            temperatures[i] = data1.timeSeries[0].parameters[i].values[0]
+                        }
+                    }
+            drawChart()
+                })
+        }
+
+            //const myJson = await response.json();
+            //var obj = jQuery.parseJSON(JSON.stringify(response));
+
+            //console.log(obj);
+            //console.log(url.approvedTime);
+                //console.log(obj.data);
+
+             //let parts = obj.results[0].address_components;
+             //   parts.forEach(part => {
+             //       if (part.types.includes("administrative_area_level_1")
+             //           || part.types.includes("administrative_area_level_2")
+             //           || part.types.includes("locality")
+             //           || part.types.includes("postal_town")
+             //           || part.types.includes("transit_station")
+             //           || part.types.includes("county")
+             //       )
+
+
+        //    for(var i = 0; i < obj.length; i++) {
+        //         alert(obj[i].validTime);
+        //    }
+        //}
+
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
+
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            document.getElementById("lat").value = marker.getPosition().lat();
+            document.getElementById("long").value = marker.getPosition().lng();
+            if (lat != null) alert(lat.value);
+            if (long != null) {
+                alert(long.value);
+                findTemperaturesFromLocation(long.value, lat.value)
+            }
+        });
+    });
 </script>
-
-
-
-<div id="line_top_x"></div>
-@*//Div för diagrammet*@

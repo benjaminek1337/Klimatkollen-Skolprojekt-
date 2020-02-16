@@ -32,6 +32,13 @@ namespace Klimatkollen.Data
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person };
         }
 
+        // Show observations by interest 
+        
+            // Find the categories the user is interested in
+            // Filter out all the observations that match those categories
+            // Return the results sorted by date
+        // 
+
         public List<float> GenerateRandomFloats(int amountToGenerate)
         {
             var floats = new List<float>();
@@ -289,6 +296,14 @@ namespace Klimatkollen.Data
             var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
             return observation.Id;
         }
+
+        //public int SelectObservationsByInterest(Person p)
+        //{
+        //    //var observation = dbContext.Persons.Where(x => x.)
+                
+        //    //    Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+        //    //return observation.Id;
+        //}
         /// <summary>
         /// Gets a list of filters for a user
         /// </summary>
