@@ -121,6 +121,11 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var user = await userManager.FindByEmailAsync(Input.Email);
+
+                    if(await _roleManager.FindByNameAsync("Klimatobservatör") == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "Klimatobservatör" });
+                    }
                     if (!await userManager.IsInRoleAsync(user, "Klimatobservatör"))
                     {
                         await userManager.AddToRoleAsync(user, "Klimatobservatör");
