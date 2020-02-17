@@ -44,7 +44,10 @@
                                    aria-expanded="false">Hantera användare</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a asp-action="ListUsers" asp-controller="Admin" class="dropdown-item">Användare</a>
-                                    <a asp-action="ListRoles" asp-controller="Admin" class="dropdown-item">Systembehörighet</a>
+                                    @if (User.IsInRole("grupp1superadmin"))
+                                    {
+                                        <a asp-action="ListRoles" asp-controller="Admin" class="dropdown-item">Systembehörighet</a>
+                                    }
                                 </div>
                             </li>
                         }

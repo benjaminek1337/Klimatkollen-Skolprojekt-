@@ -48,25 +48,29 @@
     </div>
     <div class="observations">
         <ul style="list-style-type:none; padding: 0;">
-            @foreach (var measurement in measurements)
+            @if (measurements != null)
             {
-                <li>
-                    <div class="card">
-                        <div class="card-header">
-                            Observation av @measurement.Id
+                foreach (var measurement in measurements)
+                {
+                    <li>
+                        <div class="card">
+                            <div class="card-header">
+                                Observation av @measurement.Id
+                            </div>
+                            <div class="card-body">
+                                Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
+                                Kommentar: @measurement.Observation.Comment <br />
+                                Observation gjord den @measurement.Observation.Date
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
-                            Kommentar: @measurement.Observation.Comment <br />
-                            Observation gjord den @measurement.Observation.Date
-                        </div>
-                        <div class="card-footer">
-                            <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
-                        </div>
-                    </div>
-                </li>
-                <br />
+                    </li>
+                    <br />
+                }
             }
+
         </ul>
     </div>
     <div class="card">
