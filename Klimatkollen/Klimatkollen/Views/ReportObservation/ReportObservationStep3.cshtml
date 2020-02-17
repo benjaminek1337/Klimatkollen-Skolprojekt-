@@ -71,7 +71,8 @@
 
     <div class="col-md-8">
         <h5>Datum:</h5>
-        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.EditorFor(model => model.observation.Date, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control"} })
         <br />
     </div>
 
