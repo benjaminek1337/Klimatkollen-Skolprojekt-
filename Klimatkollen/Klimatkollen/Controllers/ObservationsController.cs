@@ -20,9 +20,12 @@ namespace Klimatkollen.Controllers
             ViewBag.MainCategories = observationDB.GetMainCategoriesFromDb();
             ViewBag.Categories = observationDB.GetAllCategories();
 
+            DateTime today = DateTime.Today;
+            ViewBag.LastYear = today.Year - 1;
+            ViewBag.Date = today;
+
             //Hämtar vanligaste områden
             ViewBag.Areas = observationDB.GetTopAreas(5);
-            ViewBag.Date = DateTime.Today;
             var list = observationDB.GetAllMeasurements();
             return View(list);
         }
