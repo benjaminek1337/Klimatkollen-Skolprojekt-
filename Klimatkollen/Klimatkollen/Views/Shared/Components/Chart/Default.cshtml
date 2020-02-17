@@ -21,7 +21,6 @@
 
 <div id="line_top_x"></div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
 
 <script>
     var temperatures = []
@@ -30,6 +29,7 @@
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
+        alert("draw")
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'Datum');
         data.addColumn('number', 'Temperatur');
@@ -37,13 +37,13 @@
         data.addColumn('number', 'Medeltemperatur 2019');
 
 
-    var temperatures = [];
-
     @foreach (var m in Model)
     {
         @:temperatures.push("@m");
 
     }
+
+
 
         var medianTemperature = 0;
 
@@ -84,8 +84,10 @@
 
 
            temperatures = []
-            var url = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + lon.toFixed(2) + "/lat/" + lat.toFixed(2) + "/data.json"
+            var url1 = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + lon.toFixed(2) + "/lat/" + lat.toFixed(2) + "/data.json"
+            var url = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/12.158/lat/57.5812/data.json"
 
+          
             fetch(url)
                     .then(response => response.json())
                 .then(data => {
@@ -94,10 +96,11 @@
                     for (var i = 0; i < data1.timeSeries[0].parameters.length; i++) {
                         if (data1.timeSeries[0].parameters[i].unit[0] == "c") {
                             temperatures[i] = data1.timeSeries[0].parameters[i].values[0]
+                            alert(data1.timeSeries[0].parameters[i].values[0])
                         }
                     }
             drawChart()
-                })
+                })  
         }
 
     var map, marker;
@@ -125,14 +128,14 @@
                         draggable: true
                     });
                     marker.addListener('click', function () {
-                        map.setCenter(marker.getPosition());
+                       // map.setCenter(marker.getPosition());
                     });
                     marker.addListener('dragend', function () {
                         document.getElementById("lat").value = marker.getPosition().lat();
                         document.getElementById("long").value = marker.getPosition().lng();
                     });
-                    map.setCenter(marker.getPosition());
-                    GetAreasJson(latInput, longInput)
+                  //  map.setCenter(marker.getPosition());
+                   // GetAreasJson(latInput, longInput)
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
