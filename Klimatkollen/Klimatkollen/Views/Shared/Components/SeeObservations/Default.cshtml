@@ -17,13 +17,12 @@
         <div id="NewsBody" class="card-body">
             @if (News.Content.Length <= 32)
             {
-                @News.Content
+            <p>@News.Content</p>
             }
             @if (News.Content.Length > 32)
             {
-                @News.Content.Remove(32)
+            <p>@News.Content.Remove(32)...</p>
             }
-            <br />
         </div>
         <div id="NewsFooter" class="card-footer">
             Publicerades: @News.Date.ToShortDateString()
