@@ -135,6 +135,8 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("PhotoPath");
+
                     b.Property<string>("Value");
 
                     b.Property<int>("categoryId");
@@ -152,6 +154,23 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("thirdCategoryId");
 
                     b.ToTable("Measurements");
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.News", b =>
+                {
+                    b.Property<int>("NewsID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("NewsID");
+
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>

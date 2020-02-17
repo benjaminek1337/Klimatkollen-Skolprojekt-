@@ -32,6 +32,7 @@ namespace Klimatkollen.Data
         List<Measurement> GetMeasurements(int id);
         List<UserFilter> GetUserFilters(Person p);
         UserFilter GetUserFilter(int userFilterId);
+        List<News> GetNews();
 
         Measurement GetMeasurement(int id);
         ObservationFilterViewModel GetObservationWithMeasurement(int id);
@@ -50,5 +51,7 @@ namespace Klimatkollen.Data
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
         List<String> GetTopAreas(int num);
+        void UpdateMeasurementPhoto(int id, string filePath);
+        void DeleteMeasurementPhoto(int id);
     }
 }

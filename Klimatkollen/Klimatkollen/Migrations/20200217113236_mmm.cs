@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class refreshDb : Migration
+    public partial class mmm : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,21 @@ namespace Klimatkollen.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MainCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "News",
+                columns: table => new
+                {
+                    NewsID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_News", x => x.NewsID);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,11 +331,18 @@ namespace Klimatkollen.Migrations
                     Value = table.Column<string>(nullable: true),
                     observationId = table.Column<int>(nullable: false),
                     thirdCategoryId = table.Column<int>(nullable: true),
-                    categoryId = table.Column<int>(nullable: false)
+                    categoryId = table.Column<int>(nullable: false),
+                    PhotoPath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measurements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Measurements_Categories_categoryId",
+                        column: x => x.categoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Measurements_Observations_observationId",
                         column: x => x.observationId,
@@ -433,6 +455,11 @@ namespace Klimatkollen.Migrations
                 column: "MainCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Measurements_categoryId",
+                table: "Measurements",
+                column: "categoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Measurements_observationId",
                 table: "Measurements",
                 column: "observationId");
@@ -492,6 +519,9 @@ namespace Klimatkollen.Migrations
 
             migrationBuilder.DropTable(
                 name: "Measurements");
+
+            migrationBuilder.DropTable(
+                name: "News");
 
             migrationBuilder.DropTable(
                 name: "UserFilters");

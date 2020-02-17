@@ -143,7 +143,7 @@
                                             {
                                                 <h6 style="display:inline-block;">Miljö:</h6>
                                                 <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                                
+
                                             }
 
                                         }
@@ -161,6 +161,16 @@
                                     <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
+                                    <br />
+                                    <br />
+                                    @if (item.Measurement.PhotoPath != null)
+                                    {
+                                        <h6 style="display:inline-block">Bild:</h6>
+                                        <br/>
+                                        var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
+                                        <img class="card-img-top" style="height:auto; width:100%;" src="@photoPath" asp-append-version="true" />
+                                    }
+
 
                                 </div>
 

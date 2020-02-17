@@ -83,12 +83,19 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                 var result = await userManager.CreateAsync(superadmin, "superadminärcool");
                 if(result.Succeeded)
                 {
-                    var role = await _roleManager.FindByNameAsync("grupp1superadmin");
-                    if (role == null)
+                    
+                    if (await _roleManager.FindByNameAsync("grupp1superadmin") == null)
                     {
                         await _roleManager.CreateAsync(new IdentityRole { Name = "grupp1superadmin" });
+                        var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                        await userManager.AddToRoleAsync(superadmin, role.Name);
                     }
-                    await userManager.AddToRoleAsync(superadmin, role.Name);
+                    else if(await _roleManager.FindByNameAsync("grupp1superadmin") != null)
+                    {
+                        var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                        await userManager.AddToRoleAsync(superadmin, role.Name);
+                    }
+
                     Person person = new Person
                     {
                         IdentityId = superadmin.Id,
@@ -114,6 +121,11 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var user = await userManager.FindByEmailAsync(Input.Email);
+
+                    if(await _roleManager.FindByNameAsync("Klimatobservatör") == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "Klimatobservatör" });
+                    }
                     if (!await userManager.IsInRoleAsync(user, "Klimatobservatör"))
                     {
                         await userManager.AddToRoleAsync(user, "Klimatobservatör");

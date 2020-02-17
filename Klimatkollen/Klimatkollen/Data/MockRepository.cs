@@ -125,6 +125,7 @@ namespace Klimatkollen.Data
                 model.Observation = newObservation;
                 model.Measurements = measurementsList;
                 model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+                model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
 
                 if (model.Measurements[0].ThirdCategory == null)
                 {
@@ -156,6 +157,7 @@ namespace Klimatkollen.Data
                     model.Observation = newObservation;
                     model.Measurements = measurementsList;
                     model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+                    model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
 
                     if (model.Measurements[0].ThirdCategory == null)
                     {
@@ -213,15 +215,16 @@ namespace Klimatkollen.Data
         {
             var updatedMeasurement = GetMeasurement(measurement.Id);
 
-            updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
-            updatedMeasurement.Observation.Place = measurement.Observation.Place;
-            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
-            updatedMeasurement.Observation.Country = measurement.Observation.Country;
-            updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
-            updatedMeasurement.Observation.Date = measurement.Observation.Date;
-            updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
+            //updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            //updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            //updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
+            //updatedMeasurement.Observation.Country = measurement.Observation.Country;
+            //updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
+            //updatedMeasurement.Observation.Date = measurement.Observation.Date;
+            //updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
             updatedMeasurement.Value = measurement.Value;
-            updatedMeasurement.Observation.Person = measurement.Observation.Person;
+            //updatedMeasurement.Observation.Person = measurement.Observation.Person;
+            updatedMeasurement.PhotoPath = measurement.PhotoPath;
 
             dbContext.Update(updatedMeasurement);
             dbContext.SaveChanges();
@@ -270,6 +273,36 @@ namespace Klimatkollen.Data
                 dbContext.SaveChanges();
             }
             
+        }
+
+        public void UpdateMeasurementPhoto(int id, string filePath)
+        {
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+               .Include(o => o.Observation)
+               .Include(t => t.ThirdCategory)
+               .Include(c => c.Category)
+               .FirstOrDefault();
+
+                measurement.PhotoPath = filePath;
+
+                dbContext.Update(measurement);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteMeasurementPhoto(int id)
+        {
+            var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+            .Include(o => o.Observation)
+            .Include(t => t.ThirdCategory)
+            .Include(c => c.Category)
+            .FirstOrDefault();
+            measurement.PhotoPath = null;
+            dbContext.Update(measurement);
+            dbContext.SaveChanges();
+
         }
 
         public void DeleteMeasurement(int id)
@@ -433,6 +466,23 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
+        public List<News> GetNews()
+        {
+            List<News> allNews = new List<News>();
+            foreach (var item in dbContext.News)
+            {
+                allNews.Add(item);
+            }
+
+            allNews.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+
+            return allNews;
+        }
+
+        public void AddNews(News news)
+        {
+            
+        }
         public ObservationFilterViewModel GetObservationWithMeasurement(int id)
         {
             var model = new ObservationFilterViewModel();
@@ -448,6 +498,7 @@ namespace Klimatkollen.Data
             model.Observation = newObservation;
             model.Measurements = measurementsList;
             model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+            model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
 
             if (model.Measurements[0].ThirdCategory == null)
             {
@@ -467,5 +518,16 @@ namespace Klimatkollen.Data
                    .Select(g => g.Key).ToList();
             return test;
         }
+        //public List<News> SortNewsByDate()
+        //{
+        //    List<News> sortNewsByDate = new List<News>();
+        //    foreach (var item in dbContext.News)
+        //    {
+        //        sortNewsByDate.Add(item);
+        //    }
+        //    sortNewsByDate.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+        //    return sortNewsByDate;
+        //}
     }
 }

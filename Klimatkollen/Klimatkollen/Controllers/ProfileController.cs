@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Klimatkollen.Controllers
 {
@@ -17,12 +20,14 @@ namespace Klimatkollen.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserRepository db;
         private readonly IRepository observationdb;
+        private readonly IHostingEnvironment hostingenv;
 
-        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository)
+        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository, IHostingEnvironment hostingenv)
         {
             this.userManager = userManager;
             this.db = db;
             observationdb = repository;
+            this.hostingenv = hostingenv;
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
@@ -99,7 +104,18 @@ namespace Klimatkollen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult PostEditUserObservation(ObservationFilterViewModel model, int measurmentValue, int measurmentId) //Measurement model
         {
+            string fileName = null;
+            if (model.CreateMeasurementViewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+                fileName = Guid.NewGuid().ToString() + "_" + model.CreateMeasurementViewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                model.CreateMeasurementViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                observationdb.UpdateMeasurementPhoto(measurmentId, fileName);
+            }
+
             observationdb.UpdateObservation(model.Observation);
+
             if (!measurmentValue.Equals(0) && !measurmentId.Equals(0))
             {
                 observationdb.UpdateMeasurmentValue(measurmentId, measurmentValue.ToString());
@@ -108,6 +124,26 @@ namespace Klimatkollen.Controllers
             //var model = observationdb.GetObservationWithMeasurement(id);
             //observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
+        }
+
+        public IActionResult DeletePhoto(int measurementid, int observationid, string photoname)
+        {
+            string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+            string filePath = Path.Combine(uploadsFolder, photoname);
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch(Exception e)
+                {
+                    
+                }
+
+            }
+            observationdb.DeleteMeasurementPhoto(measurementid);
+            return RedirectToAction("EditUserObservation", new { id = observationid });
         }
 
         public IActionResult DeleteUserMeasurement(int id)

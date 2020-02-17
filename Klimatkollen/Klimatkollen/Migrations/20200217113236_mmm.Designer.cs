@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Klimatkollen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200212175531_refreshDb1")]
-    partial class refreshDb1
+    [Migration("20200217113236_mmm")]
+    partial class mmm
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -137,6 +137,8 @@ namespace Klimatkollen.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("PhotoPath");
+
                     b.Property<string>("Value");
 
                     b.Property<int>("categoryId");
@@ -154,6 +156,23 @@ namespace Klimatkollen.Migrations
                     b.HasIndex("thirdCategoryId");
 
                     b.ToTable("Measurements");
+                });
+
+            modelBuilder.Entity("Klimatkollen.Models.News", b =>
+                {
+                    b.Property<int>("NewsID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("NewsID");
+
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("Klimatkollen.Models.Observation", b =>
