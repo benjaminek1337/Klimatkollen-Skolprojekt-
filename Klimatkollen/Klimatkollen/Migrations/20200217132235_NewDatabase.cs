@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Klimatkollen.Migrations
 {
-    public partial class AddNewsToDb1 : Migration
+    public partial class NewDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -331,7 +331,8 @@ namespace Klimatkollen.Migrations
                     Value = table.Column<string>(nullable: true),
                     observationId = table.Column<int>(nullable: false),
                     thirdCategoryId = table.Column<int>(nullable: true),
-                    categoryId = table.Column<int>(nullable: false)
+                    categoryId = table.Column<int>(nullable: false),
+                    PhotoPath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
