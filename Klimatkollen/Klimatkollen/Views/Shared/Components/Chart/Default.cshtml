@@ -3,7 +3,29 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
 <script type="text/javascript">
+
+</script>
+
+
+
+<div class="col-md-8">
+    <h5>Välj plats:</h5>
+    <div id="map" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+    <div id="lat"></div>
+    <div id="long"></div>
+
+    <br />
+</div>
+
+<div id="line_top_x"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
+
+<script>
+    var temperatures = []
+
     google.charts.load('current', { 'packages': ['line'] });
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -40,7 +62,8 @@
             chart: {
                 title: 'Senaste temperaturen'
             },
-
+            width: 900,
+            height: 500,
             axes: {
                 x: {
                         0: { side: 'top' }
@@ -50,10 +73,108 @@
 
             var chart = new google.charts.Line(document.getElementById('line_top_x'));
 
-        chart.draw(data, google.charts.Line.convertOptions(options));
-        }
-</script>
+            chart.draw(data, google.charts.Line.convertOptions(options));
 
+  
+
+
+
+
+        function findTemperaturesFromLocation(lon, lat) {
+
+
+           temperatures = []
+            var url = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + lon.toFixed(2) + "/lat/" + lat.toFixed(2) + "/data.json"
+
+            fetch(url)
+                    .then(response => response.json())
+                .then(data => {
+                    var data1 = data
+
+                    for (var i = 0; i < data1.timeSeries[0].parameters.length; i++) {
+                        if (data1.timeSeries[0].parameters[i].unit[0] == "c") {
+                            temperatures[i] = data1.timeSeries[0].parameters[i].values[0]
+                        }
+                    }
+            drawChart()
+                })
+        }
+
+    var map, marker;
+    $(document).ready(function () {
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+            var latInput, longInput;
+            var mapOptions = {
+                center: myCenter,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel: true
+            };
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latInput = document.getElementById("lat").value = position.coords.latitude;
+                    longInput = document.getElementById("long").value = position.coords.longitude;
+                    marker = new google.maps.Marker({
+                        position: { lat: latInput, lng: longInput },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+                    map.setCenter(marker.getPosition());
+                    GetAreasJson(latInput, longInput)
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+            marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            }
+            );
+            marker.setMap(map);
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            var latInput = document.getElementById("lat").value = marker.getPosition().lat();
+            var longInput = document.getElementById("long").value = marker.getPosition().lng();
+            findTemperaturesFromLocation(latInput, longInput)
+        });
+    });
+
+
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
+        async defer></script>
+
+
+
+
+
+
+    
 
 <div class="row">
     <div id="line_top_x" class="chart"> </div>

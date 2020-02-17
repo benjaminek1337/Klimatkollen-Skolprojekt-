@@ -13,12 +13,6 @@ namespace Klimatkollen.Data
 
         void AddObservation();
 
-        List<float> GenerateRandomFloats(int amountToGenerate);
-
-        String SerializeJsonFromFloats(List<float> floats);
-
-        void WriteJsonToFile(String jsonString, String filePath);
-
         void AddObjectToDb(object objectToAdd);
         void RemoveObjectFromDb(object objectToRemove);
 
@@ -43,9 +37,6 @@ namespace Klimatkollen.Data
         void PostEditedMeasurement(Measurement measurement);
         void UpdateObservation(Observation observation);
         void UpdateMeasurmentValue(int id, string value);
-
-        //void GetMainCategoriesFromDb(object objectToAdd);
-        Task<IEnumerable<float>> ChartAsync();//TEST Chart
 
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);

@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Klimatkollen.ViewModels;
+using Klimatkollen.Operations;
 
 namespace Klimatkollen.Data
 {
@@ -32,46 +33,7 @@ namespace Klimatkollen.Data
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person };
         }
 
-        public List<float> GenerateRandomFloats(int amountToGenerate)
-        {
-            var floats = new List<float>();
-            Random random = new Random();
-
-            for (int i = 0; i < amountToGenerate; i++)
-            {
-                floats.Add((float)random.NextDouble() * (25 - -20) - 20);
-            }
-
-            return floats;
-        }
-
-
-        public String SerializeJsonFromFloats(List<float> floats)
-        {
-            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<float>));
-            string json;
-            using (MemoryStream msObj = new MemoryStream())
-            {
-                js.WriteObject(msObj, floats);
-                msObj.Position = 0;
-                using (StreamReader sr = new StreamReader(msObj))
-                {
-                    json = sr.ReadToEnd();
-                }
-            }
-
-            return json;
-        }
-
-        public void WriteJsonToFile(String jsonString, String filePath)
-        {
-            IFormatter formatter = new BinaryFormatter();
-
-            using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                formatter.Serialize(stream, jsonString);
-            }
-        }
+     
 
         public void AddObjectToDb(object objectToAdd)
         {
@@ -357,17 +319,7 @@ namespace Klimatkollen.Data
         {
             return dbContext.ThirdCategories.Where(x => x.Category.Id.Equals(cat.Id)).ToList();
         }
-        public async Task<IEnumerable<float>> ChartAsync() //TEST CHART
-        {
-            List<float> testjson = new List<float>();
-            foreach (var i in GenerateRandomFloats(50))
-            {
-                testjson.Add(i);
-            };
-
-            return await Task.FromResult(testjson.ToList());
-
-        }
+      
         public List<Observation> ShowObservationsTest()//Test Table OBSERVATION
         {
             List<Observation> AllObservations = new List<Observation>();
@@ -451,6 +403,14 @@ namespace Klimatkollen.Data
             var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
             return observation.Id;
         }
+
+        //public int SelectObservationsByInterest(Person p)
+        //{
+        //    //var observation = dbContext.Persons.Where(x => x.)
+                
+        //    //    Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+        //    //return observation.Id;
+        //}
         /// <summary>
         /// Gets a list of filters for a user
         /// </summary>
