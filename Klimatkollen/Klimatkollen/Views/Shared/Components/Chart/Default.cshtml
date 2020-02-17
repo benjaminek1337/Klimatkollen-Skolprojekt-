@@ -1,6 +1,7 @@
-﻿@model IEnumerable<float> 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+﻿@model IEnumerable<float>
+<link rel="stylesheet" href="~/css/site.css" />
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['line'] });
@@ -13,7 +14,7 @@
         data.addColumn('number', 'Medeltemperatur 2020');
         data.addColumn('number', 'Medeltemperatur 2019');
 
-  
+
     var temperatures = [];
 
     @foreach (var m in Model)
@@ -39,8 +40,7 @@
             chart: {
                 title: 'Senaste temperaturen'
             },
-            width: 900,
-            height: 500,
+
             axes: {
                 x: {
                         0: { side: 'top' }
@@ -50,11 +50,12 @@
 
             var chart = new google.charts.Line(document.getElementById('line_top_x'));
 
-            chart.draw(data, google.charts.Line.convertOptions(options));
+        chart.draw(data, google.charts.Line.convertOptions(options));
         }
 </script>
 
 
-
-<div id="line_top_x"></div>
+<div class="row">
+    <div id="line_top_x" class="chart"> </div>
+</div>
 @*//Div för diagrammet*@
