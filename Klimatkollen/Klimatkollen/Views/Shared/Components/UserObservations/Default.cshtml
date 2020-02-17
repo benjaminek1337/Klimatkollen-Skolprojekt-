@@ -12,12 +12,10 @@
         @foreach (var item in Model)
         {
             
-                
-            
-
+               
 
             <li>
-                <div class="card">
+                <div class="card" style="box-shadow: 3px 7px 5px #888888">
                     <div class="card-header">
                         <h5>Observation av @item.Observation.MainCategory.CategoryName</h5>
                     </div>
@@ -32,7 +30,8 @@
                                 <br />
                                 if (x.ThirdCategory.Unit == "Päls")
                                 {
-                                    <h6 style="display:inline-block;">Päls:</h6>
+                                    <h6 style="        display: inline-block;
+">Päls:</h6>
                                     <span>@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
                                 }
                                 @if (x.ThirdCategory.Unit == "Miljö")
@@ -77,7 +76,7 @@
                         @if (item.Measurement.PhotoPath != null)
                         {
                             var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
-                            <img class="card-img-top" style="height:250px; width:auto;" src="@photoPath" asp-append-version="true" />
+                            <img class="card-img-top" style="height:auto; width:100%;" src="@photoPath" asp-append-version="true" />
                         }
 
 
@@ -91,6 +90,7 @@
                             <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
                         </div>
                     </div>
+                <br />
                 </li>
             }
     </ul>

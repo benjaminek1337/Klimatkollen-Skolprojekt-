@@ -277,16 +277,32 @@ namespace Klimatkollen.Data
 
         public void UpdateMeasurementPhoto(int id, string filePath)
         {
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+               .Include(o => o.Observation)
+               .Include(t => t.ThirdCategory)
+               .Include(c => c.Category)
+               .FirstOrDefault();
+
+                measurement.PhotoPath = filePath;
+
+                dbContext.Update(measurement);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteMeasurementPhoto(int id)
+        {
             var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
-                .Include(o => o.Observation)
-                .Include(t => t.ThirdCategory)
-                .Include(c => c.Category)
-                .FirstOrDefault();
-
-            measurement.PhotoPath = filePath;
-
+            .Include(o => o.Observation)
+            .Include(t => t.ThirdCategory)
+            .Include(c => c.Category)
+            .FirstOrDefault();
+            measurement.PhotoPath = null;
             dbContext.Update(measurement);
             dbContext.SaveChanges();
+
         }
 
         public void DeleteMeasurement(int id)

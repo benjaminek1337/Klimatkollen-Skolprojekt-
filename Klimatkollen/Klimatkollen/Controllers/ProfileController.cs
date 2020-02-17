@@ -113,6 +113,7 @@ namespace Klimatkollen.Controllers
                 model.CreateMeasurementViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                 observationdb.UpdateMeasurementPhoto(measurmentId, fileName);
             }
+
             observationdb.UpdateObservation(model.Observation);
 
             if (!measurmentValue.Equals(0) && !measurmentId.Equals(0))
@@ -123,6 +124,26 @@ namespace Klimatkollen.Controllers
             //var model = observationdb.GetObservationWithMeasurement(id);
             //observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
+        }
+
+        public IActionResult DeletePhoto(int measurementid, int observationid, string photoname)
+        {
+            string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+            string filePath = Path.Combine(uploadsFolder, photoname);
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch(Exception e)
+                {
+                    
+                }
+
+            }
+            observationdb.DeleteMeasurementPhoto(measurementid);
+            return RedirectToAction("EditUserObservation", new { id = observationid });
         }
 
         public IActionResult DeleteUserMeasurement(int id)
