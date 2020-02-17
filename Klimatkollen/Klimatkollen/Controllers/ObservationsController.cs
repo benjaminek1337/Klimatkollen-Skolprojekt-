@@ -22,7 +22,7 @@ namespace Klimatkollen.Controllers
 
             //Hämtar vanligaste områden
             ViewBag.Areas = observationDB.GetTopAreas(5);
-
+            ViewBag.Date = DateTime.Today;
             var list = observationDB.GetAllMeasurements();
             return View(list);
         }

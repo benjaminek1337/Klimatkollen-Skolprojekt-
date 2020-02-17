@@ -82,10 +82,10 @@ body {
     width: 120px;
     height: 90px;
 }
-    .active, .activeTwo, .activeThree, .buttonTemp:hover {
-        background-color: #4CAF50;
-        color: white;
-    }
+.active, .activeTwo, .activeThree, .activeFour, .buttonTemp:hover {
+    background-color: #4CAF50;
+    color: white;
+}
 .activeBtnTwo {
     background-color: #4CAF50;
     color: white;
@@ -421,14 +421,26 @@ body {
 #NewsSiteHeader, #NewsSiteFooter{
     background-color: #cadbce;
 }
-
+.observationCard {
+    width: 50%;
+}
 #NewsSiteBody {
     background-color: #e9f7ec;
 }
 @media only screen and (max-width: 990px) {
-    .card {
+    .card{
         margin: auto;
         width: 250px;
+    }
+    .observationCard {
+        margin: auto;
+        width: 450px;
+    }
+}
+@media only screen and (max-width: 525px) {
+    .observationCard {
+        margin: auto;
+        width: 100%;
     }
 }
 @media only screen and (max-width: 450px) {
@@ -436,9 +448,13 @@ body {
         margin: auto;
         width: 80%;
     }
+    .observationCard {
+        margin: auto;
+        width: 100%;
+    }
 }
-/*SEE OBSERVATIONS*/
 
+/*SEE OBSERVATIONS*/
 .box1 {
     background-color: #cadbce;
 }

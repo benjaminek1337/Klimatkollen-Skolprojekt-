@@ -1,7 +1,7 @@
 ﻿@*@model IEnumerable<Klimatkollen.Models.Measurement>*@
 @model List<Klimatkollen.ViewModels.ObservationFilterViewModel>
 <div id="header" style="text-align:center">
-    <h3>Mina observationer</h3>
+    
 </div>
 
 
@@ -10,7 +10,7 @@
         @foreach (var item in Model)
         {
             <li>
-                <div class="card">
+                <div class="card observationCard">
                     <div class="card-header">
                         <h5>Observation av @item.Observation.MainCategory.CategoryName</h5>
                     </div>
@@ -72,14 +72,16 @@
 
 
                         @*Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
-        Kommentar: @measurement.Observation.Comment <br />
-        Observation gjord den @measurement.Observation.Date*@
+                        Kommentar: @measurement.Observation.Comment <br />
+                        Observation gjord den @measurement.Observation.Date*@
                     </div>
                     <div class="card-footer">
                         <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
                     </div>
                 </div>
+
             </li>
         }
+
     </ul>
 </div>
