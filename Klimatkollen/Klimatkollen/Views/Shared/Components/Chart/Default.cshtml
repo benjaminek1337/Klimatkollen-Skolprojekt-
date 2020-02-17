@@ -454,6 +454,117 @@
         });
     });
 
+
+    }
+
+
+
+
+
+    function removeOptions(selectbox) {
+        var i;
+        for (i = selectbox.options.length - 1; i >= 0; i--) {
+            selectbox.remove(i);
+        }
+    }
+    function GetAreasJson(_lat, _lng) {
+        var select = document.getElementById("areas");
+        removeOptions(select);
+        var lat = _lat;
+        var lng = _lng;
+        var key = "AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU"
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key="
+            + key;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let parts = data.results[0].address_components;
+                parts.forEach(part => {
+                    if (part.types.includes("administrative_area_level_1")
+                        || part.types.includes("administrative_area_level_2")
+                        || part.types.includes("locality")
+                        || part.types.includes("postal_town")
+                        || part.types.includes("sublocality")
+                        || part.types.includes("sublocality_level_1")
+                        || part.types.includes("sublocality_level_2")
+                        || part.types.includes("political")
+                    ) {
+                        var option = document.createElement("option");
+                        option.setAttribute("id", "option");
+                        option.text = part.long_name;
+                        select.add(option);
+                    }
+                });
+            })
+            .catch(error => console.warn(error.message));
+    }
+
+
+    <script>
+    var map, marker;
+    $(document).ready(function () {
+        function myMap(lat, long) {
+            var myCenter = new google.maps.LatLng(lat, long);
+            var mapCanvas = document.getElementById("map");
+            var latInput, longInput;
+            var mapOptions = {
+                center: myCenter,
+                zoom: 12,
+                streetViewControl: false,
+                mapTypeControl: true,
+                zoomControl: false,
+                scrollwheel: true
+            };
+            map = new google.maps.Map(mapCanvas, mapOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latInput = document.getElementById("lat").value = position.coords.latitude;
+                    longInput = document.getElementById("long").value = position.coords.longitude;
+                    marker = new google.maps.Marker({
+                        position: { lat: latInput, lng: longInput },
+                        map: map,
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        map.setCenter(marker.getPosition());
+                    });
+                    marker.addListener('dragend', function () {
+                        document.getElementById("lat").value = marker.getPosition().lat();
+                        document.getElementById("long").value = marker.getPosition().lng();
+                    });
+                    map.setCenter(marker.getPosition());
+                    GetAreasJson(latInput, longInput)
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+            marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            }
+            );
+            marker.setMap(map);
+        }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+        google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
+        map.addListener('click', function (event) {
+            marker.setPosition(event.latLng);
+            var latInput = document.getElementById("lat").value = marker.getPosition().lat();
+            var longInput = document.getElementById("long").value = marker.getPosition().lng();
+            GetAreasJson(latInput, longInput)
+        });
+    });
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
         async defer></script>
