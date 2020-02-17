@@ -20,14 +20,6 @@
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
     </div>
 
-
-
-
-
-
-
-
-
 <div id="filters" style="display:inline-block; display:none">
     
     <div id="filterbuttons">
@@ -110,8 +102,7 @@
                                             {
 
                                                 <h6 style="display:inline-block;">Päls:</h6>
-                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                                
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>                                             
                                             }
                                         }
 
@@ -127,8 +118,8 @@
                                             {
                                                 <br />
                                                 <h6 style="display:inline-block;">Värde: </h6>
-                                                <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
                                                 <span>@Html.DisplayFor(modelItem => x.Value)</span>
+                                                <span style="display:inline-block;">@x.ThirdCategory.Unit</span>
                                             }
                                             <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
                                         }
@@ -138,15 +129,12 @@
 
                                     @if (item.Observation.maincategoryId == 2)
                                     {
-
                                         @foreach (var x in item.Measurements)
                                         {
-
                                             @if (x.ThirdCategory.Unit == "Miljö")
                                             {
                                                 <h6 style="display:inline-block;">Miljö:</h6>
                                                 <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-
                                             }
 
                                         }
@@ -155,13 +143,17 @@
 
 
                                     <h6 style="display:inline-block;">Datum:</h6>
-                                    <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
-                                    <span class="filterItem" data="@item.Observation.Date.Year"> @item.Observation.Date.Year</span>
-                                    <span class="filterItem" data="@item.Observation.Date.Month"> @item.Observation.Date.Month</span>
+                                    <span> @item.Observation.Date.ToShortDateString()</span>
+                                    @*<span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>*@
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Year"> @item.Observation.Date.Year</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Month"> @item.Observation.Date.Month</span>
                                     <br />
-                                    <h6 style="display:inline-block;">Kommentar:</h6>
-                                    <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                                    <br />
+                                    @if (item.Observation.Comment != null && item.Observation.Comment != "")
+                                    {
+                                        <h6 style="display:inline-block;">Kommentar:</h6>
+                                        <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                                        <br />
+                                    }
                                     <h6 style="display:inline-block;">Utförd av:</h6>
                                     <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
