@@ -31,9 +31,9 @@
      google.charts.load('current', { 'packages': ['line'] });
 
 
-    //google.charts.load('current', { 'packages': ['line'] });
-    //google.charts.setOnLoadCallback(drawChart);
-    //@foreach (var m in Model)
+    google.charts.load('current', { 'packages': ['line'] });
+    google.charts.setOnLoadCallback(drawChart);
+    @foreach (var m in Model)
     {
         @:temperatures.push("@m");
 
