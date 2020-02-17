@@ -263,10 +263,16 @@ body {
 
 @media only screen and (max-width: 400px) {
     #slideOne, #slideTwo {
-        width:100%;
-        height:auto;
+        width: 100%;
+        height: auto;
         /*display: none;*/
-        
+    }
+}
+@media only screen and (max-width: 700px) {
+    #slideOne, #slideTwo {
+        width: 100%;
+        height: auto;
+        /*display: none;*/
     }
 }
     .slidershow {
