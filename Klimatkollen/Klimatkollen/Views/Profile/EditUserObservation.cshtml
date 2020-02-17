@@ -7,6 +7,8 @@
 <h1>Ändra observation</h1>
 <hr />
 
+@*://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/12.158/lat/57.5812/data.json*@
+
 <div id="editForm">
     <form method="post">
         @Html.AntiForgeryToken()
@@ -36,7 +38,7 @@
 
         <div class="form-group row">
             <label class="col-form-label col-sm-2">Datum:</label>
-            
+
             <div class="col-sm-10">
                 @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
                 @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
@@ -53,14 +55,14 @@
         <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
         <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
-        
-        <button type="button" class="btn btn-danger" ><a  style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
+
+        <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
     </form>
 </div>
 
 <script>
-    $(document).ready( function() {
-        $( "#datepicker" ).datepicker();
+    $(document).ready(function () {
+        $("#datepicker").datepicker();
     });
 </script>
 

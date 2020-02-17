@@ -7,5 +7,9 @@ namespace Klimatkollen.Operations
 {
     public class ObservationOperations
     {
+        public bool CanEditRoles(String Admin)
+        {
+            return Admin == "Admin";
+        }
     }
 }
