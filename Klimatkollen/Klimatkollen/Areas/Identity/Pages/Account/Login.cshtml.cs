@@ -99,7 +99,9 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                     Person person = new Person
                     {
                         IdentityId = superadmin.Id,
-                        Email = superadmin.Email
+                        Email = superadmin.Email,
+                        FirstName = "Super",
+                        Lastname = "Admin"
                     }; userDb.AddPerson(person);
                 }
             }
