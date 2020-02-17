@@ -1,0 +1,14 @@
+﻿@model Klimatkollen.Models.News
+@{
+    ViewData["Title"] = "AddNews";
+}
+
+<h1>AddNews</h1>
+
+<form>
+    <input asp-for="Title" />
+    <input type="date" asp-for="Date" />
+    <input asp-for="Content" />
+    <input type="submit" asp-action="AddNews" asp-controller="NewsController" formmethod="post"/>
+</form>
+

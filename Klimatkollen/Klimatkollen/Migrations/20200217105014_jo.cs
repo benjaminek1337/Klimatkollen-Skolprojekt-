@@ -2,7 +2,7 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class NotAnotherTeenMigration : Migration
+    public partial class jo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

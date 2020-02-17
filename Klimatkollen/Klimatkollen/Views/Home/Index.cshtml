@@ -15,9 +15,9 @@
         @await  Component.InvokeAsync("ObservationViewComponent")
     </div>*@
     <a class="btn btn-group" style="margin-top:1px" asp-action="Index" asp-controller="Observations" title="Se alla observationer">Alla observationer</a>
-    <div>
+    @*<div>
         @await Component.InvokeAsync("ObservationsOnMap")
-    </div>
+    </div>*@
 
 <div>
     @await Component.InvokeAsync("SliderOne")
