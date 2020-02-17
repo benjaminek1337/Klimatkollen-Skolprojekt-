@@ -6,18 +6,21 @@
 <br />
 <h1 style="text-align: center;">Nyheter från Klimatkollen</h1>
 <br />
+@if (User.IsInRole("Admin") || User.IsInRole("grupp1superadmin"))
+{
 
     <div>
         <a class="btn btn-sec" href="/News/AddNews"> Lägg till nyhet</a>
     </div>
+}
 
 
 
 
-@*@Html.ActionLink("Visa mer", "AddNews", "News")*@
+    @*@Html.ActionLink("Visa mer", "AddNews", "News")*@
 
 <div class="col-sm-7">
-    
+
     <ul style="list-style-type:none; padding: 0;">
         @foreach (var News in Model)
         {
