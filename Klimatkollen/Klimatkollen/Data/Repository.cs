@@ -222,5 +222,10 @@ namespace Klimatkollen.Data
         {
             throw new NotImplementedException();
         }
+
+        public List<News> GetNews()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

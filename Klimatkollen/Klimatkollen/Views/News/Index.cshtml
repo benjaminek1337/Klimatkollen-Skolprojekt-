@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Klimatkollen.Models.News>
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="~/css/site.css" />
+<br />
+<h1 style="text-align: center;">Nyheter från Klimatkollen</h1>
+<br />
+<div  class="col-sm-7">
+    <ul style="list-style-type:none; padding: 0;">
+        @foreach (var News in Model)
+        {
+            <li>
+                <div id="NewsSiteCard" class="cardSite">
+                    <div id="NewsSiteHeader" class="card-header">
+                        @News.Title
+                    </div>
+                    <div id="NewsSiteBody" class="card-body">
+                        @News.Content
+                        <br />
+                        
+                    </div>
+                    <div id="NewsSiteFooter" class="card-footer">
+                        Publicerades: @News.Date.ToShortDateString()
+                        @*<a class="btn btn-outline-primary" asp-route-id="@News.NewsID" asp-action="EditNews" asp-controller="News">Ändra nyhet</a>*@
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
