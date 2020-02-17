@@ -12,13 +12,10 @@ namespace Klimatkollen.UnitTests1
         [TestMethod]
         public void GetObservationCategories_GetCategories_ReturnsThreeObservationCategories()
         {
-            // Arrange
             var repository = new Repository(new ApplicationDbContext(null));
 
-            // Act
             var result = repository.GetObservationCategories();
 
-            // Assert
             Assert.AreEqual(new List<String>() { "Animal", "Environment", "Other" }, result);
         }
     }

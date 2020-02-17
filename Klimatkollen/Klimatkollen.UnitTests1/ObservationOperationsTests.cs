@@ -12,14 +12,31 @@ namespace Klimatkollen.UnitTests1
         [TestMethod]
         public void CanEditObservations_AdminCanEditObservations_ReturnsTrue()
         {
-            // Arrange
             var observationOperations = new ObservationOperations();
 
-            // Act
             var result = observationOperations.CanEditRoles("Admin");
 
-            // Assert
             Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void CanEditObservations_UserCanEditObservations_ReturnsTrue()
+        {
+            var observationOperations = new ObservationOperations();
+
+            var result = observationOperations.CanEditRoles("User");
+
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void CanEditObservations_VisitorCannotEditObservations_ReturnsFalse()
+        {
+            var observationOperations = new ObservationOperations();
+
+            var result = observationOperations.CanEditRoles("Visitor");
+
+            Assert.AreEqual(false, result);
         }
     }
 }
