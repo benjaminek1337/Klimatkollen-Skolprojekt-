@@ -20,14 +20,6 @@
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
     </div>
 
-
-
-
-
-
-
-
-
 <div id="filters" style="display:inline-block; display:none">
     
     <div id="filterbuttons">
@@ -55,6 +47,12 @@
                 }
             }
         </div>
+        <div id="dateDiv">
+            <h4>Tidpunkter</h4>
+            <p class="filters dateBtn" id="@ViewBag.LastYear">Förra året</p>
+            <p class="filters dateBtn" id="@ViewBag.Date.Year">I år</p>
+            <p class="filters dateBtn" id="@ViewBag.Date.Month">Den här månaden</p>
+        </div>
     </div>
 </div>
 
@@ -75,11 +73,8 @@
             {
                 <tr>
                     <td>
-                        
-                        <div>
-                            @*<div class="card-header">
-            <h6 style="display:inline-block;" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
-        </div>*@            <div class="card">
+                         <div>
+                              <div class="card observationCard">
                                 <div class="card-header">
                                     <h6 style="display:inline-block;" data="@item.Observation.MainCategory.CategoryName" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
                                 </div>
@@ -107,8 +102,7 @@
                                             {
 
                                                 <h6 style="display:inline-block;">Päls:</h6>
-                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-                                                
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>                                             
                                             }
                                         }
 
@@ -124,8 +118,8 @@
                                             {
                                                 <br />
                                                 <h6 style="display:inline-block;">Värde: </h6>
-                                                <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
                                                 <span>@Html.DisplayFor(modelItem => x.Value)</span>
+                                                <span style="display:inline-block;">@x.ThirdCategory.Unit</span>
                                             }
                                             <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
                                         }
@@ -135,15 +129,12 @@
 
                                     @if (item.Observation.maincategoryId == 2)
                                     {
-
                                         @foreach (var x in item.Measurements)
                                         {
-
                                             @if (x.ThirdCategory.Unit == "Miljö")
                                             {
                                                 <h6 style="display:inline-block;">Miljö:</h6>
                                                 <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
-
                                             }
 
                                         }
@@ -152,11 +143,17 @@
 
 
                                     <h6 style="display:inline-block;">Datum:</h6>
-                                    <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
+                                    <span> @item.Observation.Date.ToShortDateString()</span>
+                                    @*<span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>*@
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Year"> @item.Observation.Date.Year</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Month"> @item.Observation.Date.Month</span>
                                     <br />
-                                    <h6 style="display:inline-block;">Kommentar:</h6>
-                                    <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                                    <br />
+                                    @if (item.Observation.Comment != null && item.Observation.Comment != "")
+                                    {
+                                        <h6 style="display:inline-block;">Kommentar:</h6>
+                                        <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                                        <br />
+                                    }
                                     <h6 style="display:inline-block;">Utförd av:</h6>
                                     <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
@@ -178,11 +175,7 @@
                             <div class="card-footer">
                                 <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
                             </div>
-                            </div>
-
-
-                            
-                            
+                            </div>                                                   
                         </div>
                         
                     </td>
@@ -246,8 +239,7 @@
     //Källa: https://caveofcode.com/2016/02/jquery-tutorial-how-to-filter-data-using-multiple-parameters/
        //Fritextsök
        $('#SearchString').keyup(filter);
-
-       
+      
        //När man klickar på en knapp som har klassen filter
        $('.filters').click(function () {
             filter();
@@ -259,6 +251,7 @@
         resetAreaFilters();
         resetMainCatFilters();
         resetCatFilters();
+        resetdateFilters();
     };
 
     function resetAreaFilters() {
@@ -277,6 +270,12 @@
         var current = document.getElementsByClassName("activeThree");
                 if (current.length > 0) {
                 current[0].className = current[0].className.replace(" activeThree", "");
+                }
+    };
+    function resetdateFilters() {
+        var current = document.getElementsByClassName("activeFour");
+                if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeFour", "");
                 }
     };
 
@@ -304,7 +303,9 @@
                         var activeOne = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
                         var activeTwo = $('#filterbuttons .filters.activeTwo'); //Sparar alla filterknappar som har klassen active
                         var activeThree = $('#filterbuttons .filters.activeThree'); //Sparar alla filterknappar som har klassen active
+                        var activeFour = $('#filterbuttons .filters.activeFour'); //Sparar alla filterknappar som har klassen active
 
+                        //Loopar igenom varje kategori
                         for (var i = 0; i < activeOne.length; i++) {
                             var item = $(selector).find('[data="' + activeOne[i].id + '"]'); //(if item.name == filterbutton.name)
 
@@ -326,6 +327,13 @@
                                 tester = false;
                             }
                         }
+                        for (var i = 0; i < activeFour.length; i++) {
+                            var item = $(selector).find('[data="' + activeFour[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
 
                         return tester;
     };
@@ -333,6 +341,7 @@
   </script>
 
 <script>
+    //Togglar active på knapparna inom samma kategori
     var header = document.getElementById("areaDiv");
     var btns = header.getElementsByClassName("areaBtn");
     for (var i = 0; i < btns.length; i++) {
@@ -366,6 +375,18 @@
                 current[0].className = current[0].className.replace(" activeThree", "");
             }
             this.className += " activeThree";
+        });
+    };
+
+    var header = document.getElementById("dateDiv");
+    var test = header.getElementsByClassName("dateBtn");
+    for (var i = 0; i < test.length; i++) {
+        test[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeFour");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeFour", "");
+            }
+            this.className += " activeFour";
         });
     };
 </script>

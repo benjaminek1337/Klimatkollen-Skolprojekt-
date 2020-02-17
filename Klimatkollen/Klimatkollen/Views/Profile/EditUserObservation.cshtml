@@ -12,7 +12,7 @@
     <form method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
-        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName@*, @Model.ThirdCategory.Type*@ </h3>
+        <h3>Observation av @Model.Observation.MainCategory.CategoryName</h3>
         <br />
         @if (@Model.Observation.maincategoryId == 2)
         {
@@ -47,7 +47,7 @@
                     @*<label class="col-form-label col-sm-2">Värde: (@item.ThirdCategory.Unit)</label>*@
                     <h6 style="display:inline-block;">Värde:</h6><span> (@item.ThirdCategory.Unit)</span>
                     <div class="col-sm-4">
-                        <input asp-for="@item.Value" class="form-control" type="number" value="@item.Value" name="measurmentValue" id="measurmentValue" />
+                        <input asp-for="@item.Value" class="form-control" type="text" value="@item.Value" name="measurmentValue" id="measurmentValue" />
                         <input asp-for="@item.Id" class="form-control" type="hidden" value="@item.Id" name="measurmentId" id="measurmentId" />
 
                     </div>
@@ -75,7 +75,7 @@
 
         <h6>Datum:</h6>
         <div class="col-sm-4">
-            @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
         </div>
         <br />
         <h6>Bild:</h6>

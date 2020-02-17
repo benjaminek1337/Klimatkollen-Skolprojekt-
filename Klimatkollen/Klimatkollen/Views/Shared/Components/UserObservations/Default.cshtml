@@ -3,7 +3,7 @@
 
 
 <div id="header" style="text-align:center">
-    <h3>Mina observationer</h3>
+    
 </div>
 
 
@@ -15,7 +15,7 @@
                
 
             <li>
-                <div class="card" style="box-shadow: 3px 7px 5px #888888">
+                <div class="card observationCard">
                     <div class="card-header">
                         <h5>Observation av @item.Observation.MainCategory.CategoryName</h5>
                     </div>
@@ -64,7 +64,7 @@
                         <span> @item.Observation.Place, @item.Observation.AdministrativeArea</span>
                         <br />
                         <h6 style="display:inline-block;">Datum:</h6>
-                        <span> @item.Observation.Date</span>
+                        <span> @item.Observation.Date.ToShortDateString()</span>
                         <br />
                         @if (item.Observation.Comment != "" && item.Observation.Comment != null)
                         {

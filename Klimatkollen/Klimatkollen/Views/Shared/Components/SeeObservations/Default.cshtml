@@ -2,9 +2,9 @@
 <link rel="stylesheet" href="~/css/site.css" />
 
 <div class="soHead">
-    <h1>Senaste nyheterna</h1>
+    <h1>Senaste nyheterna från Klimatkollen</h1>
 
-    @Html.ActionLink("Visa mer", "Index", "News")
+    @Html.ActionLink("Visa fler nyheter", "Index", "News")
 </div>
  <br />
 @foreach (var News in Model)
@@ -15,20 +15,19 @@
             @News.Title
         </div>
         <div id="NewsBody" class="card-body">
-            @if (News.Content.Length <= 32)
+            @if (News.Content.Length <= 120)
             {
-            <p>@News.Content</p>
+                <p>@News.Content</p>
             }
-            @if (News.Content.Length > 32)
+            @if (News.Content.Length > 120)
             {
-            <p>@News.Content.Remove(32)...</p>
+                <span>@News.Content.Remove(120)... <a asp-action="Index" asp-controller="News" title="Se alla observationer">&nbsp; Läs vidare</a></span>               
             }
         </div>
         <div id="NewsFooter" class="card-footer">
             Publicerades: @News.Date.ToShortDateString()
         </div>
     </div>
-
 }
 
     @*<div class="box">
@@ -49,9 +48,3 @@
         </div>
     </div>*@
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
