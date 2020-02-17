@@ -13,6 +13,8 @@ namespace Klimatkollen.Models
         public int Id { get; set; }
         [Required]
         public Person Person { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
         public String Longitude { get; set; }
         public String Latitude { get; set; }

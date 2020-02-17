@@ -466,6 +466,18 @@ namespace Klimatkollen.Data
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
 
+        public List<News> GetNews()
+        {
+            List<News> allNews = new List<News>();
+            foreach (var item in dbContext.News)
+            {
+                allNews.Add(item);
+            }
+
+            allNews.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+
+            return allNews;
+        }
         public ObservationFilterViewModel GetObservationWithMeasurement(int id)
         {
             var model = new ObservationFilterViewModel();
@@ -501,5 +513,16 @@ namespace Klimatkollen.Data
                    .Select(g => g.Key).ToList();
             return test;
         }
+        //public List<News> SortNewsByDate()
+        //{
+        //    List<News> sortNewsByDate = new List<News>();
+        //    foreach (var item in dbContext.News)
+        //    {
+        //        sortNewsByDate.Add(item);
+        //    }
+        //    sortNewsByDate.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+        //    return sortNewsByDate;
+        //}
     }
 }

@@ -86,7 +86,7 @@ namespace Klimatkollen.Controllers
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
 
-            model.measurement.categoryId = model.category.Id;
+            model.measurement.categoryId = model.category.Id; 
 
             return View(model);
         }
@@ -101,6 +101,10 @@ namespace Klimatkollen.Controllers
             string userId = user?.Id;
             var person = userDb.GetPerson(userId);
 
+            if (model.observation.Date.Year == 1)
+            {
+                model.observation.Date = DateTime.Today;
+            }
             //Sätter värden
             model.observation.Person = person;
             model.measurement.Observation = model.observation;
