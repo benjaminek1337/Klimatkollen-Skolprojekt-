@@ -24,7 +24,6 @@ namespace Klimatkollen.Data
         public DbSet<UsersTrackedLocations> UserTrackedLocations { get; set; }
         public DbSet<News> News { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
