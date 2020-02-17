@@ -2,9 +2,9 @@
 <link rel="stylesheet" href="~/css/site.css" />
 
 <div class="soHead">
-    <h1>Senaste nyheterna</h1>
+    <h1>Senaste nyheterna från Klimatkollen</h1>
 
-    @Html.ActionLink("Visa mer", "Index", "News")
+    @Html.ActionLink("Visa fler nyheter", "Index", "News")
 </div>
  <br />
 @foreach (var News in Model)
@@ -17,11 +17,11 @@
         <div id="NewsBody" class="card-body">
             @if (News.Content.Length <= 32)
             {
-            <p>@News.Content</p>
+                <p>@News.Content</p>
             }
             @if (News.Content.Length > 32)
             {
-            <p>@News.Content.Remove(32)...</p>
+                <p>@News.Content.Remove(32)...</p>
             }
         </div>
         <div id="NewsFooter" class="card-footer">

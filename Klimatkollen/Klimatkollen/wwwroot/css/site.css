@@ -425,6 +425,18 @@ body {
 #NewsSiteBody {
     background-color: #e9f7ec;
 }
+@media only screen and (max-width: 990px) {
+    .card {
+        margin: auto;
+        width: 250px;
+    }
+}
+@media only screen and (max-width: 450px) {
+    .card {
+        margin: auto;
+        width: 80%;
+    }
+}
 /*SEE OBSERVATIONS*/
 
 .box1 {
