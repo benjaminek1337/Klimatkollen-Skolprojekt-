@@ -134,7 +134,12 @@ namespace Klimatkollen.Data
 
                 observationsList.Add(model);
             }
-            return observationsList;
+
+            //observationsList.OrderByDescending(x => x.Observation.Id).ToList();
+            var result = observationsList.OrderByDescending(a => a.Observation.Id).ToList();
+
+            //return observationsList;
+            return result;
         }
         public List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person person)
         {
@@ -476,7 +481,8 @@ namespace Klimatkollen.Data
                    .GroupBy(q => q.AdministrativeArea)
                    .OrderByDescending(gp => gp.Count())
                    .Take(num)
-                   .Select(g => g.Key).ToList();
+                   .Select(g => g.Key)
+                   .ToList();
             return test;
         }
         //public List<News> SortNewsByDate()
