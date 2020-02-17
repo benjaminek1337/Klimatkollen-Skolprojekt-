@@ -1,10 +1,13 @@
 ﻿@*@model IEnumerable<float>*@ 
 @model IEnumerable<Klimatkollen.ViewModels.MeasurementDatesViewModel>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="~/css/site.css" />
 
-<form>
-    <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()"/>
-    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()"/>
+<form class="inputForm">
+    <label for="date">Datum från:</label>
+    <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()" />
+    <label for="date">Datum till:</label>
+    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()" />
 </form>
 
 <script type="text/javascript">
