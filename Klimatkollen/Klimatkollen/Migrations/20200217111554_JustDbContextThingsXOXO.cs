@@ -2,7 +2,7 @@
 
 namespace Klimatkollen.Migrations
 {
-    public partial class JustDatabaseThingsXOXO : Migration
+    public partial class JustDbContextThingsXOXO : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
