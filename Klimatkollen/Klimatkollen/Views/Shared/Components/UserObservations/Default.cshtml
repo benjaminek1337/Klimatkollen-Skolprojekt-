@@ -58,7 +58,7 @@
                         <span> @item.Observation.Place, @item.Observation.AdministrativeArea</span>
                         <br />
                         <h6 style="display:inline-block;">Datum:</h6>
-                        <span> @item.Observation.Date</span>
+                        <span> @item.Observation.Date.ToShortDateString()</span>
                         <br />
                         @if (item.Observation.Comment != "" && item.Observation.Comment != null)
                         {
