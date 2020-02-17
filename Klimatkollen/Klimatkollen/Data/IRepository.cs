@@ -34,10 +34,14 @@ namespace Klimatkollen.Data
         UserFilter GetUserFilter(int userFilterId);
 
         Measurement GetMeasurement(int id);
+        ObservationFilterViewModel GetObservationWithMeasurement(int id);
         List<ObservationFilterViewModel> GetAllMeasurements();
         List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person p);
         void DeleteMeasurement(int id);
+        void DeleteObservation(int id);
         void PostEditedMeasurement(Measurement measurement);
+        void UpdateObservation(Observation observation);
+        void UpdateMeasurmentValue(int id, string value);
 
         //void GetMainCategoriesFromDb(object objectToAdd);
         Task<IEnumerable<float>> ChartAsync();//TEST Chart
@@ -45,5 +49,6 @@ namespace Klimatkollen.Data
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
+        List<String> GetTopAreas(int num);
     }
 }

@@ -83,27 +83,41 @@ namespace Klimatkollen.Controllers
             }            
         }
         [HttpGet]
-        public async Task<IActionResult> EditUserObservation(Measurement measurement)
+        public async Task<IActionResult> EditUserObservation(int id) //Measurement measurement
         {
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
-            measurement = observationdb.GetMeasurement(measurement.Id);
-            measurement.Observation.Person = db.GetPerson(userId);
+            //measurement = observationdb.GetMeasurement(measurement.Id);
+            //measurement.Observation.Person = db.GetPerson(userId);
+
+            var observation = observationdb.GetObservationWithMeasurement(id);
             //Kod för att hämta vald observation
-            return View(measurement);
+            return View(observation);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PostEditUserObservation(Measurement model)
+        public IActionResult PostEditUserObservation(ObservationFilterViewModel model, int measurmentValue, int measurmentId) //Measurement model
         {
-            observationdb.PostEditedMeasurement(model);
+            observationdb.UpdateObservation(model.Observation);
+            if (!measurmentValue.Equals(0) && !measurmentId.Equals(0))
+            {
+                observationdb.UpdateMeasurmentValue(measurmentId, measurmentValue.ToString());
+            }
+
+            //var model = observationdb.GetObservationWithMeasurement(id);
+            //observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
         }
 
         public IActionResult DeleteUserMeasurement(int id)
         {
             observationdb.DeleteMeasurement(id);
+            return RedirectToAction("UserProfile");
+        }
+        public IActionResult DeleteObservation(int id)
+        {
+            observationdb.DeleteObservation(id);
             return RedirectToAction("UserProfile");
         }
 

@@ -47,8 +47,8 @@
                                 {
                                     <br />
                                     <h6 style="display:inline-block;">Värde: </h6>
-                                    <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
-                                    <span style="display: inline-block">@Html.DisplayFor(modelItem => x.Value)</span>
+                                    <span style="display: inline-block">@Html.DisplayFor(modelItem => x.Value) @x.ThirdCategory.Unit</span>
+                                    @*<p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>*@
                                 }
 
                             }

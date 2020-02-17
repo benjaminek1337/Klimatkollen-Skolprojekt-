@@ -504,6 +504,20 @@ body {
         width: 100%;
     }
 }
+.table td {
+    border-top: none;
+    border-bottom: none;
+}
+.btn-outline-primary {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+    .btn-outline-primary:hover {
+        color: white;
+        background-color: #4CAF50;
+    }
+    }
+}
 .chart {
     width: 100%;
     min-height: 450px;
