@@ -478,6 +478,11 @@ namespace Klimatkollen.Data
 
             return allNews;
         }
+
+        public void AddNews(News news)
+        {
+            
+        }
         public ObservationFilterViewModel GetObservationWithMeasurement(int id)
         {
             var model = new ObservationFilterViewModel();
