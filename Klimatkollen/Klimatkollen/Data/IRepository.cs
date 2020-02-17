@@ -51,5 +51,7 @@ namespace Klimatkollen.Data
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
         List<String> GetTopAreas(int num);
+        void UpdateMeasurementPhoto(int id, string filePath);
+        void DeleteMeasurementPhoto(int id);
     }
 }

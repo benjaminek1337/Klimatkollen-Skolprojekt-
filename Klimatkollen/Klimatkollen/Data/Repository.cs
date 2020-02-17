@@ -223,6 +223,16 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
+        public void UpdateMeasurementPhoto(int id, string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteMeasurementPhoto(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<News> GetNews()
         {
             throw new NotImplementedException();

@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Klimatkollen.Models;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Klimatkollen.Models
+namespace Klimatkollen.ViewModels
 {
-    public class Measurement
+    public class CreateMeasurementViewModel
     {
-        [Key]
-        public int Id { get; set; }
+
         public String Value { get; set; }
         public int observationId { get; set; }
         [ForeignKey("observationId")]
@@ -21,6 +22,6 @@ namespace Klimatkollen.Models
         public ThirdCategory ThirdCategory { get; set; }
         public int categoryId { get; set; }
         public Category Category { get; set; }
-        public string PhotoPath { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }

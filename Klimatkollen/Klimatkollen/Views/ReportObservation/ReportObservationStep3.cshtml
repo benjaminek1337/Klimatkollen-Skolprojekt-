@@ -45,7 +45,7 @@
     }
 </div>
 
-@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm", enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
     @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
@@ -81,6 +81,12 @@
     </div>
     <br />
 
+    <h5>Bild</h5>
+    <div class="col-md-8 custom-file" style="visibility: visible">
+        <input asp-for="CreateMeasurementViewModel.Photo" class="form-control custom-file-input"/>
+        <label class="custom-file-label">Välj bild...</label>
+    </div>
+
     <div class="col-md-8">
         <div class="form-group">
             <button type="submit" value="Spara Observation" class="btn btn-primary btn-right">Spara observation</button>
@@ -104,7 +110,7 @@
         @Html.EditorFor(m => @Model.measurement.thirdCategoryId, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
         @Html.EditorFor(m => @Model.category.Type, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(m => @Model.observation.maincategoryId, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.EditorFor(m => @Model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.EditorFor(m => @Model.mainCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(model => model.category.Unit, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(model => @Model.category.MainCategory.Id, new { htmlAttributes = new { @class = "form-control" } })
         @Html.EditorFor(model => @Model.category.Id, new { htmlAttributes = new { @class = "form-control" } })
@@ -116,7 +122,14 @@
 </div>
 }
 
-
+<script>
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+    });
+</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
 

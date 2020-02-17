@@ -9,7 +9,7 @@
 <hr />
 
 <div id="editForm">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
         <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName@*, @Model.ThirdCategory.Type*@ </h3>
@@ -56,16 +56,16 @@
         }
 
         @*<div class="form-group row">
-            <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
-            <div class="col-sm-10">
-                <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
-            </div>
-        </div>*@
+                <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
+                <div class="col-sm-10">
+                    <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
+                </div>
+            </div>*@
 
 
         @*<label class="col-form-label col-sm-2">Kommentar:</label>*@
         <h6>Kommentar:</h6>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox" } })
         </div>
 
@@ -77,9 +77,36 @@
         <div class="col-sm-4">
             @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
         </div>
+        <br />
+        <h6>Bild:</h6>
+        <div class="form-group row">
+            <div class="col-md-5 custom-file" style="visibility: visible">
+                <input asp-for="@Model.CreateMeasurementViewModel.Photo" class="form-control custom-file-input" />
+                <label class="custom-file-label">Välj bild...</label>
+                <input asp-for="@Model.Measurement.Id" class="form-control" type="hidden" value="@Model.Measurement.Id" name="measurmentId" id="measurmentId" />
+                <input asp-for="@Model.Observation.Id" class="form-control" type="hidden" value="@Model.Observation.Id" name="observationId" id="observationId" />
+            </div>
+            <div class="col-md-3">
+                @if (Model.Measurement.PhotoPath != null)
+                {
+                    <a asp-action="DeletePhoto" asp-controller="Profile" asp-route-measurementid="@Model.Measurement.Id"
+                       asp-route-observationid="@Model.Observation.Id" asp-route-photoname="@Model.Measurement.PhotoPath">
+                        <input type="button" asp-action="DeletePhoto" class="btn btn-danger" value="Ta bort bild" />
+                    </a>
+                    <br />
+                }
+            </div>
+        </div>
+        <div class="photo" style="height:auto; width:250px;">
+            @if (Model.Measurement.PhotoPath != null)
+            {
+                var photoPath = "~/pictures/" + (Model.Measurement.PhotoPath ?? "noimage.jpg");
+                <div style="height:auto; width:300px;">
+                    <img class="card-img-top" style="height:auto; width:350px;" src="@photoPath" asp-append-version="true" />
+                </div>
+            }
+        </div>
 
-
-        <div style="visibility: hidden"></div>
 
         <input type="hidden" value="@Model.Observation.Id" asp-for="@Model.Observation.Id" />
         <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
@@ -91,7 +118,7 @@
         <input type="hidden" asp-for="@Model.Measurements" value="@Model.Measurements" />
 
 
-
+        <br />
         <h5 style="text-align:center">Välj plats där observation gjordes på kartan nedan</h5>
         <div id="map" style="height: 500px; width:100%; border-radius: 10px; box-shadow: 3px 7px 5px #888888"></div>
         <br />
@@ -100,12 +127,23 @@
         <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteObservation" asp-controller="Profile" asp-route-id="@Model.Observation.Id">Ta bort observation</a></button>
     </form>
 </div>
-
 <script>
-    $(document).ready( function() {
-        $( "#datepicker" ).datepicker();
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+
+        $("#datepicker").datepicker();
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker();
+    });
+</script>
+
 
 <script>
     var map, marker;
