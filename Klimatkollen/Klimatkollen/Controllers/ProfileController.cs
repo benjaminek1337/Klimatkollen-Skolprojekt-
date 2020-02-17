@@ -135,14 +135,19 @@ namespace Klimatkollen.Controllers
                 try
                 {
                     System.IO.File.Delete(filePath);
+                    observationdb.DeleteMeasurementPhoto(measurementid);
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
+                    string message = string.Format("<b>Message:</b> {0}<br /><br />", ex.Message);
+                    message += string.Format("<b>StackTrace:</b> {0}<br /><br />", ex.StackTrace.Replace(Environment.NewLine, string.Empty));
+                    message += string.Format("<b>Source:</b> {0}<br /><br />", ex.Source.Replace(Environment.NewLine, string.Empty));
+                    message += string.Format("<b>TargetSite:</b> {0}", ex.TargetSite.ToString().Replace(Environment.NewLine, string.Empty));
+                    ViewBag.ErrorMessage = message;
                     
                 }
 
             }
-            observationdb.DeleteMeasurementPhoto(measurementid);
             return RedirectToAction("EditUserObservation", new { id = observationid });
         }
 

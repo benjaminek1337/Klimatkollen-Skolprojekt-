@@ -105,6 +105,11 @@
                     <img class="card-img-top" style="height:auto; width:350px;" src="@photoPath" asp-append-version="true" />
                 </div>
             }
+            @if(ViewBag.Errormessage != null)
+            {
+                <p style="color: red">@ViewBag.ErrorMessage</p>
+            }
+
         </div>
 
 
