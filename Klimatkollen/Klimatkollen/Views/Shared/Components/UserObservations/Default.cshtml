@@ -11,10 +11,11 @@
     <ul style="list-style-type:none; padding: 0;">
         @foreach (var item in Model)
         {
-            
-               
+
+
 
             <li>
+                <br/>
                 <div class="card observationCard">
                     <div class="card-header">
                         <h5>Observation av @item.Observation.MainCategory.CategoryName</h5>
@@ -31,7 +32,9 @@
                                 if (x.ThirdCategory.Unit == "Päls")
                                 {
                                     <h6 style="        display: inline-block;
-">Päls:</h6>
+">
+                                        Päls:
+                                    </h6>
                                     <span>@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
                                 }
                                 @if (x.ThirdCategory.Unit == "Miljö")
@@ -76,22 +79,24 @@
                         @if (item.Measurement.PhotoPath != null)
                         {
                             var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
-                            <img class="card-img-top" style="height:auto; width:100%;" src="@photoPath" asp-append-version="true" />
+                            <img class="card-img-top" style="height:auto; width:auto; max-height:350px; max-width:100%" src="@photoPath" asp-append-version="true" />
                         }
 
 
 
 
-                            @*Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
-                            Kommentar: @measurement.Observation.Comment <br />
-                            Observation gjord den @measurement.Observation.Date*@
-                        </div>
-                        <div class="card-footer">
-                            <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
-                        </div>
+                        @*Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
+            Kommentar: @measurement.Observation.Comment <br />
+            Observation gjord den @measurement.Observation.Date*@
                     </div>
-                <br />
-                </li>
-            }
+                    <div class="card-footer">
+                        <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                    </div>
+                </div>
+
+
+            </li>
+
+        }
     </ul>
 </div>
