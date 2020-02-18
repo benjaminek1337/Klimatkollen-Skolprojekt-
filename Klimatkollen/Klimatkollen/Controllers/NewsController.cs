@@ -34,16 +34,16 @@ namespace Klimatkollen.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,grupp1superadmin")] 
-        public IActionResult AddNews(News news)
+        public IActionResult PostNews(News news)
         {
-            news = new News
-            {
-                Title = news.Title,
-                Date = news.Date,
-                Content = news.Content
-            };
+            //news = new News
+            //{
+            //    Title = news.Title,
+            //    Date = news.Date,
+            //    Content = news.Content
+            //};
             newsDd.AddObjectToDb(news);
-            return View();
+            return RedirectToAction("Index", "News");
         }
         [Authorize(Roles = "Admin,grupp1superadmin")] //måste den ligga här?
         public IActionResult RemoveNews(int newsId)
@@ -55,7 +55,7 @@ namespace Klimatkollen.Controllers
             News news = newsDd.GetChoosenNews(newsId);
             newsDd.RemoveObjectFromDb(news);
 
-            return RedirectToAction("AddNews");//Egentligen en bekräftelse på borttagningen
+            return RedirectToAction("Index");//Egentligen en bekräftelse på borttagningen
         }
     }
 }

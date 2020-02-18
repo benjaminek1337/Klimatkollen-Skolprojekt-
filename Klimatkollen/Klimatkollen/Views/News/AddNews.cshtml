@@ -7,23 +7,23 @@
 
 <div class="addNews">
 
-<label>Titel</label>
-<form class="news">
-    <input type="text" asp-for="Title" />
-</form>
-<br />
+    <label>Titel</label>
+    <form class="news" method="post">
+        <input type="text" asp-for="Title" class="form-control" />
 
-    <label>Datum</label>
-    <form>
+        <br />
+
+        <label>Datum</label>
+
         @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control oso", @type = "date" } })
-    </form>
-<br />
 
-    <label>Innehåll</label>
-    <form>
-        @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control ContentTextArea", @placeholder = "Lägg till innehåll"} })
+        <br />
+
+        <label>Innehåll</label>
+
+        @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control ContentTextArea", @placeholder = "Lägg till innehåll" } })
+        <br />
+        <button class="btn btn-primary" asp-action="PostNews" asp-controller="News" >Spara nyheter</button>
     </form>
-<br />
-    <input type="submit" value="Spara nyhet" asp-action="AddNews" asp-controller="NewsController" formmethod="post"/>
 </div>
 
