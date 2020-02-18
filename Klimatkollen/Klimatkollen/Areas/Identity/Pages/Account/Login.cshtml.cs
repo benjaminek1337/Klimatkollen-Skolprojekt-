@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Klimatkollen.Data;
 using Klimatkollen.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Klimatkollen.Areas.Identity.Pages.Account
 {
@@ -72,6 +73,39 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
+            if(await userManager.FindByNameAsync("grupp1superadmin@cool.se") == null)
+            {
+                var superadmin = new IdentityUser
+                {
+                    Email = "grupp1superadmin@cool.se",
+                    UserName = "grupp1superadmin@cool.se"
+                };
+                var result = await userManager.CreateAsync(superadmin, "superadminärcool");
+                if(result.Succeeded)
+                {
+                    
+                    if (await _roleManager.FindByNameAsync("grupp1superadmin") == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "grupp1superadmin" });
+                        var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                        await userManager.AddToRoleAsync(superadmin, role.Name);
+                    }
+                    else if(await _roleManager.FindByNameAsync("grupp1superadmin") != null)
+                    {
+                        var role = await _roleManager.FindByNameAsync("grupp1superadmin");
+                        await userManager.AddToRoleAsync(superadmin, role.Name);
+                    }
+
+                    Person person = new Person
+                    {
+                        IdentityId = superadmin.Id,
+                        Email = superadmin.Email,
+                        FirstName = "Super",
+                        Lastname = "Admin"
+                    }; userDb.AddPerson(person);
+                }
+            }
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
@@ -89,6 +123,11 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var user = await userManager.FindByEmailAsync(Input.Email);
+
+                    if(await _roleManager.FindByNameAsync("Klimatobservatör") == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "Klimatobservatör" });
+                    }
                     if (!await userManager.IsInRoleAsync(user, "Klimatobservatör"))
                     {
                         await userManager.AddToRoleAsync(user, "Klimatobservatör");
@@ -103,7 +142,7 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                         }; userDb.AddPerson(person);
                     }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("UserProfile", "Profile");
                 }
                 if (result.RequiresTwoFactor)
                 {

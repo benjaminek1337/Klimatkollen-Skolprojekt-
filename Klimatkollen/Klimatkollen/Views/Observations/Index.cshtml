@@ -8,20 +8,17 @@
     @*<p style="display:inline-block; float:right; margin-top:10px;">@Html.ActionLink("Sparade frilansare lista", "SavedFreelancers", "customers")</p>*@
     <h3 style="display:inline-block;">Sök efter observationer</h3>
     <br />
+    <div>
+        <p>Här kan du som observatör kolla på observationer som gjorts av andra observatörer.</p>
+        <p>Tips: Använd filtret eller sökrutan för att hitta observationer som du är intresserade av.</p>
+    </div>
+    
     <input id="SearchString" name="SearchString" type="text" placeholder="Fritext sök" value="">
 
     <br />
     <div>
         <button id="filterbtn" class="btn btn-primary">Visa filter</button>
     </div>
-
-
-
-
-
-
-
-
 
 <div id="filters" style="display:inline-block; display:none">
     
@@ -50,6 +47,12 @@
                 }
             }
         </div>
+        <div id="dateDiv">
+            <h4>Tidpunkter</h4>
+            <p class="filters dateBtn" id="@ViewBag.LastYear">Förra året</p>
+            <p class="filters dateBtn" id="@ViewBag.Date.Year">I år</p>
+            <p class="filters dateBtn" id="@ViewBag.Date.Month">Den här månaden</p>
+        </div>
     </div>
 </div>
 
@@ -70,96 +73,109 @@
             {
                 <tr>
                     <td>
-                        
-                        <div class="col-md-12 observationBox">
-                            @*<div class="card-header">
-            <h6 style="display:inline-block;" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
-        </div>*@
-                            <h6 style="display:inline-block;" data="@item.Observation.MainCategory.CategoryName" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
+                         <div>
+                              <div class="card observationCard">
+                                <div class="card-header">
+                                    <h6 style="display:inline-block;" data="@item.Observation.MainCategory.CategoryName" class="filterItem"><b>Kategori: @Html.DisplayFor(x => @item.Observation.MainCategory.CategoryName)</b></h6>
+                                </div>
+                                <div class="card-body">
+                                    <h6 style="display:inline-block;">Plats:</h6>
+                                    @if (!item.Observation.maincategoryId.Equals(2))
+                                    {
+                                        //Om kategori inte är djur så visas stad också
+                                        <span class="filterItem" data="@item.Observation.Place"> @item.Observation.Place, </span>
+                                    }
+                                    <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
 
-                            <br />
-                            <h6 style="display:inline-block;">Plats:</h6>
-                            @if (!item.Observation.maincategoryId.Equals(2))
-                            {
-                                //Om kategori inte är djur så visas stad också
-                                <span class="filterItem" data="@item.Observation.Place"> @item.Observation.Place, </span>
-                            }
-                            <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
-                            
 
-                            <br />
-
-                            @*(Djur)*@
-                            @if (item.Observation.maincategoryId == 2)
-                            {
-                                <h6 style="display:inline-block;">Djur:</h6>
-                                <span class="filterItem" data="@item.Category.Type">@Html.DisplayFor(x => item.Category.Type)</span>
-                                @foreach (var x in item.Measurements)
-                                {
                                     <br />
-                                    if (x.ThirdCategory.Unit == "Päls" || x.ThirdCategory == null)
-                                    {
 
-                                        <h6 style="display:inline-block;">Päls:</h6>
-                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                    @*(Djur)*@
+                                    @if (item.Observation.maincategoryId == 2)
+                                    {
+                                        <h6 style="display:inline-block;">Djur:</h6>
+                                        <span class="filterItem" data="@item.Category.Type">@Html.DisplayFor(x => item.Category.Type)</span>
+                                        @foreach (var x in item.Measurements)
+                                        {
+                                            <br />
+                                            if (x.ThirdCategory.Unit == "Päls" || x.ThirdCategory == null)
+                                            {
+
+                                                <h6 style="display:inline-block;">Päls:</h6>
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>                                             
+                                            }
+                                        }
+
                                     }
-                                }
-
-                            }
-                            else
-                            {
-                                <h6 style="display:inline-block;">Typ av mätning:</h6>
-                                @foreach (var x in item.Measurements)
-                                {
-                                    <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
-
-                                    if (x.Value != null)
+                                    else
                                     {
-                                        <br />
-                                        <h6 style="display:inline-block;">Värde: </h6>
-                                        <p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>
-                                        <span>@Html.DisplayFor(modelItem => x.Value)</span>
-                                    }
-                                    <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
-                                }
-                                <br />
-                            }
-                        <div style="display:none" id="@item.Observation.Id">
+                                        <h6 style="display:inline-block;">Typ av mätning:</h6>
+                                        @foreach (var x in item.Measurements)
+                                        {
+                                            <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Type)</span>
 
-                            @if (item.Observation.maincategoryId == 2)
-                            {
-
-                                @foreach (var x in item.Measurements)
-                                {
-
-                                    @if (x.ThirdCategory.Unit == "Miljö")
-                                    {
-                                        <h6 style="display:inline-block;">Miljö:</h6>
-                                        <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                            if (x.Value != null)
+                                            {
+                                                <br />
+                                                <h6 style="display:inline-block;">Värde: </h6>
+                                                <span>@Html.DisplayFor(modelItem => x.Value)</span>
+                                                <span style="display:inline-block;">@x.ThirdCategory.Unit</span>
+                                            }
+                                            <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
+                                        }
                                         <br />
                                     }
-                                }
-                                <br />
-                            }
+                                <div style="display:none" id="@item.Observation.Id">
+
+                                    @if (item.Observation.maincategoryId == 2)
+                                    {
+                                        @foreach (var x in item.Measurements)
+                                        {
+                                            @if (x.ThirdCategory.Unit == "Miljö")
+                                            {
+                                                <h6 style="display:inline-block;">Miljö:</h6>
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
+                                            }
+
+                                        }
+                                        <br />
+                                    }
 
 
-                            <h6 style="display:inline-block;">Datum:</h6>
-                            <span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>
-                            <br />
-                            <h6 style="display:inline-block;">Kommentar:</h6>
-                            <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
-                            <br />
-                            <h6 style="display:inline-block;">Utförd av:</h6>
-                            <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
-                            <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
-                            <span class="filterItem" style="visibility:visible" data="@item.Observation.Country"> @item.Observation.Country</span>
+                                    <h6 style="display:inline-block;">Datum:</h6>
+                                    <span> @item.Observation.Date.ToShortDateString()</span>
+                                    @*<span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>*@
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Year"> @item.Observation.Date.Year</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Month"> @item.Observation.Date.Month</span>
+                                    <br />
+                                    @if (item.Observation.Comment != null && item.Observation.Comment != "")
+                                    {
+                                        <h6 style="display:inline-block;">Kommentar:</h6>
+                                        <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
+                                        <br />
+                                    }
+                                    <h6 style="display:inline-block;">Utförd av:</h6>
+                                    <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
+                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
+                                    <br />
+                                    <br />
+                                    @if (item.Measurement.PhotoPath != null)
+                                    {
+                                        <h6 style="display:inline-block">Bild:</h6>
+                                        <br/>
+                                        var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
+                                        <img class="card-img-top" style="height:auto; width:auto; max-height:350px; max-width:100%" src="@photoPath" asp-append-version="true" />
+                                    }
 
-                            <br />
-                            <br />
 
-                        </div>
+                                </div>
 
-                            <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
+                                </div>
+                            <div class="card-footer">
+                                <a style="display:block;" onclick="ShowDetailedInfo(@item.Observation.Id, this)">Visa mer</a>
+                            </div>
+                            </div>                                                   
                         </div>
                         
                     </td>
@@ -199,7 +215,7 @@
      function ShowDetailedInfo(id, btn) {
          var x = document.getElementById(id);
             if (x.style.display === 'none') {
-                x.style.display = 'inline-block';
+                x.style.display = 'block';
                 btn.innerHTML = "Visa mindre";
             } else {
                 x.style.display = 'none';
@@ -223,8 +239,7 @@
     //Källa: https://caveofcode.com/2016/02/jquery-tutorial-how-to-filter-data-using-multiple-parameters/
        //Fritextsök
        $('#SearchString').keyup(filter);
-
-       
+      
        //När man klickar på en knapp som har klassen filter
        $('.filters').click(function () {
             filter();
@@ -236,6 +251,7 @@
         resetAreaFilters();
         resetMainCatFilters();
         resetCatFilters();
+        resetdateFilters();
     };
 
     function resetAreaFilters() {
@@ -254,6 +270,12 @@
         var current = document.getElementsByClassName("activeThree");
                 if (current.length > 0) {
                 current[0].className = current[0].className.replace(" activeThree", "");
+                }
+    };
+    function resetdateFilters() {
+        var current = document.getElementsByClassName("activeFour");
+                if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeFour", "");
                 }
     };
 
@@ -281,7 +303,9 @@
                         var activeOne = $('#filterbuttons .filters.active'); //Sparar alla filterknappar som har klassen active
                         var activeTwo = $('#filterbuttons .filters.activeTwo'); //Sparar alla filterknappar som har klassen active
                         var activeThree = $('#filterbuttons .filters.activeThree'); //Sparar alla filterknappar som har klassen active
+                        var activeFour = $('#filterbuttons .filters.activeFour'); //Sparar alla filterknappar som har klassen active
 
+                        //Loopar igenom varje kategori
                         for (var i = 0; i < activeOne.length; i++) {
                             var item = $(selector).find('[data="' + activeOne[i].id + '"]'); //(if item.name == filterbutton.name)
 
@@ -303,6 +327,13 @@
                                 tester = false;
                             }
                         }
+                        for (var i = 0; i < activeFour.length; i++) {
+                            var item = $(selector).find('[data="' + activeFour[i].id + '"]'); //(if item.name == filterbutton.name)
+
+                            if (!item.hasClass('filterItem')) {
+                                tester = false;
+                            }
+                        }
 
                         return tester;
     };
@@ -310,6 +341,7 @@
   </script>
 
 <script>
+    //Togglar active på knapparna inom samma kategori
     var header = document.getElementById("areaDiv");
     var btns = header.getElementsByClassName("areaBtn");
     for (var i = 0; i < btns.length; i++) {
@@ -343,6 +375,18 @@
                 current[0].className = current[0].className.replace(" activeThree", "");
             }
             this.className += " activeThree";
+        });
+    };
+
+    var header = document.getElementById("dateDiv");
+    var test = header.getElementsByClassName("dateBtn");
+    for (var i = 0; i < test.length; i++) {
+        test[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("activeFour");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" activeFour", "");
+            }
+            this.className += " activeFour";
         });
     };
 </script>

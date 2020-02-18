@@ -1,26 +1,33 @@
 ﻿using Klimatkollen.Data;
 using Klimatkollen.Models;
 using Klimatkollen.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Klimatkollen.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserRepository db;
         private readonly IRepository observationdb;
+        private readonly IHostingEnvironment hostingenv;
 
-        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository)
+        public ProfileController(UserManager<IdentityUser> userManager, IUserRepository db, IRepository repository, IHostingEnvironment hostingenv)
         {
             this.userManager = userManager;
             this.db = db;
             observationdb = repository;
+            this.hostingenv = hostingenv;
         }
 
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
@@ -81,28 +88,86 @@ namespace Klimatkollen.Controllers
             }            
         }
         [HttpGet]
-        public async Task<IActionResult> EditUserObservation(Measurement measurement)
+        public async Task<IActionResult> EditUserObservation(int id) //Measurement measurement
         {
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
-            measurement = observationdb.GetMeasurement(measurement.Id);
-            measurement.Observation.Person = db.GetPerson(userId);
+            //measurement = observationdb.GetMeasurement(measurement.Id);
+            //measurement.Observation.Person = db.GetPerson(userId);
+
+            var observation = observationdb.GetObservationWithMeasurement(id);
             //Kod för att hämta vald observation
-            return View(measurement);
+            return View(observation);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PostEditUserObservation(Measurement model)
+        public IActionResult PostEditUserObservation(ObservationFilterViewModel model, int measurmentValue, int measurmentId) //Measurement model
         {
-            observationdb.PostEditedMeasurement(model);
+            string fileName = null;
+            if (model.CreateMeasurementViewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+                fileName = Guid.NewGuid().ToString() + "_" + model.CreateMeasurementViewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                model.CreateMeasurementViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                observationdb.UpdateMeasurementPhoto(measurmentId, fileName);
+            }
+
+            observationdb.UpdateObservation(model.Observation);
+
+            if (!measurmentValue.Equals(0) && !measurmentId.Equals(0))
+            {
+                observationdb.UpdateMeasurmentValue(measurmentId, measurmentValue.ToString());
+            }
+
+            //var model = observationdb.GetObservationWithMeasurement(id);
+            //observationdb.PostEditedMeasurement(model);
             return RedirectToAction("UserProfile");
         }
 
-        public IActionResult DeleteUserMeasurement(int id)
+        public IActionResult DeletePhoto(int measurementid, int observationid, string photoname)
         {
-            observationdb.DeleteMeasurement(id);
+            string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+            string filePath = Path.Combine(uploadsFolder, photoname);
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                    observationdb.DeleteMeasurementPhoto(measurementid);
+                }
+                catch(Exception ex)
+                {
+                    string message = string.Format("<b>Message:</b> {0}<br /><br />", ex.Message);
+                    message += string.Format("<b>StackTrace:</b> {0}<br /><br />", ex.StackTrace.Replace(Environment.NewLine, string.Empty));
+                    message += string.Format("<b>Source:</b> {0}<br /><br />", ex.Source.Replace(Environment.NewLine, string.Empty));
+                    message += string.Format("<b>TargetSite:</b> {0}", ex.TargetSite.ToString().Replace(Environment.NewLine, string.Empty));
+                    observationdb.DeleteMeasurementPhoto(measurementid);
+
+                }
+
+            }
+            return RedirectToAction("EditUserObservation", new { id = observationid });
+        }
+
+        public IActionResult DeleteUserMeasurement(int observationid)
+        {
+            observationdb.DeleteMeasurement(observationid);
             return RedirectToAction("UserProfile");
+        }
+        public async Task<IActionResult> DeleteObservation(int measurementid, int observationid, string photoname)
+        {
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPersonFromObservationId(observationid);
+            if(photoname != null)
+                DeletePhoto(measurementid, observationid, photoname);
+            observationdb.DeleteObservation(observationid);
+            if (person.IdentityId == userId)
+                return RedirectToAction("UserProfile");
+            else
+                return RedirectToAction("EditUser", "Admin", new { id = person.IdentityId });
         }
 
         public async Task<IActionResult> UsersTrackedLocations()

@@ -5,23 +5,26 @@
     ViewBag.Title = "Profil";
 }
 
-<h1>@Model.FirstName @Model.Lastname's profil</h1>
+<h1>Hej @Model.FirstName @Model.Lastname!</h1>
 <hr />
+<div>
+    <p>Här kan du som observatör hantera dina uppgifter, intressen samt dina observationer.</p>
+</div>
+
 <div class="row">
 
-    <div id="myObservations" class="col-sm-7">
-        @await Component.InvokeAsync("UserObservations")
-    </div>
+    <div class="col">
+        <div id="userFiltersDiv" style="text-align:center; float:left; margin:5px">
+            <a class="btn btn-primary" asp-action="EditUserFilters" asp-controller="Profile">Mina intressen</a>
+        </div>
 
-    
-    <div class="col-sm-5">
-        <br />
-        <div id="displayUserInfo" style="text-align:center">
+        <div id="userFilterAreaDiv" style="text-align:center; float:left; margin:5px">
+            <a class="btn btn-primary" asp-action="UsersTrackedLocations" asp-controller="Profile">Mina bevakade områden</a>
+        </div>
+        <div id="displayUserInfo" style="text-align:center; float:left; margin:5px">
             <button class="btn btn-primary" id="launchEdit">Ändra personlig information</button>
         </div>
         <br />
-
-
 
         <div id="editUserInfo" style="display:none">
             <form method="post">
@@ -29,53 +32,58 @@
 
                 <input type="hidden" asp-for="@Model.IdentityId" value="@Model.IdentityId" />
                 <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-
+                <br />
+                <br />
+                <br />
                 <div class="form-group row">
-                    <label class="col-form-label col-sm-3">Förnamn:</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
+                    <label class="col-form-label" style="margin-left: 10px">Förnamn: &nbsp;</label>
+                    <div class="col-sm-6" >
+                        <input class="form-control" style="float:right" required type="text" asp-for="@Model.FirstName" value="@Model.FirstName" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-sm-3">Efternamn:</label>
-                    <div class="col-sm-9">
+                    <label class="col-form-label" style="margin-left: 10px">Efternamn:</label>
+                    <div class="col-sm-6" style="float:right">
                         <input class="form-control" required type="text" asp-for="@Model.Lastname" value="@Model.Lastname" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-sm-3">E-postadress:</label>
-                    <div class="col-sm-9">
+                    <label class="col-form-label" style="margin-left: 10px">E-post: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <div class="col-sm-6" style="float:right">
                         <input class="form-control" type="email" pattern="^[a-zA-Z0-9._+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required asp-for="@Model.Email" value="@Model.Email" />
                     </div>
                 </div>
 
                 <div asp-validation-summary="All" class="text-danger"></div>
-                &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Ändra info</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" asp-action="EditUserProfile" asp-controller="Profile">Uppdatera info</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-primary"><a style="color:white" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Byt lösenord</a></button>
-                <button type="button" class="btn btn-primary" id="abortEdit">Avbryt</button>
+                <button type="button" class="btn btn-sec" id="abortEdit">Avbryt</button>
                 <br />
             </form>
             <br />
         </div>
-        <div id="userFiltersDiv" style="text-align:center">
-            <a class="btn btn-primary" asp-action="EditUserFilters" asp-controller="Profile">Mina intressen</a>
-        </div>
-        <br />
-        <div id="userFilterAreaDiv" style="text-align:center">
-            <a class="btn btn-primary" asp-action="UsersTrackedLocations" asp-controller="Profile">Mina bevakade områden</a>
-        </div>
+
     </div>
-
-
+    
 </div>
-<br /><br />
+<div class="row">
+    
+    <div id="myObservations" class="col">
+        <br />
+        <h3 style="margin-left: 30px;">Mina observationer</h3>
+        @await Component.InvokeAsync("UserObservations")
+    </div>
+</div>
+
+<br />
+<br />
 @*<h1>ÄR DET HÄR VI VILL VISA LITE GAMIFICATION SHEISSE? Hur ska vi göra det måtro?</h1>*@
 <script>
     $(document).ready(function () {
         $("#launchEdit").click(function () {
             $("#displayUserInfo").hide();
-            $("#editUserInfo").show(200);
+            $("#editUserInfo").show(100);
         })
     })
 </script>
@@ -84,7 +92,7 @@
     $(document).ready(function () {
         $("#abortEdit").click(function () {
             $("#displayUserInfo").show();
-            $("#editUserInfo").hide(200);
+            $("#editUserInfo").hide(100);
         })
     })
 </script>

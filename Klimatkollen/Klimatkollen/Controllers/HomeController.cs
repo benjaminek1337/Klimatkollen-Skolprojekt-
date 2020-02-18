@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Klimatkollen.Models;
 using Klimatkollen.Data;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace Klimatkollen.Controllers
 {
@@ -18,6 +18,7 @@ namespace Klimatkollen.Controllers
         {
             db = repository;
         }
+
         public IActionResult Index()
         {
             return View();

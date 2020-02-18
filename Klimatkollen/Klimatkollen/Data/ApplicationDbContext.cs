@@ -22,6 +22,8 @@ namespace Klimatkollen.Data
         public DbSet<ThirdCategory> ThirdCategories{ get; set; }
         public DbSet<UserFilter> UserFilters{ get; set; }
         public DbSet<UsersTrackedLocations> UserTrackedLocations { get; set; }
+        public DbSet<News> News { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

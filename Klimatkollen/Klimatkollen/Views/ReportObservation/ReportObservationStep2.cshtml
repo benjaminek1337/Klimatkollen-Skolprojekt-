@@ -8,7 +8,10 @@
 <div id="catDiv">
     @foreach (var item in ViewBag.newList)
     {
-        <button class="buttonTemp" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        if (item.Type != null && item.Type != "")
+        {
+            <button class="buttonTemp" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        }
     }
 </div>
 

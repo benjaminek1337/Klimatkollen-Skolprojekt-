@@ -192,5 +192,56 @@ namespace Klimatkollen.Data
             }
             return measurements;
         }
+
+        public List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person p)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservationFilterViewModel GetObservationWithMeasurement(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateObservation(Observation observation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateMeasurmentValue(int id, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteObservation(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetTopAreas(int num)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateMeasurementPhoto(int id, string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteMeasurementPhoto(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<News> GetNews()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

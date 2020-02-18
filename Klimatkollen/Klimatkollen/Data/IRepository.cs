@@ -13,12 +13,6 @@ namespace Klimatkollen.Data
 
         void AddObservation();
 
-        List<float> GenerateRandomFloats(int amountToGenerate);
-
-        String SerializeJsonFromFloats(List<float> floats);
-
-        void WriteJsonToFile(String jsonString, String filePath);
-
         void AddObjectToDb(object objectToAdd);
         void RemoveObjectFromDb(object objectToRemove);
 
@@ -32,17 +26,24 @@ namespace Klimatkollen.Data
         List<Measurement> GetMeasurements(int id);
         List<UserFilter> GetUserFilters(Person p);
         UserFilter GetUserFilter(int userFilterId);
+        List<News> GetNews();
 
         Measurement GetMeasurement(int id);
+        ObservationFilterViewModel GetObservationWithMeasurement(int id);
         List<ObservationFilterViewModel> GetAllMeasurements();
+        List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person p);
         void DeleteMeasurement(int id);
+        void DeleteObservation(int id);
         void PostEditedMeasurement(Measurement measurement);
-
-        //void GetMainCategoriesFromDb(object objectToAdd);
-        Task<IEnumerable<float>> ChartAsync();//TEST Chart
+        void UpdateObservation(Observation observation);
+        void UpdateMeasurmentValue(int id, string value);
 
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
+        Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync();
+        List<String> GetTopAreas(int num);
+        void UpdateMeasurementPhoto(int id, string filePath);
+        void DeleteMeasurementPhoto(int id);
     }
 }

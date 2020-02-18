@@ -1,4 +1,5 @@
-﻿@model Klimatkollen.Models.Measurement
+﻿@*@model Klimatkollen.Models.Measurement*@
+@model Klimatkollen.ViewModels.ObservationFilterViewModel
 
 @{
     ViewBag.Title = "Ändra observation";
@@ -8,47 +9,115 @@
 <hr />
 
 <div id="editForm">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
+        <h3>Observation av @Model.Observation.MainCategory.CategoryName</h3>
+        <br />
+        @if (@Model.Observation.maincategoryId == 2)
+        {
+            <h6 style="display:inline-block;">Djur:</h6>
+            <span> @Model.Category.Type</span>
+            <br />
+            foreach (var item in @Model.Measurements)
+            {
+                if (item.ThirdCategory.Unit == "Päls")
+                {
+                    <h6 style="display:inline-block;">Päls:</h6>
+                }
+                else if (item.ThirdCategory.Unit == "Miljö")
+                {
+                    <br />
+                    <h6 style="display:inline-block;">Sågs i:</h6>
+                }
+                <span> @item.ThirdCategory.Type</span>
+            }
+
+        }
+        @if (@Model.Observation.maincategoryId != 2)
+        {
+            <h6 style="display:inline-block;">Typ av mätning:</h6>
+            <span> @Model.Category.Type</span>
+
+            foreach (var item in @Model.Measurements)
+            {
+                if (item.Value != null)
+                {
+                    <br />
+                    @*<label class="col-form-label col-sm-2">Värde: (@item.ThirdCategory.Unit)</label>*@
+                    <h6 style="display:inline-block;">Värde:</h6><span> (@item.ThirdCategory.Unit)</span>
+                    <div class="col-sm-4">
+                        <input asp-for="@item.Value" class="form-control" type="text" value="@item.Value" name="measurmentValue" id="measurmentValue" />
+                        <input asp-for="@item.Id" class="form-control" type="hidden" value="@item.Id" name="measurmentId" id="measurmentId" />
+
+                    </div>
+                }
+            }
+        }
+
+        @*<div class="form-group row">
+                <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
+                <div class="col-sm-10">
+                    <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
+                </div>
+            </div>*@
+
+
+        @*<label class="col-form-label col-sm-2">Kommentar:</label>*@
+        <h6>Kommentar:</h6>
+        <div class="col-sm-8">
+            @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox" } })
+        </div>
+
+
+
+        @*<label class="col-form-label col-sm-2">Datum:</label>*@
+
+        <h6>Datum:</h6>
+        <div class="col-sm-4">
+            @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+        </div>
+        <br />
+        <h6>Bild:</h6>
+        <div class="form-group row">
+            <div class="col-md-5 custom-file" style="visibility: visible">
+                <input asp-for="@Model.CreateMeasurementViewModel.Photo" class="form-control custom-file-input" />
+                <label class="custom-file-label">Välj bild...</label>
+                <input asp-for="@Model.Measurement.Id" class="form-control" type="hidden" value="@Model.Measurement.Id" name="measurmentId" id="measurmentId" />
+                <input asp-for="@Model.Observation.Id" class="form-control" type="hidden" value="@Model.Observation.Id" name="observationId" id="observationId" />
+            </div>
+            <div class="col-md-3">
+                @if (Model.Measurement.PhotoPath != null)
+                {
+                    <a asp-action="DeletePhoto" asp-controller="Profile" asp-route-measurementid="@Model.Measurement.Id"
+                       asp-route-observationid="@Model.Observation.Id" asp-route-photoname="@Model.Measurement.PhotoPath">
+                        <input type="button" asp-action="DeletePhoto" class="btn btn-danger" value="Ta bort bild" />
+                    </a>
+                    <br />
+                }
+            </div>
+        </div>
+        <div class="photo" style="height:auto; width:250px;">
+            @if (Model.Measurement.PhotoPath != null)
+            {
+                var photoPath = "~/pictures/" + (Model.Measurement.PhotoPath ?? "noimage.jpg");
+                <div style="height:auto; width:300px;">
+                    <img class="card-img-top" style="height:auto; width:350px;" src="@photoPath" asp-append-version="true" />
+                </div>
+            }
+
+        </div>
+
+
+        <input type="hidden" value="@Model.Observation.Id" asp-for="@Model.Observation.Id" />
         <input id="long" type="hidden" value="@Model.Observation.Longitude" asp-for="@Model.Observation.Longitude" />
         <input id="lat" type="hidden" value="@Model.Observation.Latitude" asp-for="@Model.Observation.Latitude" />
         <input type="hidden" asp-for="@Model.Observation.Person" value="@Model.Observation.Person" />
-        <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="" />
-        <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="" />
-        <input id="hiddenCountry" type="hidden" asp-for="@Model.Observation.Country" value="" />
+        <input id="hiddenPlace" type="hidden" asp-for="@Model.Observation.Place" value="@Model.Observation.Place" />
+        <input id="hiddenAdministrativeArea" type="hidden" asp-for="@Model.Observation.AdministrativeArea" value="@Model.Observation.AdministrativeArea" />
+        <input id="hiddenCountry" type="hidden" asp-for="@Model.Observation.Country" value="@Model.Observation.Country" />
+        <input type="hidden" asp-for="@Model.Measurements" value="@Model.Measurements" />
 
-
-        <h3 style="text-align:center">Observation av @Model.Observation.MainCategory.CategoryName, @Model.ThirdCategory.Type </h3>
-        <br />
-        <div class="form-group row">
-            <label class="col-form-label col-sm-2">@Model.ThirdCategory.Unit Värde:</label>
-            <div class="col-sm-10">
-                <input asp-for="@Model.Value" class="form-control" value="@Model.Value" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-form-label col-sm-2">Kommentar:</label>
-            <div class="col-sm-10">
-                @*<input class="form-control CommentTextBox" required type="text" asp-for="@Model.Observation.Comment" value="@Model.Observation.Comment" />*@
-                @Html.TextAreaFor(model => model.Observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-form-label col-sm-2">Datum:</label>
-
-            <div class="col-sm-10">
-                @*<input type="text" class="form-control" asp-for="@Model.Date" value="@Model.Date" id="datepicker" />*@
-                @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div id="hiddens">
-            <div class="col-md-10" style="visibility: hidden">
-                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control btnResult", @id = "resultBoxId" } })
-            </div>
-        </div>
 
         <br />
         <h5 style="text-align:center">Välj plats där observation gjordes på kartan nedan</h5>
@@ -56,15 +125,29 @@
         <br />
         <input type="submit" value="Uppdatera observation" class="btn btn-primary" asp-action="PostEditUserObservation" asp-controller="Profile" />
 
-        <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteUserMeasurement" asp-controller="Profile" asp-route-id="@Model.Id">Ta bort vald observation</a></button>
+        <button type="button" class="btn btn-danger"><a style="color:white" asp-action="DeleteObservation" asp-controller="Profile"
+         asp-route-measurementid="@Model.Measurement.Id" asp-route-observationid="@Model.Observation.Id" asp-route-photoname="@Model.Measurement.PhotoPath">
+            Ta bort observation
+               </a></button>
     </form>
 </div>
-
 <script>
-    $(document).ready( function() {
-        $( "#datepicker" ).datepicker();
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+
+        $("#datepicker").datepicker();
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker();
+    });
+</script>
+
 
 <script>
     var map, marker;

@@ -37,14 +37,18 @@
                         @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hem (sätta logga här)</a>
                         </li>*@
-                        @if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("grupp1superadmin"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">Hantera användare</a>
+                                   aria-expanded="false">Administrationspanel</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a asp-action="ListUsers" asp-controller="Admin" class="dropdown-item">Användare</a>
-                                    <a asp-action="ListRoles" asp-controller="Admin" class="dropdown-item">Systembehörighet</a>
+                                    <a asp-action="ListUsers" asp-controller="Admin" class="dropdown-item">Hantera användare</a>
+                                    @if (User.IsInRole("grupp1superadmin"))
+                                    {
+                                        <a asp-action="ListRoles" asp-controller="Admin" class="dropdown-item">Hantera systembehörigheter</a>
+                                    }
+                                    <a asp-action="AddNews" asp-controller="News" class="dropdown-item">Lägg till nyhet</a>
                                 </div>
                             </li>
                         }
@@ -64,7 +68,7 @@
 
     <footer class="border-top footer text-muted" style="background-color: #fff">
         <div class="container">
-            &copy; 2020 - Klimatkollen - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year.ToString() - Klimatkollen - <a asp-area="" asp-controller="Home" asp-action="Privacy">Integritetspolicy</a>
         </div>
     </footer>
 
