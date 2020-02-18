@@ -18,7 +18,7 @@ namespace Klimatkollen.Operations
 
             for (int i = 0; i < amountToGenerate; i++)
             {
-                floats.Add((float)random.NextDouble() * (25 - -20) - 20);
+                floats.Add((float)random.NextDouble() * (5 - -5) - 5);
             }
 
             return floats;
@@ -54,7 +54,7 @@ namespace Klimatkollen.Operations
         public async Task<IEnumerable<float>> GetRandomFloatsJson() //TEST CHART
         {
             List<float> testjson = new List<float>();
-            foreach (var i in GenerateRandomFloats(50))
+            foreach (var i in GenerateRandomFloats(31))
             {
                 testjson.Add(i);
             };

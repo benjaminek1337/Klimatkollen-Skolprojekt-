@@ -54,6 +54,7 @@ namespace Klimatkollen
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<IdDbContext>();
 
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 8;

@@ -584,6 +584,14 @@ body {
     }
 }
 /*Chart*/
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+
+.row {
+    margin: 0 !important;
+}
 .inputForm {
     width: 15%;
     /*display: inline-block;*/
