@@ -13,21 +13,20 @@
 <ul style="list-style-type:none" id="userList">
     @foreach (var user in Model)
     {
-        if (user.Email != "grupp1superadmin@cool.se")
+
+        @foreach (var person in people)
         {
-            <li>
-                <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id" style="color:black ">
-                    <b>E-postadress:</b> @user.Email <br /> <b>AnvändarID:</b> @user.Id <br />
-                    @foreach (var person in people)
-                    {
-                        if (person.IdentityId == user.Id)
-                        {
-                            <text><b>Namn:</b> @person.FirstName @person.Lastname </text>
-                        }
-                    }
-                </a><hr />
-            </li>
+            @if (person.IdentityId == user.Id && user.Email != "grupp1superadmin@cool.se")
+            {
+                <li>
+                    <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id" style="color:black ">
+                        <b>E-postadress:</b> @user.Email <br /> <b>AnvändarID:</b> @user.Id <br />
+                        <text><b>Namn:</b> @person.FirstName @person.Lastname </text>
+                    </a><hr />
+                </li>
+            }
         }
+
 
 
     }
