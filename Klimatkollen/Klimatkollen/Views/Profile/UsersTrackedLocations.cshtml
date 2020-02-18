@@ -179,9 +179,7 @@
     }
 
 
-    $(document).ready(function () {
-
-        //Metod för att dra igång kartan
+   $(document).ready(function () {
         function myMap(lat, long) {
             var myCenter = new google.maps.LatLng(lat, long);
             var mapCanvas = document.getElementById("map");
@@ -195,8 +193,7 @@
                 zoomControl: false,
                 scrollwheel: true
             };
-            //Skapar kartan, plockar enhetens position (vid godkännande) och lägger markern på plats
-            //Kallar även på metod för att hämta områden kopplade till latlng
+
             map = new google.maps.Map(mapCanvas, mapOptions);
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -212,12 +209,12 @@
                         map.setCenter(marker.getPosition());
                     });
                     marker.addListener('dragend', function () {
-                        document.getElementById("lat").value = marker.getPosition().lat();
-                        document.getElementById("long").value = marker.getPosition().lng();
+                        var lat = document.getElementById("lat").value = marker.getPosition().lat();
+                        var long = document.getElementById("long").value = marker.getPosition().lng();
+                        GetAreasJson(lat, long);
                     });
-
-                    map.setCenter(marker.getPosition());
                     GetAreasJson(latInput, longInput);
+                    map.setCenter(marker.getPosition());
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -225,14 +222,14 @@
                 // Browser doesn't support Geolocation
                 handleLocationError(false, infoWindow, map.getCenter());
             }
-        };
 
-        marker = new google.maps.Marker({
-            position: myCenter,
-            draggable: true
+            marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            }
+            );
+            marker.setMap(map);
         }
-        );
-        marker.setMap(map);
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
@@ -242,7 +239,6 @@
             infoWindow.open(map);
         }
 
-        //Dessa rader ser till att markern är flyttbar med klick
         google.maps.event.addDomListener(window, 'load', myMap(67.85426620914679, 20.227949203380874));
 
         map.addListener('click', function (event) {
@@ -250,10 +246,7 @@
             var lat = document.getElementById("lat").value = marker.getPosition().lat();
             var long = document.getElementById("long").value = marker.getPosition().lng();
             GetAreasJson(lat, long);
-            ShowDroplist();
         });
-
-
     });
 
     //Kod för att flytta marker till angivet område och centrera kartan där
