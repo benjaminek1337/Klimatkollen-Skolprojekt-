@@ -3,12 +3,27 @@
     ViewData["Title"] = "AddNews";
 }
 
-<h1>AddNews</h1>
+<h1>Lägg till ny nyhet</h1>
 
-<form>
-    <input asp-for="Title" />
-    <input type="date" asp-for="Date" />
-    <input asp-for="Content" />
-    <input type="submit" asp-action="AddNews" asp-controller="NewsController" formmethod="post"/>
+<div class="addNews">
+
+<label>Titel</label>
+<form class="news">
+    <input type="text" asp-for="Title" />
 </form>
+<br />
+
+    <label>Datum</label>
+    <form>
+        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control oso", @type = "date" } })
+    </form>
+<br />
+
+    <label>Innehåll</label>
+    <form>
+        @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control ContentTextArea", @placeholder = "Lägg till innehåll"} })
+    </form>
+<br />
+    <input type="submit" value="Spara nyhet" asp-action="AddNews" asp-controller="NewsController" formmethod="post"/>
+</div>
 

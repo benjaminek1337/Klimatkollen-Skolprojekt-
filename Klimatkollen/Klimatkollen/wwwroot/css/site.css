@@ -629,3 +629,22 @@ body {
 .row {
     margin: 0 !important;
 }
+    }
+
+/*NEWS*/
+
+.addNews input[type=date], .addNews input[type=text]{
+    width: 30%;
+}
+
+.addNews input[type=submit]{
+    padding: 10px
+}
+.addNews label{
+    font-size: 20px;
+}
+
+#Content{
+    width: 50%;
+    height: 300px;
+}

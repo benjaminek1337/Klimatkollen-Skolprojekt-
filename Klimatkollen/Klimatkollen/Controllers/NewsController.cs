@@ -45,5 +45,17 @@ namespace Klimatkollen.Controllers
             newsDd.AddObjectToDb(news);
             return View();
         }
+        [Authorize(Roles = "Admin,grupp1superadmin")] //måste den ligga här?
+        public IActionResult RemoveNews(int newsId)
+        {
+            if (newsId == 0)
+            {
+                return RedirectToAction("AddnNews");
+            }
+            News news = newsDd.GetChoosenNews(newsId);
+            newsDd.RemoveObjectFromDb(news);
+
+            return RedirectToAction("AddNews");//Egentligen en bekräftelse på borttagningen
+        }
     }
 }

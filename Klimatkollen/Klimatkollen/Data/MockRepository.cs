@@ -447,6 +447,10 @@ namespace Klimatkollen.Data
             return await Task.FromResult(avgtemps);
         }
 
+        public News GetChoosenNews(int newsId)
+        {
+            return dbContext.News.Where(i => i.NewsID.Equals(newsId)).FirstOrDefault();
+        }
         public List<News> GetNews()
         {
             List<News> allNews = new List<News>();
