@@ -102,7 +102,7 @@ namespace Klimatkollen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PostEditUserObservation(ObservationFilterViewModel model, int measurmentValue, int measurmentId) //Measurement model
+        public async Task<IActionResult> PostEditUserObservation(ObservationFilterViewModel model, int measurmentValue, int measurmentId) //Measurement model
         {
             string fileName = null;
             if (model.CreateMeasurementViewModel.Photo != null)
@@ -120,10 +120,14 @@ namespace Klimatkollen.Controllers
             {
                 observationdb.UpdateMeasurmentValue(measurmentId, measurmentValue.ToString());
             }
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPersonFromObservationId(model.Observation.Id);
 
-            //var model = observationdb.GetObservationWithMeasurement(id);
-            //observationdb.PostEditedMeasurement(model);
-            return RedirectToAction("UserProfile");
+            if (person.IdentityId == userId)
+                return RedirectToAction("UserProfile");
+            else
+                return RedirectToAction("EditUser", "Admin", new { id = person.IdentityId });
         }
 
         public IActionResult DeletePhoto(int measurementid, int observationid, string photoname)
