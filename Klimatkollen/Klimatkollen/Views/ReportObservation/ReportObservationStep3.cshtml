@@ -20,7 +20,15 @@
     @if (ViewBag.thirdCategoriesCount > 0)
     {
         <br />
-        <h5>Kategorier:</h5>
+        if (Model.category.Unit == "Päls")
+        {
+            <h5>Jag såg en @Model.category.Type med:</h5>
+        }
+        else
+        {
+            <h5>Jag har gjort en mätning av:</h5>
+        }
+
         @foreach (var item in ViewBag.thirdCategories)
         {
             <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
@@ -32,8 +40,7 @@
 <div id="valueBox">
     @if (ViewBag.IsValueEnable == false)
     {
-        <hr />
-        <h5>Miljö:</h5>
+        <h5>i miljön:</h5>
         <div id="valueDiv">
             @foreach (var item in ViewBag.environment)
             {
@@ -56,9 +63,10 @@
     {
         if (!Model.category.Unit.Equals("Djur") && !Model.category.Unit.Equals("Annat"))
         {
-            <h5>Värde:</h5>
+            <h5 style="display: inline-block">Värde: </h5> <p id="unitLabel" style="display: inline-block"></p>
             <div class="col-md-8" style="visibility: visible">
                 @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue"@*, @type="number"*@ } })
+                
             </div>
             <br />
         }
@@ -77,7 +85,8 @@
 
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
+        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", placeholder = "Fyll i en kommentar" } })
+        
     </div>
     <br />
 
@@ -248,7 +257,28 @@
 <script>
     function SetValue(y) {
         var x = document.getElementById("resultBoxId");
+        var z = document.getElementById("unitLabel");
+        var defaultString = "(anges i ";
+
         x.value = y.value;
+        if (y.value == 7 || y.value == 8) {
+            z.innerHTML = defaultString + "celcius)";
+        }
+        else if (y.value == 9) {
+            z.innerHTML = defaultString + "m/s)";
+        }
+        else if (y.value == 10) {
+            z.innerHTML = defaultString + "grader)";
+        }
+        else if (y.value == 11) {
+            z.innerHTML = defaultString + "ph)";
+        }
+        else if (y.value == 12) {
+            z.innerHTML = defaultString + "%)";
+        }
+        else if (y.value == 13) {
+            z.innerHTML = defaultString + "cm)";
+        }
     }
     function SetValueTwo(y) {
         var x = document.getElementById("resultBoxSecondMeasurement");

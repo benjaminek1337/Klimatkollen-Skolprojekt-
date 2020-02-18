@@ -576,6 +576,33 @@ body {
         width: 100%;
     }
 }
+/*Chart*/
+.inputForm {
+    width: 15%;
+    /*display: inline-block;*/
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+    .inputForm input {
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+    }
+@media (max-width: 450px) {
+    .inputForm input {
+        margin: 10px 0;
+    }
+
+    .inputForm {
+        width:100%;
+        
+    }
+}
+    }
+}
 .table td {
     border-top: none;
     border-bottom: none;
