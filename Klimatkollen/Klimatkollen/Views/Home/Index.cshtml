@@ -10,13 +10,17 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h2>Välkommen till Klimatkollen</h2>
-    <p>På nedan karta ser du de observationer som gjorts utifrån dina intressen. Dessa kan hanteras under <a asp-action="UserProfile" asp-controller="Profile" title="Till min profil">min profil.</a></p>
-    <p>Eller klicka här för att se <a asp-action="Index" asp-controller="Observations" title="Till min profil">alla observationer.</a></p>
-    <a class="btn btn-primary" asp-action="ReportObservationStep1" asp-controller="ReportObservation" title="Se alla observationer">Rapportera ny observation</a>
+    <br />
+    <div style="margin-left:5%; margin-right:5%; padding:2%; background-color:#cadbce; border-radius:7px; ">
+        <h2>Hej, och välkommen in till oss!</h2>
+        <p>På kartan här nere ser du de observationer som gjorts utifrån dina intressen. Dessa kan du ändra under <a asp-action="UserProfile" asp-controller="Profile" title="Till min profil">min profil.</a></p>
+        <p>Eller klicka här för att se <a asp-action="Index" asp-controller="Observations" title="Till min profil">alla gjorda observationer.</a></p>
+        <a class="btn btn-primary" asp-action="ReportObservationStep1" asp-controller="ReportObservation" title="Se alla observationer">Rapportera ny observation</a>
+    </div>
     <br />
     <br />
     <div>
+
         @await Component.InvokeAsync("ObservationsOnMap")
     </div>
 }
@@ -25,6 +29,8 @@ else
     <div>
         @await Component.InvokeAsync("SliderOne")
     </div>
+    <h1 style="text-align:center">Välkommen till Klimatkollen</h1>
+    <br/>
     <div>
         @await Component.InvokeAsync("BecomeMember")
     </div>

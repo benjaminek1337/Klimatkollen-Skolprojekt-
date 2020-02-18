@@ -29,27 +29,23 @@
                 <a asp-action="ListRoles" class="btn btn-outline-primary">Tillbaka</a>
             </div>
         </div>
+        <br />
 
-        <div class="card">
-            <div class="card-header">
-                <h3>Användare</h3>
-            </div>
-            <div class="card-body">
+                <h3>Användare med denna behörighet</h3>
+
                 @if (Model.Users.Any())
                 {
                     foreach (var user in Model.Users)
                     {
-                        <p>@user</p>
+                        <p>&bull;&nbsp;@user</p>
                     }
                 }
                 else
                 {
                     <h4>Det finns inga användare i denna roll</h4>
                 }
-            </div>
-            <div class="card-footer">
+
                 <a asp-action="EditUserRole" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-primary">Lägg till eller ta bort användare</a>
 
-            </div>
-        </div>
+
     </form>

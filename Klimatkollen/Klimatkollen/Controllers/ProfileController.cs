@@ -143,23 +143,31 @@ namespace Klimatkollen.Controllers
                     message += string.Format("<b>StackTrace:</b> {0}<br /><br />", ex.StackTrace.Replace(Environment.NewLine, string.Empty));
                     message += string.Format("<b>Source:</b> {0}<br /><br />", ex.Source.Replace(Environment.NewLine, string.Empty));
                     message += string.Format("<b>TargetSite:</b> {0}", ex.TargetSite.ToString().Replace(Environment.NewLine, string.Empty));
-                    ViewBag.ErrorMessage = message;
-                    
+                    observationdb.DeleteMeasurementPhoto(measurementid);
+
                 }
 
             }
             return RedirectToAction("EditUserObservation", new { id = observationid });
         }
 
-        public IActionResult DeleteUserMeasurement(int id)
+        public IActionResult DeleteUserMeasurement(int observationid)
         {
-            observationdb.DeleteMeasurement(id);
+            observationdb.DeleteMeasurement(observationid);
             return RedirectToAction("UserProfile");
         }
-        public IActionResult DeleteObservation(int id)
+        public async Task<IActionResult> DeleteObservation(int measurementid, int observationid, string photoname)
         {
-            observationdb.DeleteObservation(id);
-            return RedirectToAction("UserProfile");
+            var user = await GetCurrentUserAsync();
+            string userId = user?.Id;
+            var person = db.GetPersonFromObservationId(observationid);
+            if(photoname != null)
+                DeletePhoto(measurementid, observationid, photoname);
+            observationdb.DeleteObservation(observationid);
+            if (person.IdentityId == userId)
+                return RedirectToAction("UserProfile");
+            else
+                return RedirectToAction("EditUser", "Admin", new { id = person.IdentityId });
         }
 
         public async Task<IActionResult> UsersTrackedLocations()

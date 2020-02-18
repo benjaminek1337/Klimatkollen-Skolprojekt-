@@ -430,7 +430,27 @@ namespace Klimatkollen.Data
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
+        public async Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync()
+        {   
+            var temperaturelist = dbContext.Measurements.Where(m => m.ThirdCategory.Type.Equals("Lufttemperatur"))
+                .Include(n=>n.Observation).ToList();
 
+            var avgtemps = from post in temperaturelist
+                           group post by post.Observation.Date into dateGroup
+                           select new MeasurementDatesViewModel
+                           {
+                               Date = dateGroup.Key,
+                               AvgTemp = dateGroup.Average(x => float.Parse(x.Value))
+                           };
+
+   
+            return await Task.FromResult(avgtemps);
+        }
+
+        public News GetChoosenNews(int newsId)
+        {
+            return dbContext.News.Where(i => i.NewsID.Equals(newsId)).FirstOrDefault();
+        }
         public List<News> GetNews()
         {
             List<News> allNews = new List<News>();

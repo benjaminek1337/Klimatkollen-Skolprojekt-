@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -63,6 +64,14 @@ namespace Klimatkollen.Data
             context.UserTrackedLocations.Remove(context.UserTrackedLocations.Where(l => l.Id.Equals(id)).FirstOrDefault());
             context.SaveChanges();
 
+        }
+
+        public Person GetPersonFromObservationId(int id)
+        {
+            var observation = context.Observations.Where(o => o.Id.Equals(id))
+                .Include(o => o.Person)
+                .FirstOrDefault();
+            return context.Persons.Where(p => p.Id.Equals(observation.Person.Id)).FirstOrDefault();
         }
     }
 }

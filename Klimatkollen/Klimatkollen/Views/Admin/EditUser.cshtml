@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Hantera användare";
-    var measurements = ViewBag.Measurements;
+    var observations = ViewBag.Observations;
 }
 
 <h1>Hantera användare</h1>
@@ -36,7 +36,7 @@
             <span asp-validation-for="Lastname" class="text-danger"></span>
         </div>
     </div>
-    @Html.HiddenFor(m => m.UserName, new { id = "hiddenUserName"})
+    @Html.HiddenFor(m => m.UserName, new { id = "hiddenUserName" })
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="form-group row">
@@ -46,54 +46,127 @@
             <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@Model.Id" class="btn btn-danger">Radera användare</a>
         </div>
     </div>
+    <br />
+    <h3>Användarens systembehörigheter</h3>
+    @if (Model.Roles.Any())
+    {
+        foreach (var role in Model.Roles)
+        {
+            <h5 class="card-title">&bull;&nbsp;@role</h5>
+        }
+        <br />
+    }
+    else
+    {
+        <h5 class="card-title">Användaren har för tillfället inga systembehörigheter</h5>
+        <br />
+    }
+    <a asp-action="EditRolesForUser" asp-controller="Admin" asp-route-id="@Model.Id" style="width:auto" class="btn btn-primary">
+        Hantera användares systembehörigheter
+    </a>
+    <br />
+    <br />
+    <h3>@Model.FirstName's observationer</h3>
+    <hr />
     <div class="observations">
         <ul style="list-style-type:none; padding: 0;">
-            @if (measurements != null)
+            @if (observations != null)
             {
-                foreach (var measurement in measurements)
+            <li>
+                @foreach (var item in observations)
                 {
-                    <li>
-                        <div class="card">
-                            <div class="card-header">
-                                Observation av @measurement.Id
-                            </div>
-                            <div class="card-body">
-                                Mätvärde: @measurement.Value, @measurement.ThirdCategory.Type <br /><br />
-                                Kommentar: @measurement.Observation.Comment <br />
-                                Observation gjord den @measurement.Observation.Date
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
-                            </div>
-                        </div>
-                    </li>
+                    <h4>Observation av @item.Observation.MainCategory.CategoryName</h4>
+                    @if (item.Observation.maincategoryId == 2)
+                    {
+                        <h6 style="display:inline-block;">Djur:</h6>
+                        <span>@item.Category.Type</span>
+
+                        @foreach (var x in item.Measurements)
+                        {
+                            <br />
+                            if (x.ThirdCategory.Unit == "Päls")
+                            {
+                                <h6 style="        display: inline-block;
+">
+                                    Päls:
+                                </h6>
+                                <span>@x.ThirdCategory.Type</span>
+                            }
+                            @if (x.ThirdCategory.Unit == "Miljö")
+                            {
+                                <h6 style="display:inline-block;">Miljö:</h6>
+                                <span>@x.ThirdCategory.Type</span>
+                                <br />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <h6 style="display:inline-block;">Typ av mätning:</h6>
+                        @foreach (var x in item.Measurements)
+                        {
+                            <span>@x.ThirdCategory.Type</span>
+
+                            if (x.Value != null)
+                            {
+                                <br />
+                                <h6 style="display:inline-block;">Värde: </h6>
+                                <span style="display: inline-block">@x.Value @x.ThirdCategory.Unit</span>
+                                @*<p style="display:inline-block;">(@x.ThirdCategory.Unit)</p>*@
+                            }
+
+                        }
+                        <br />
+                    }
+                    <h6 style="display:inline-block;">Plats:</h6>
+                    <span> @item.Observation.Place, @item.Observation.AdministrativeArea</span>
                     <br />
+                    <h6 style="display:inline-block;">Datum:</h6>
+                    <span> @item.Observation.Date.ToShortDateString()</span>
+                    <br />
+                    @if (item.Observation.Comment != "" && item.Observation.Comment != null)
+                    {
+                        <h6 style="display:inline-block;">Kommentar:</h6>
+                        <span> @item.Observation.Comment</span>
+                        <br />
+                    }
+
+                    @if (item.Measurement.PhotoPath != null)
+                    {
+                        var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
+                        <img class="card-img-top" style="height:auto; width:auto; max-height:350px; max-width:100%" src="@photoPath" asp-append-version="true" />
+                    }
+                    <br/>
+                    <div>
+                        <a class="btn btn-outline-primary" asp-route-id="@item.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                    </div>
                 }
+
+
+            </li>
             }
 
         </ul>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h3>Användarens systembehörigheter</h3>
-        </div>
-        <div class="card-body">
-            @if (Model.Roles.Any())
-            {
-                foreach (var role in Model.Roles)
-                {
-                    <h5 class="card-title">@role</h5>
-                }
-            }
-            else
-            {
-                <h5 class="card-title">Användaren har för tillfället inga systembehörigheter</h5>
-            }
-        </div>
-        <div class="card-footer">
-            <a asp-action="EditRolesForUser" asp-controller="Admin" asp-route-id="@Model.Id" style="width:auto" class="btn btn-primary">
-                Hantera användares systembehörigheter
-            </a>
-        </div>
-    </div>
+
+
 </form>
+
+                        @*foreach (var Measurement in item)
+                        {
+
+                        }
+
+                        <h4>
+                            Observation av @item.Observation.MainCategory.CategoryName
+                        </h4>
+                        <p>
+                            Mätvärde: @item.Measurement.Value, @item.Measurement.ThirdCategory.Type <br /><br />
+                            Kommentar: @item.Measurement.Observation.Comment <br />
+                            Observation gjord den @measurement.Observation.Date.ToString("yyyy-MM-dd") <br />
+                        </p>
+                        <div>
+                            <a class="btn btn-outline-primary" asp-route-id="@measurement.Observation.Id" asp-action="EditUserObservation" asp-controller="Profile">Ändra observation</a>
+                        </div>
+
+                        <hr />*@

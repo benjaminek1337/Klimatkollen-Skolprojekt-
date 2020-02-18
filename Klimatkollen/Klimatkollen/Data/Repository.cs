@@ -198,6 +198,12 @@ namespace Klimatkollen.Data
             throw new NotImplementedException();
         }
 
+
+        public Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public ObservationFilterViewModel GetObservationWithMeasurement(int id)
         {
             throw new NotImplementedException();
@@ -234,6 +240,11 @@ namespace Klimatkollen.Data
         }
 
         public List<News> GetNews()
+        {
+            throw new NotImplementedException();
+        }
+
+        public News GetChoosenNews(int newsId)
         {
             throw new NotImplementedException();
         }

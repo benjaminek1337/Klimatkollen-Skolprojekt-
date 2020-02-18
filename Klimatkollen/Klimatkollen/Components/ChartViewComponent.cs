@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Data;
+using Klimatkollen.ViewModels;
 using Klimatkollen.Operations;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,15 +12,17 @@ namespace Klimatkollen.Components
     public class ChartViewComponent : ViewComponent 
     {
         private readonly RandomFloatGenerator randomFloatGenerator;
+        private readonly IRepository repository;
+
         public ChartViewComponent(IRepository repository)
         {
             randomFloatGenerator = new RandomFloatGenerator();
+            this.repository = repository;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-             
-            var test = await randomFloatGenerator.GetRandomFloatsJson();
-            return View(test);
+            var temperatures = await repository.GetTemperatureObservationsAsync();
+            return View(temperatures);
         }
     }
 }

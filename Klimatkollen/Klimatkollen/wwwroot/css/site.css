@@ -101,6 +101,13 @@ body {
         background-color: #3d8b40;
         border-color: #3d8b40;
     }
+
+.btn-outline-primary {
+    padding: 10px 12px 10px 12px;
+}
+.btn-danger {
+    padding: 10px 12px 10px 12px;
+}
 .btn-right {
     position: absolute;
     right: 0%;
@@ -276,8 +283,10 @@ body {
     }
 }
     .slidershow {
-        width: 700px;
-        height: 400px;
+        width: 100%;
+        height: auto;
+        max-height:550px;
+        
         overflow: hidden;
     }
 
@@ -285,7 +294,7 @@ body {
         margin: auto auto auto auto;
         top: 50%;
         left: 50%;
-        transform: translate(-1%, -1%);
+        transform: translate(0%, -4.5%);
     }
 
     .navigation {
@@ -574,6 +583,40 @@ body {
         width: 100%;
     }
 }
+/*Chart*/
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+
+.row {
+    margin: 0 !important;
+}
+.inputForm {
+    width: 15%;
+    /*display: inline-block;*/
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+    .inputForm input {
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+    }
+@media (max-width: 450px) {
+    .inputForm input {
+        margin: 10px 0;
+    }
+
+    .inputForm {
+        width:100%;
+        
+    }
+}
+
 .table td {
     border-top: none;
     border-bottom: none;
@@ -593,4 +636,23 @@ body {
 }
 .row {
     margin: 0 !important;
+}
+    }
+
+/*NEWS*/
+
+.addNews input[type=date], .addNews input[type=text]{
+    width: 30%;
+}
+
+.addNews input[type=submit]{
+    padding: 10px
+}
+.addNews label{
+    font-size: 20px;
+}
+
+#Content{
+    width: 50%;
+    height: 300px;
 }
