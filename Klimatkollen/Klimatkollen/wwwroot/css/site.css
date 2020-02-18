@@ -276,8 +276,10 @@ body {
     }
 }
     .slidershow {
-        width: 700px;
-        height: 400px;
+        width: 100%;
+        height: auto;
+        max-height:550px;
+        
         overflow: hidden;
     }
 
@@ -285,7 +287,7 @@ body {
         margin: auto auto auto auto;
         top: 50%;
         left: 50%;
-        transform: translate(-1%, -1%);
+        transform: translate(0%, -4.5%);
     }
 
     .navigation {
