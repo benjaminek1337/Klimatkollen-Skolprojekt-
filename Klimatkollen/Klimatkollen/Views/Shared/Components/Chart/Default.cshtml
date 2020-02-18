@@ -29,7 +29,6 @@
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
-        alert("draw")
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'Datum');
         data.addColumn('number', 'Temperatur');
@@ -56,9 +55,9 @@
 
         for (i = 0; i < temperatures.length; i++) {
             data.addRow([i, parseFloat(temperatures[i]), medianTemperature, medianTemperature - 0.80]);
-    }
+        }
 
-                var options = {
+        var options = {
             chart: {
                 title: 'Senaste temperaturen'
             },
@@ -66,28 +65,22 @@
             height: 500,
             axes: {
                 x: {
-                        0: { side: 'top' }
-                    }
+                    0: { side: 'top' }
                 }
-            };
+            }
+        };
 
-            var chart = new google.charts.Line(document.getElementById('line_top_x'));
+        var chart = new google.charts.Line(document.getElementById('line_top_x'));
 
-            chart.draw(data, google.charts.Line.convertOptions(options));
+        chart.draw(data, google.charts.Line.convertOptions(options));
 
   
-
-
-
-
         function findTemperaturesFromLocation(lon, lat) {
-
-
+        alert(temp)
            temperatures = []
             var url1 = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/" + lon.toFixed(2) + "/lat/" + lat.toFixed(2) + "/data.json"
             var url = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/12.158/lat/57.5812/data.json"
 
-          
             fetch(url)
                     .then(response => response.json())
                 .then(data => {
@@ -96,7 +89,6 @@
                     for (var i = 0; i < data1.timeSeries[0].parameters.length; i++) {
                         if (data1.timeSeries[0].parameters[i].unit[0] == "c") {
                             temperatures[i] = data1.timeSeries[0].parameters[i].values[0]
-                            alert(data1.timeSeries[0].parameters[i].values[0])
                         }
                     }
             drawChart()
@@ -128,14 +120,13 @@
                         draggable: true
                     });
                     marker.addListener('click', function () {
-                       // map.setCenter(marker.getPosition());
+                        map.setCenter(marker.getPosition());
                     });
                     marker.addListener('dragend', function () {
                         document.getElementById("lat").value = marker.getPosition().lat();
                         document.getElementById("long").value = marker.getPosition().lng();
                     });
-                  //  map.setCenter(marker.getPosition());
-                   // GetAreasJson(latInput, longInput)
+                    map.setCenter(marker.getPosition());
                 }, function () {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
@@ -143,12 +134,12 @@
                 // Browser doesn't support Geolocation
                 handleLocationError(false, infoWindow, map.getCenter());
             }
-            marker = new google.maps.Marker({
-                position: myCenter,
-                draggable: true
-            }
-            );
-            marker.setMap(map);
+            //marker = new google.maps.Marker({
+            //    position: myCenter,
+            //    draggable: true
+            //}
+            //);
+            //marker.setMap(map);
         }
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
