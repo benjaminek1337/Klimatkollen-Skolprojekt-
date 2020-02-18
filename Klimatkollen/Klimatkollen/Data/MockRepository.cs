@@ -465,7 +465,10 @@ namespace Klimatkollen.Data
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
-
+        public News GetChoosenNews(int newsId)
+        {
+            return dbContext.News.Where(i => i.NewsID.Equals(newsId)).FirstOrDefault();
+        }
         public List<News> GetNews()
         {
             List<News> allNews = new List<News>();

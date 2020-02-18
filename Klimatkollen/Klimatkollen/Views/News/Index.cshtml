@@ -38,6 +38,10 @@
                         Publicerades: @News.Date.ToShortDateString()
                         @*<a class="btn btn-outline-primary" asp-route-id="@News.NewsID" asp-action="EditNews" asp-controller="News">Ändra nyhet</a>*@
                     </div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("grupp1superadmin"))
+                    {
+                        @Html.ActionLink("Ta bort nyhet", "RemoveNews", "News", new { newsId = News.NewsID })
+                    }
                 </div>
             </li>
         }
