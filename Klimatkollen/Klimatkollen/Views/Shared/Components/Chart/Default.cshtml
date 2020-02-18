@@ -163,8 +163,21 @@
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
             } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
+                    // Browser doesn't support Geolocation
+                     marker = new google.maps.Marker({
+                            position: { lat: 67.85426620914679, lng: 20.227949203380874 },
+                            map: map,
+                            draggable: true
+                     });
+                     marker.addListener('click', function () {
+                            map.setCenter(marker.getPosition());
+                     });
+                        marker.addListener('dragend', function () {
+                            document.getElementById("lat").value = marker.getPosition().lat();
+                            document.getElementById("long").value = marker.getPosition().lng();
+                        });
+                        map.setCenter(marker.getPosition());
+                    handleLocationError(false, infoWindow, map.getCenter());
             }
         }
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
