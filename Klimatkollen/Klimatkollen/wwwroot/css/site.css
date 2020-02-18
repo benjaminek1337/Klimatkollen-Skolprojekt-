@@ -101,6 +101,13 @@ body {
         background-color: #3d8b40;
         border-color: #3d8b40;
     }
+
+.btn-outline-primary {
+    padding: 10px 12px 10px 12px;
+}
+.btn-danger {
+    padding: 10px 12px 10px 12px;
+}
 .btn-right {
     position: absolute;
     right: 0%;
