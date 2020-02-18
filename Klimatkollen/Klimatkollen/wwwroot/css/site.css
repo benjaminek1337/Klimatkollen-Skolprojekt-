@@ -575,6 +575,14 @@ body {
     }
 }
 /*Chart*/
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+
+.row {
+    margin: 0 !important;
+}
 .inputForm {
     width: 15%;
     /*display: inline-block;*/
@@ -599,8 +607,7 @@ body {
         
     }
 }
-    }
-}
+    
 .table td {
     border-top: none;
     border-bottom: none;
@@ -613,11 +620,4 @@ body {
         color: white;
         background-color: #4CAF50;
     }
-   
-.chart {
-    width: 100%;
-    min-height: 450px;
-}
-.row {
-    margin: 0 !important;
-}
+  

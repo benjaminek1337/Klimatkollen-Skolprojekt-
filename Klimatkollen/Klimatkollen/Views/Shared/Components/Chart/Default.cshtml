@@ -3,13 +3,6 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="~/css/site.css" />
 
-<form class="inputForm">
-    <label for="date">Datum från:</label>
-    <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()" />
-    <label for="date">Datum till:</label>
-    <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()" />
-</form>
-
 <script type="text/javascript">
 
 </script>
@@ -18,13 +11,23 @@
 
 <div class="col-md-8">
     <h5>Välj plats:</h5>
-    <div id="map" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+    <div id="map1" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
     <div id="lat"></div>
     <div id="long"></div>
 
     <br />
 </div>
-
+<div class="form-group row">
+    <form class="inputForm">
+        <div class="col-sm-6">
+            <label for="date">Datum från:</label>
+            <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()" />
+        </div>
+        <div class="col-sm-6">
+            <label for="date">Datum till:</label>
+            <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()" />
+         </div>
+    </form></div>
 <div id="line_top_x"></div>
 
 
@@ -35,7 +38,7 @@
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
-        alert("draw")
+
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Datum');
         data.addColumn('number', 'Temperatur');
@@ -106,10 +109,10 @@
 
                 var options = {
             chart: {
-                title: 'Senaste temperaturen'
+                title: 'Se temperatur över tid'
             },
-            width: 900,
-            height: 500,
+            //width: 900,
+            //height: 500,
             axes: {
                 x: {
                         0: { side: 'top' }
@@ -139,9 +142,13 @@
                 .then(data => {
                     var data1 = data
 
+                    var today = new Date();
+
                     for (var i = 0; i < data1.timeSeries[0].parameters.length; i++) {
                         if (data1.timeSeries[0].parameters[i].unit[0] == "c") {
-                            temperatures[i] = data1.timeSeries[0].parameters[i].values[0]
+                            temperatures[i].temp = data1.timeSeries[0].parameters[i].values[0]
+                            temperatures[i].date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+
                             alert(data1.timeSeries[0].parameters[i].values[0])
                         }
                     }
@@ -153,7 +160,7 @@
     $(document).ready(function () {
         function myMap(lat, long) {
             var myCenter = new google.maps.LatLng(lat, long);
-            var mapCanvas = document.getElementById("map");
+            var mapCanvas = document.getElementById("map1");
             var latInput, longInput;
             var mapOptions = {
                 center: myCenter,

@@ -12,8 +12,10 @@ namespace Klimatkollen.Components
     public class ChartViewComponent : ViewComponent 
     {
         private readonly RandomFloatGenerator randomFloatGenerator;
+        private readonly IRepository db;
         public ChartViewComponent(IRepository repository)
         {
+            db = repository;
             randomFloatGenerator = new RandomFloatGenerator();
         }
         public async Task<IViewComponentResult> InvokeAsync()
