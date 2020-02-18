@@ -9,8 +9,8 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <div class="member">
-            <h1>Engagera dig som klimatobservatör</h1>
-            <h4>Gör något bra för forskningen och klimatet, rapportera dina observationer</h4>
+            <h2 style="text-align:center">Engagera dig som klimatobservatör</h2>
+            <h4>Gör ditt bidrag till forskningen och klimatet, rapportera dina observationer</h4>
             <div>              
                 <a href="@Url.Action("ReportObservationStep1", "ReportObservation")" class="btn btn-primary">Rapportera ny observation</a>
             </div>
@@ -20,10 +20,13 @@
     else
     {
         <div class="member">
-            <h1>Engagera dig - <br /> bli klimatobservatör idag!</h1>
-            <h4>Gör något bra för forskningen, bli medlem gratis.</h4>
+            <h2 style="text-align:center">Engagera dig - bli klimatobservatör idag!</h2>
+            <h5 style="text-align:center">Gör ett bidrag till forskningen och klimatet, bli medlem helt gratis och hjälp oss att hjälpa klimatet.</h5>
+            <p style="padding-left:5%; padding-right:5%; padding-top:2%" >Din data räknas - bli medlem redan idag. Det kostar dig ingenting, och du kan bidra med det du kan. <br />
+            Är det ovanligt kallt ute?
+            Har du sett ett djur klädd i sommarpäls trots att det är februari? Sådan information är väldigt värdefull för vetenskapen och du kan vara med att bidra!</p>
             <div>
-                <a href="/Identity/Account/Register?returnUrl=%2F" style="font-size:20px;">Jag vill bli klimatobservatör</a>
+                <a href="/Identity/Account/Register?returnUrl=%2F" style="font-size:24px;">Jag vill bli klimatobservatör</a>
             </div>
             <div>
                 <p>Eller klicka här för att inspireras av <a asp-action="Index" asp-controller="Observations" title="Alla observationer">befintliga observationer.</a></p>
