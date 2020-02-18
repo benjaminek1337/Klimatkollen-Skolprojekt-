@@ -41,6 +41,7 @@ namespace Klimatkollen.Data
         Task<IEnumerable<Observation>> TestTableAsync();
         int GetLastObservationIdFromUser(Person p);
         List<Measurement> GetAllMeasurements2();
+        Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync();
         List<String> GetTopAreas(int num);
         void UpdateMeasurementPhoto(int id, string filePath);
         void DeleteMeasurementPhoto(int id);

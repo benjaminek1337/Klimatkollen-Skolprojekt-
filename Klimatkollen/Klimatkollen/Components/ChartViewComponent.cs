@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Data;
+using Klimatkollen.ViewModels;
 using Klimatkollen.Operations;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,9 +18,9 @@ namespace Klimatkollen.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-             
-            var test = await randomFloatGenerator.GetRandomFloatsJson();
-            return View(test);
+
+            var temperatures = await db.GetTemperatureObservationsAsync();
+            return View(temperatures);
         }
     }
 }
