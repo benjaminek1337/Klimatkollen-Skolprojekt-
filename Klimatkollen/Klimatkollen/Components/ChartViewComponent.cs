@@ -12,14 +12,16 @@ namespace Klimatkollen.Components
     public class ChartViewComponent : ViewComponent 
     {
         private readonly RandomFloatGenerator randomFloatGenerator;
+        private readonly IRepository repository;
+
         public ChartViewComponent(IRepository repository)
         {
             randomFloatGenerator = new RandomFloatGenerator();
+            this.repository = repository;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
-            var temperatures = await db.GetTemperatureObservationsAsync();
+            var temperatures = await repository.GetTemperatureObservationsAsync();
             return View(temperatures);
         }
     }
