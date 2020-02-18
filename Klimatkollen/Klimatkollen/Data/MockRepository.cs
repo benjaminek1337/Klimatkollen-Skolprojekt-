@@ -443,7 +443,7 @@ namespace Klimatkollen.Data
                                AvgTemp = dateGroup.Average(x => float.Parse(x.Value))
                            };
 
-   
+            avgtemps = avgtemps.OrderBy(x => x.Date);
             return await Task.FromResult(avgtemps);
         }
 

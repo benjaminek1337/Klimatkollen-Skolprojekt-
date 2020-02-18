@@ -1,35 +1,15 @@
-﻿@*@model IEnumerable<float>*@ 
+﻿@*@model IEnumerable<float>*@
 @model IEnumerable<Klimatkollen.ViewModels.MeasurementDatesViewModel>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="~/css/site.css" />
 
-<script type="text/javascript">
 
+
+<script>
+    function ToggleChangeDates() {
+        $("#ChangeDatesDiv").toggle("fast");
+    }
 </script>
-
-
-
-<div class="col-md-8">
-    <h5>Välj plats:</h5>
-    <div id="map1" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
-    <div id="lat"></div>
-    <div id="long"></div>
-
-    <br />
-</div>
-<div class="form-group row">
-    <form class="inputForm">
-        <div class="col-sm-6">
-            <label for="date">Datum från:</label>
-            <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()" />
-        </div>
-        <div class="col-sm-6">
-            <label for="date">Datum till:</label>
-            <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()" />
-         </div>
-    </form></div>
-<div id="line_top_x"></div>
-
 
 <script>
     var temperatures = []
@@ -81,7 +61,7 @@
         @:});
     }
 
-       
+
 
         for (var i = 0; i < model.length; i++) {
             if (Date.parse(model[i].Date) >= Date.parse(startDate) && Date.parse(model[i].Date) <= Date.parse(endDate)) {
@@ -89,7 +69,7 @@
                 dates.push(model[i].Date.customFormat("#DD#/#MM#/#YYYY#"));
             }
         }
-        
+
 
         var medianTemperature = 0;
 
@@ -100,9 +80,8 @@
 
         medianTemperature = medianTemperature / temperatures.length;
 
-        for (i = 0; i < temperatures.length; i++) {
-            data.addRow([i, parseFloat(temperatures[i]), medianTemperature, medianTemperature - 0.80]);
-        }
+        for (y = 0; y < temperatures.length; y++) {            data.addRow([temperatures[y].date, parseFloat(temperatures[y].temp), medianTemperature, medianTemperature - 0.80]);        }
+
 
         var options = {
             chart: {
@@ -121,7 +100,7 @@
 
         chart.draw(data, google.charts.Line.convertOptions(options));
 
-  
+
         function findTemperaturesFromLocation(lon, lat) {
         alert(temp)
            temperatures = []
@@ -144,7 +123,7 @@
                         }
                     }
             drawChart()
-                })  
+                })
         }
 
     var map, marker;
@@ -216,13 +195,33 @@
         async defer></script>
 
 
-
-
-
-
-    
-
 <div class="row">
     <div id="line_top_x" class="chart"> </div>
+</div>
+
+<div id="ChangeDatesDiv" style="display:none">
+    <div class="form-group row">
+        <div class="col-md-8">
+            <h5>Välj plats:</h5>
+            <div id="map1" style="height: 400px; width:100%; border-radius: 8px; box-shadow: 3px 7px 5px #888888"></div>
+            <br />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <label for="date">Datum från:</label>
+            <input type="date" class="form-control" value="@DateTime.Today.AddYears(-1).ToString("yyyy/MM/dd")" id="startDate" onchange="drawChart()" />
+        </div>
+        <div class="col-sm-4">
+            <label for="date">Datum till:</label>
+            <input type="date" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd")" id="endDate" onchange="drawChart()" />
+        </div>
+    </div>
+    <input type="text" id="lat" value="" />
+    <input type="text" id="long" value="" />
+    <br />
+</div>
+<div>
+    <button class="btn btn-outline-primary" onclick="ToggleChangeDates()">Ändra datum och plats för temperaturdata</button>
 </div>
 @*//Div för diagrammet*@
