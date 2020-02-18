@@ -496,13 +496,14 @@ namespace Klimatkollen.Data
 
         public List<String> GetTopAreas(int num)
         {
-            var test = dbContext.Observations
+            var list = dbContext.Observations
+                   .Where(x => !string.IsNullOrEmpty(x.AdministrativeArea))
                    .GroupBy(q => q.AdministrativeArea)
                    .OrderByDescending(gp => gp.Count())
                    .Take(num)
                    .Select(g => g.Key)
                    .ToList();
-            return test;
+            return list;
         }
         //public List<News> SortNewsByDate()
         //{
