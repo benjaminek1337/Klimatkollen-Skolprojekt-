@@ -56,6 +56,11 @@ namespace Klimatkollen.Data
             }; return person;
         }
 
+        public Person GetPersonFromObservationId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<UsersTrackedLocations> GetUsersTrackedLocations(Person person)
         {
             throw new NotImplementedException();

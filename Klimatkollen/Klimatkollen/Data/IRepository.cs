@@ -26,6 +26,7 @@ namespace Klimatkollen.Data
         List<Measurement> GetMeasurements(int id);
         List<UserFilter> GetUserFilters(Person p);
         UserFilter GetUserFilter(int userFilterId);
+        News GetChoosenNews(int newsId);
         List<News> GetNews();
 
         Measurement GetMeasurement(int id);
