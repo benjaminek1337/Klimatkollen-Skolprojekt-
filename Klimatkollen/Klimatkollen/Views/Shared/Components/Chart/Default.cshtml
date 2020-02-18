@@ -74,7 +74,9 @@
 
         medianTemperature = medianTemperature / temperatures.length;
 
-        for (y = 0; y < temperatures.length; y++) {            data.addRow([temperatures[y].date, parseFloat(temperatures[y].temp), medianTemperature, medianTemperature - 0.80]);        }
+        for (y = 0; y < temperatures.length; y++) {
+            data.addRow([temperatures[y].date, parseFloat(temperatures[y].temp), medianTemperature, medianTemperature - 0.80]);
+        }
 
 
         var options = {
@@ -182,12 +184,12 @@
     });
 
 
-    
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap"
         async defer></script>
 
-
+<h3> Temperaturdata </h3>
 <div class="row">
     <div id="line_top_x" class="chart"> </div>
 </div>
