@@ -8,27 +8,32 @@ using Klimatkollen.Models;
 using Microsoft.AspNetCore.Http;
 using Klimatkollen.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Klimatkollen.Controllers
 {
+    [Authorize(Roles = "Klimatobservatör,Admin,Superadmin")]
     public class ReportObservationController : Controller
     {
         private readonly IRepository db;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IHostingEnvironment hostingenv;
         private readonly IUserRepository userDb;
         private Task<IdentityUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
-        public ReportObservationController(IRepository repository, IUserRepository userRepository, UserManager<IdentityUser> userManager)
+        public ReportObservationController(IRepository repository, IUserRepository userRepository, UserManager<IdentityUser> userManager, IHostingEnvironment hostingenv)
         {
             this.db = repository;
             this.userManager = userManager;
+            this.hostingenv = hostingenv;
             this.userDb = userRepository;
         }
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult ReportObservationStep1()
         {
             //Hämtar MainCategories från db
@@ -71,6 +76,8 @@ namespace Klimatkollen.Controllers
             ViewBag.IsValueEnable = CheckList(list);
 
             ViewBag.thirdCategories = list;
+            int thirdCategoriesCount = list.Count();
+            ViewBag.thirdCategoriesCount = thirdCategoriesCount;
 
             if (model.category.Unit.Equals("Päls"))
             {
@@ -79,55 +86,37 @@ namespace Klimatkollen.Controllers
                 ViewBag.environment = list.Where(x => x.Unit.Equals("Miljö"));
             }
 
-            model.measurement.categoryId = model.category.Id;
+            model.measurement.categoryId = model.category.Id; 
 
             return View(model);
         }
 
         [HttpPost]
-        //[AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddObservation(ObservationViewModel model)
-        {
-            Measurement m = new Measurement()
-            {
-                //Category = model.category
-            };
-            //Konverterar ViewModel till ett objekt av Observation
-            Observation finalObservation = new Observation()
-            {
-                Comment = model.observation.Comment,
-                Date = model.observation.Date,
-                Longitude = model.observation.Longitude,
-                Latitude = model.observation.Latitude,
-                MainCategory = model.mainCategory,
-                //Measurement = m
-            };
-
-            //db.AddObjectToDb(finalOb);          
-            return View();
-        }
-
-
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReportObservationCompleted(ObservationViewModel model, string secondMeasurement)
         {
-            //if (model.measurement.thirdCategoryId == 0)
-            //{
-            //    //TODO: Fixa fullösning
-            //    model.measurement.thirdCategoryId = 11;
-            //}
-
             model.measurement.categoryId = model.category.Id;
             //Hämtar inloggad user
             var user = await GetCurrentUserAsync();
             string userId = user?.Id;
             var person = userDb.GetPerson(userId);
 
+            if (model.observation.Date.Year == 1)
+            {
+                model.observation.Date = DateTime.Today;
+            }
             //Sätter värden
             model.observation.Person = person;
             model.measurement.Observation = model.observation;
+            string fileName = null;
+            if(model.CreateMeasurementViewModel.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingenv.WebRootPath, "pictures");
+                fileName = Guid.NewGuid().ToString() + "_" + model.CreateMeasurementViewModel.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                model.CreateMeasurementViewModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.measurement.PhotoPath = fileName;
+            }
             
             //Sparar i DB
             //db.AddObjectToDb(model.observation);
@@ -142,7 +131,8 @@ namespace Klimatkollen.Controllers
                 {
                     thirdCategoryId =  Convert.ToInt32(secondMeasurement),
                     observationId = id,
-                    categoryId = model.category.Id
+                    categoryId = model.category.Id,
+                    PhotoPath = fileName
                 };
                 db.AddObjectToDb(m);
             }

@@ -1,33 +1,31 @@
-﻿<link rel="stylesheet" href="~/css/site.css" />
+﻿@model IEnumerable<Klimatkollen.Models.News>
+<link rel="stylesheet" href="~/css/site.css" />
 
 <div class="soHead">
-    <h1>Senaste gjorda observationer</h1>
-    <a href="" style="font-size: 20px">Visa mer</a>
+    <h1>Senaste nyheterna från Klimatkollen</h1>
+
+    @Html.ActionLink("Visa fler nyheter", "Index", "News")
 </div>
+ <br />
+@foreach (var News in Model)
+{
 
-<br />
-
-<div class="box">
-    <div class="box1">
-        <h2>Observation 1</h2>
-        <p>Datum</p>
-        <p>Här finns information om observation 1</p>
+    <div class="card">
+        <div id="NewsHeader" class="card-header">
+            @News.Title
+        </div>
+        <div id="NewsBody" class="card-body">
+            @if (News.Content.Length <= 120)
+            {
+                <p>@News.Content</p>
+            }
+            @if (News.Content.Length > 120)
+            {
+                <span>@News.Content.Remove(120)... <a asp-action="Index" asp-controller="News" title="Se alla observationer">&nbsp; Läs vidare</a></span>               
+            }
+        </div>
+        <div id="NewsFooter" class="card-footer">
+            Publicerades: @News.Date.ToShortDateString()
+        </div>
     </div>
-    <div class="box2">
-        <h2>Observation 2</h2>
-        <p>Datum</p>
-        <p>Här finns information om observation 2</p>
-    </div>
-    <div class="box3">
-        <h2>Observation 3</h2>
-        <p>Datum</p>
-        <p>Här finns information om observation 3</p>
-    </div>
-</div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+}

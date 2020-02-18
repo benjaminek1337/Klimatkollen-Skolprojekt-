@@ -16,19 +16,31 @@
 <hr />
 
 <div id="catDiv">
-    <br />
-    <h5>Kategorier:</h5>
-    @foreach (var item in ViewBag.thirdCategories)
+
+    @if (ViewBag.thirdCategoriesCount > 0)
     {
-        <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        <br />
+        if (Model.category.Unit == "Päls")
+        {
+            <h5>Jag såg en @Model.category.Type med:</h5>
+        }
+        else
+        {
+            <h5>Jag har gjort en mätning av:</h5>
+        }
+
+        @foreach (var item in ViewBag.thirdCategories)
+        {
+            <button class="buttonTemp smallbtn thirdCategoryBtn" onclick="SetValue(this)" value=@item.Id>@item.Type</button>
+        }
     }
+
 </div>
 
 <div id="valueBox">
     @if (ViewBag.IsValueEnable == false)
     {
-        <hr />
-        <h5>Miljö:</h5>
+        <h5>i miljön:</h5>
         <div id="valueDiv">
             @foreach (var item in ViewBag.environment)
             {
@@ -40,10 +52,10 @@
     }
 </div>
 
-@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm" }))
+@using (Html.BeginForm("ReportObservationCompleted", "ReportObservation", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myForm", enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
 
 
 <div class="form-group">
@@ -51,9 +63,10 @@
     {
         if (!Model.category.Unit.Equals("Djur") && !Model.category.Unit.Equals("Annat"))
         {
-            <h5>Värde:</h5>
+            <h5 style="display: inline-block">Värde: </h5> <p id="unitLabel" style="display: inline-block"></p>
             <div class="col-md-8" style="visibility: visible">
-                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue" } })
+                @Html.EditorFor(model => model.measurement.Value, new { htmlAttributes = new { @class = "form-control", @id = "resultBoxValue"@*, @type="number"*@ } })
+                
             </div>
             <br />
         }
@@ -66,15 +79,22 @@
 
     <div class="col-md-8">
         <h5>Datum:</h5>
-        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.observation.Date, new { htmlAttributes = new { @class = "form-control oso", @type = "date" } })
         <br />
     </div>
 
     <h5>Kommentar för observationen:</h5>
     <div class="col-md-8">
-        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", @placeholder = "Fyll i en kommentar" } })
+        @Html.TextAreaFor(model => model.observation.Comment, new { htmlAttributes = new { @class = "form-control CommentTextBox", placeholder = "Fyll i en kommentar" } })
+        
     </div>
     <br />
+
+    <h5>Bild</h5>
+    <div class="col-md-8 custom-file" style="visibility: visible">
+        <input asp-for="CreateMeasurementViewModel.Photo" class="form-control custom-file-input"/>
+        <label class="custom-file-label">Välj bild...</label>
+    </div>
 
     <div class="col-md-8">
         <div class="form-group">
@@ -111,7 +131,14 @@
 </div>
 }
 
-
+<script>
+    $(document).ready(function () {
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+    });
+</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBagdhMKVaEPqLco2PxO2NCSTPYeU_T4gU&callback=initMap" async defer></script>
 
@@ -230,7 +257,28 @@
 <script>
     function SetValue(y) {
         var x = document.getElementById("resultBoxId");
+        var z = document.getElementById("unitLabel");
+        var defaultString = "(anges i ";
+
         x.value = y.value;
+        if (y.value == 7 || y.value == 8) {
+            z.innerHTML = defaultString + "celcius)";
+        }
+        else if (y.value == 9) {
+            z.innerHTML = defaultString + "m/s)";
+        }
+        else if (y.value == 10) {
+            z.innerHTML = defaultString + "grader)";
+        }
+        else if (y.value == 11) {
+            z.innerHTML = defaultString + "ph)";
+        }
+        else if (y.value == 12) {
+            z.innerHTML = defaultString + "%)";
+        }
+        else if (y.value == 13) {
+            z.innerHTML = defaultString + "cm)";
+        }
     }
     function SetValueTwo(y) {
         var x = document.getElementById("resultBoxSecondMeasurement");

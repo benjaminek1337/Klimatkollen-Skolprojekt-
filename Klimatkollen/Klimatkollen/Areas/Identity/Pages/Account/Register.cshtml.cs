@@ -97,12 +97,18 @@ namespace Klimatkollen.Areas.Identity.Pages.Account
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    var role = await _roleManager.FindByNameAsync("Klimatobservatör");
-                    if(role == null)
+                    
+                    if(await _roleManager.FindByNameAsync("Klimatobservatör") == null)
                     {
                         await _roleManager.CreateAsync(new IdentityRole { Name = "Klimatobservatör" });
+                        var role = await _roleManager.FindByNameAsync("Klimatobservatör");
+                        await _userManager.AddToRoleAsync(user, role.Name);
                     }
-                    await _userManager.AddToRoleAsync(user, role.Name);
+                    else if(await _roleManager.FindByNameAsync("Klimatobservatör") != null)
+                    {
+                        var role = await _roleManager.FindByNameAsync("Klimatobservatör");
+                        await _userManager.AddToRoleAsync(user, role.Name);
+                    }
                     //CreatePerson(user);
                     Person person = new Person
                     {

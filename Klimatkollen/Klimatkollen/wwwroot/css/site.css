@@ -82,10 +82,10 @@ body {
     width: 120px;
     height: 90px;
 }
-    .active, .activeTwo, .activeThree, .buttonTemp:hover {
-        background-color: #4CAF50;
-        color: white;
-    }
+.active, .activeTwo, .activeThree, .activeFour, .buttonTemp:hover {
+    background-color: #4CAF50;
+    color: white;
+}
 .activeBtnTwo {
     background-color: #4CAF50;
     color: white;
@@ -101,6 +101,13 @@ body {
         background-color: #3d8b40;
         border-color: #3d8b40;
     }
+
+.btn-outline-primary {
+    padding: 10px 12px 10px 12px;
+}
+.btn-danger {
+    padding: 10px 12px 10px 12px;
+}
 .btn-right {
     position: absolute;
     right: 0%;
@@ -263,13 +270,23 @@ body {
 
 @media only screen and (max-width: 400px) {
     #slideOne, #slideTwo {
-        display: none;
-        
+        width: 100%;
+        height: auto;
+        /*display: none;*/
+    }
+}
+@media only screen and (max-width: 700px) {
+    #slideOne, #slideTwo {
+        width: 100%;
+        height: auto;
+        /*display: none;*/
     }
 }
     .slidershow {
-        width: 700px;
-        height: 400px;
+        width: 100%;
+        height: auto;
+        max-height:550px;
+        
         overflow: hidden;
     }
 
@@ -277,7 +294,7 @@ body {
         margin: auto auto auto auto;
         top: 50%;
         left: 50%;
-        transform: translate(-1%, -1%);
+        transform: translate(0%, -4.5%);
     }
 
     .navigation {
@@ -389,9 +406,76 @@ body {
         margin-right: 100px;
     }
 }
+/*NEWS*/
+.card {
+    float: left;
+    width: 27%;
+    box-shadow: 10px 10px 5px grey;
+    border-radius: 10px;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+#NewsHeader, #NewsFooter{
+    background-color: #cadbce;
+}
+
+#NewsBody {
+    background-color: #e9f7ec;
+}
+#NewsHeader, #NewsSiteHeader{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.cardSite {
+    width: 100%;
+    margin: 4%;
+    margin-left: 40%; 
+    box-shadow: 10px 10px 5px grey;
+    border-radius: 10px;
+
+}
+#NewsSiteHeader, #NewsSiteFooter{
+    background-color: #cadbce;
+}
+.observationCard {
+    width: 50%;
+}
+#NewsSiteBody {
+    background-color: #e9f7ec;
+}
+@media only screen and (max-width: 990px) {
+    .card{
+        margin: auto;
+        width: 250px;
+    }
+    .observationCard {
+        margin: auto;
+        width: 450px;
+    }
+}
+@media only screen and (max-width: 525px) {
+    .observationCard {
+        margin: auto;
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 450px) {
+    .card {
+        margin: auto;
+        width: 80%;
+    }
+    .observationCard {
+        margin: auto;
+        width: 100%;
+    }
+}
 
 /*SEE OBSERVATIONS*/
+.observationscontainer{
+    max-height:100%;
 
+}
 .box1 {
     background-color: #cadbce;
 }
@@ -399,13 +483,15 @@ body {
     background-color: #ddebe0;
 }
 .box3 {
+
     background-color: #e9f7ec;
+
 }
 
 .box1, .box2, .box3 {
     border-radius: 25px;
     box-shadow: 10px 10px 5px grey;
-    float: left;
+    display: inline-block;
     width: 30%;
     padding: 10px;
     margin-right: 15px;
@@ -415,7 +501,7 @@ body {
 @media only screen and (max-width: 400px) {
     .box1, .box2, .box3 {
         width: 80%;
-        margin-bottom: 15px;
+        margin-top: 15px;
     }
 }
 
@@ -496,4 +582,50 @@ body {
     #SearchString {
         width: 100%;
     }
+}
+/*Chart*/
+.inputForm {
+    width: 15%;
+    /*display: inline-block;*/
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+    .inputForm input {
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+    }
+@media (max-width: 450px) {
+    .inputForm input {
+        margin: 10px 0;
+    }
+
+    .inputForm {
+        width:100%;
+        
+    }
+}
+
+.table td {
+    border-top: none;
+    border-bottom: none;
+}
+.btn-outline-primary {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+    .btn-outline-primary:hover {
+        color: white;
+        background-color: #4CAF50;
+    }
+   
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+.row {
+    margin: 0 !important;
 }

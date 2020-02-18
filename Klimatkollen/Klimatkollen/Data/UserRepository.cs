@@ -1,4 +1,5 @@
 ﻿using Klimatkollen.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,12 @@ namespace Klimatkollen.Data
         public Person GetPerson(string id)
         {
             return context.Persons.FirstOrDefault(p => p.IdentityId.Equals(id));
+        }
+
+        public void AddPerson(Person person)
+        {
+            context.Add(person);
+            context.SaveChanges();
         }
 
         public List<Person> GetPeople()
@@ -59,10 +66,12 @@ namespace Klimatkollen.Data
 
         }
 
-        public void AddPerson(Person person)
+        public Person GetPersonFromObservationId(int id)
         {
-            context.Add(person);
-            context.SaveChanges();
+            var observation = context.Observations.Where(o => o.Id.Equals(id))
+                .Include(o => o.Person)
+                .FirstOrDefault();
+            return context.Persons.Where(p => p.Id.Equals(observation.Person.Id)).FirstOrDefault();
         }
     }
 }

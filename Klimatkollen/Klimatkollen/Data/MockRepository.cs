@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Klimatkollen.ViewModels;
+using Klimatkollen.Operations;
 
 namespace Klimatkollen.Data
 {
@@ -32,46 +33,7 @@ namespace Klimatkollen.Data
             var observation = new Observation() { Comment = "En kefefko", Date = DateTime.Now, Latitude = "l 232, 323, 323", Longitude = "1 ,234 ,342", Person = person };
         }
 
-        public List<float> GenerateRandomFloats(int amountToGenerate)
-        {
-            var floats = new List<float>();
-            Random random = new Random();
-
-            for (int i = 0; i < amountToGenerate; i++)
-            {
-                floats.Add((float)random.NextDouble() * (25 - -20) - 20);
-            }
-
-            return floats;
-        }
-
-
-        public String SerializeJsonFromFloats(List<float> floats)
-        {
-            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<float>));
-            string json;
-            using (MemoryStream msObj = new MemoryStream())
-            {
-                js.WriteObject(msObj, floats);
-                msObj.Position = 0;
-                using (StreamReader sr = new StreamReader(msObj))
-                {
-                    json = sr.ReadToEnd();
-                }
-            }
-
-            return json;
-        }
-
-        public void WriteJsonToFile(String jsonString, String filePath)
-        {
-            IFormatter formatter = new BinaryFormatter();
-
-            using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                formatter.Serialize(stream, jsonString);
-            }
-        }
+     
 
         public void AddObjectToDb(object objectToAdd)
         {
@@ -125,6 +87,7 @@ namespace Klimatkollen.Data
                 model.Observation = newObservation;
                 model.Measurements = measurementsList;
                 model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+                model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
 
                 if (model.Measurements[0].ThirdCategory == null)
                 {
@@ -133,6 +96,45 @@ namespace Klimatkollen.Data
                 }
 
                 observationsList.Add(model);
+            }
+
+            //observationsList.OrderByDescending(x => x.Observation.Id).ToList();
+            var result = observationsList.OrderByDescending(a => a.Observation.Id).ToList();
+
+            //return observationsList;
+            return result;
+        }
+        public List<ObservationFilterViewModel> GetAllMeasurementsFromPerson(Person person)
+        {
+            List<ObservationFilterViewModel> observationsList = new List<ObservationFilterViewModel>();
+            foreach (var observation in dbContext.Observations)
+            {
+                if (observation.Person == person)
+                {
+                    ObservationFilterViewModel model = new ObservationFilterViewModel();
+
+                    var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                        .Include(m => m.MainCategory)
+                        .Include(p => p.Person)
+                        .FirstOrDefault();
+                    var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(observation.Id))
+                        .Include(y => y.ThirdCategory)
+                        .ToList();
+
+                    model.Observation = newObservation;
+                    model.Measurements = measurementsList;
+                    model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+                    model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
+
+                    if (model.Measurements[0].ThirdCategory == null)
+                    {
+                        //Tomt objekt för att slippa få "null reference"
+                        model.Measurements[0].ThirdCategory = new ThirdCategory();
+                    }
+
+                    observationsList.Add(model);
+                }
+                
             }
             return observationsList;
         }
@@ -147,6 +149,15 @@ namespace Klimatkollen.Data
                 .Include(y => y.ThirdCategory)
                 .ThenInclude(a => a.Category)
                 .FirstOrDefault(m => m.Id.Equals(item.Id));
+
+                if (measurement.ThirdCategory == null)
+                {
+                    //Tomt objekt för att slippa få "null reference"
+                    measurement.ThirdCategory = new ThirdCategory()
+                    {
+                        Category = new Category()
+                    };
+                }
                 measurements.Add(measurement);
             }
             return measurements;
@@ -171,24 +182,112 @@ namespace Klimatkollen.Data
         {
             var updatedMeasurement = GetMeasurement(measurement.Id);
 
-            updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
-            updatedMeasurement.Observation.Place = measurement.Observation.Place;
-            updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
-            updatedMeasurement.Observation.Country = measurement.Observation.Country;
-            updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
-            updatedMeasurement.Observation.Date = measurement.Observation.Date;
-            updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
+            //updatedMeasurement.Observation.Latitude = measurement.Observation.Latitude;
+            //updatedMeasurement.Observation.Place = measurement.Observation.Place;
+            //updatedMeasurement.Observation.AdministrativeArea = measurement.Observation.AdministrativeArea;
+            //updatedMeasurement.Observation.Country = measurement.Observation.Country;
+            //updatedMeasurement.Observation.Longitude = measurement.Observation.Longitude;
+            //updatedMeasurement.Observation.Date = measurement.Observation.Date;
+            //updatedMeasurement.Observation.Comment = measurement.Observation.Comment;
             updatedMeasurement.Value = measurement.Value;
-            updatedMeasurement.Observation.Person = measurement.Observation.Person;
+            //updatedMeasurement.Observation.Person = measurement.Observation.Person;
+            updatedMeasurement.PhotoPath = measurement.PhotoPath;
 
             dbContext.Update(updatedMeasurement);
             dbContext.SaveChanges();
+        }
+        public void UpdateObservation(Observation observation)
+        {
+            var newObservation = dbContext.Observations.Where(o => o.Id.Equals(observation.Id))
+                .Include(p => p.Person)
+                .Include(m => m.MainCategory)
+                .FirstOrDefault();
+
+            newObservation.Date = observation.Date;
+            if (observation.Latitude != null || observation.Latitude != null)
+            {
+                newObservation.Longitude = observation.Longitude;
+                newObservation.Latitude = observation.Latitude;
+                newObservation.Place = observation.Place;
+                newObservation.AdministrativeArea = observation.AdministrativeArea;
+                newObservation.Country = observation.Country;
+            }
+
+            newObservation.Comment = observation.Comment;
+
+            dbContext.Update(newObservation);
+            dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Updates the value in a measurement
+        /// </summary>
+        /// <param name="id">Id of measurement</param>
+        /// <param name="value">New value</param>
+        public void UpdateMeasurmentValue(int id, string value)
+        {
+            if (!id.Equals(0) && !string.IsNullOrEmpty(value))
+            {
+                var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+                .Include(o => o.Observation)
+                .Include(t => t.ThirdCategory)
+                .Include(c => c.Category)
+                .FirstOrDefault();
+
+                measurement.Value = value;
+
+                dbContext.Update(measurement);
+                dbContext.SaveChanges();
+            }
+            
+        }
+
+        public void UpdateMeasurementPhoto(int id, string filePath)
+        {
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+               .Include(o => o.Observation)
+               .Include(t => t.ThirdCategory)
+               .Include(c => c.Category)
+               .FirstOrDefault();
+
+                measurement.PhotoPath = filePath;
+
+                dbContext.Update(measurement);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteMeasurementPhoto(int id)
+        {
+            var measurement = dbContext.Measurements.Where(m => m.Id.Equals(id))
+            .Include(o => o.Observation)
+            .Include(t => t.ThirdCategory)
+            .Include(c => c.Category)
+            .FirstOrDefault();
+            measurement.PhotoPath = null;
+            dbContext.Update(measurement);
+            dbContext.SaveChanges();
+
         }
 
         public void DeleteMeasurement(int id)
         {
             var measurement = GetMeasurement(id);
             dbContext.Remove(measurement);
+            dbContext.SaveChanges();
+        }
+        public void DeleteObservation(int id)
+        {
+            var observation = dbContext.Observations.Where(o => o.Id.Equals(id)).FirstOrDefault();
+            var measurements = dbContext.Measurements.Where(o => o.observationId.Equals(observation.Id)).ToList();
+
+            foreach (var item in measurements)
+            {
+                dbContext.Remove(item);
+            }
+            dbContext.Remove(observation);
             dbContext.SaveChanges();
         }
 
@@ -220,17 +319,7 @@ namespace Klimatkollen.Data
         {
             return dbContext.ThirdCategories.Where(x => x.Category.Id.Equals(cat.Id)).ToList();
         }
-        public async Task<IEnumerable<float>> ChartAsync() //TEST CHART
-        {
-            List<float> testjson = new List<float>();
-            foreach (var i in GenerateRandomFloats(50))
-            {
-                testjson.Add(i);
-            };
-
-            return await Task.FromResult(testjson.ToList());
-
-        }
+      
         public List<Observation> ShowObservationsTest()//Test Table OBSERVATION
         {
             List<Observation> AllObservations = new List<Observation>();
@@ -314,6 +403,14 @@ namespace Klimatkollen.Data
             var observation = dbContext.Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
             return observation.Id;
         }
+
+        //public int SelectObservationsByInterest(Person p)
+        //{
+        //    //var observation = dbContext.Persons.Where(x => x.)
+                
+        //    //    Observations.Where(x => x.Person.Equals(p)).LastOrDefault();
+        //    //return observation.Id;
+        //}
         /// <summary>
         /// Gets a list of filters for a user
         /// </summary>
@@ -333,7 +430,86 @@ namespace Klimatkollen.Data
         {
             return dbContext.UserFilters.Where(x => x.Id.Equals(userFilterId)).FirstOrDefault();
         }
+        public async Task<IEnumerable<MeasurementDatesViewModel>> GetTemperatureObservationsAsync()
+        {   
+            var temperaturelist = dbContext.Measurements.Where(m => m.ThirdCategory.Type.Equals("Lufttemperatur"))
+                .Include(n=>n.Observation).ToList();
 
+            var avgtemps = from post in temperaturelist
+                           group post by post.Observation.Date into dateGroup
+                           select new MeasurementDatesViewModel
+                           {
+                               Date = dateGroup.Key,
+                               AvgTemp = dateGroup.Average(x => float.Parse(x.Value))
+                           };
 
+   
+            return await Task.FromResult(avgtemps);
+        }
+
+        public List<News> GetNews()
+        {
+            List<News> allNews = new List<News>();
+            foreach (var item in dbContext.News)
+            {
+                allNews.Add(item);
+            }
+
+            allNews.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+
+            return allNews;
+        }
+
+        public void AddNews(News news)
+        {
+            
+        }
+        public ObservationFilterViewModel GetObservationWithMeasurement(int id)
+        {
+            var model = new ObservationFilterViewModel();
+
+            var newObservation = dbContext.Observations.Where(o => o.Id.Equals(id))
+                        .Include(m => m.MainCategory)
+                        .Include(p => p.Person)
+                        .FirstOrDefault();
+            var measurementsList = dbContext.Measurements.Where(m => m.observationId.Equals(id))
+                        .Include(y => y.ThirdCategory)
+                        .ToList();
+
+            model.Observation = newObservation;
+            model.Measurements = measurementsList;
+            model.Category = dbContext.Categories.Where(c => c.Id.Equals(measurementsList[0].categoryId)).FirstOrDefault();
+            model.Measurement = dbContext.Measurements.Where(m => m.Id.Equals(measurementsList[0].Id)).FirstOrDefault();
+
+            if (model.Measurements[0].ThirdCategory == null)
+            {
+                //Tomt objekt för att slippa få "null reference"
+                model.Measurements[0].ThirdCategory = new ThirdCategory();
+            }
+
+            return model;
+        }
+
+        public List<String> GetTopAreas(int num)
+        {
+            var test = dbContext.Observations
+                   .GroupBy(q => q.AdministrativeArea)
+                   .OrderByDescending(gp => gp.Count())
+                   .Take(num)
+                   .Select(g => g.Key)
+                   .ToList();
+            return test;
+        }
+        //public List<News> SortNewsByDate()
+        //{
+        //    List<News> sortNewsByDate = new List<News>();
+        //    foreach (var item in dbContext.News)
+        //    {
+        //        sortNewsByDate.Add(item);
+        //    }
+        //    sortNewsByDate.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+        //    return sortNewsByDate;
+        //}
     }
 }

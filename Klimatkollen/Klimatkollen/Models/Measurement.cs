@@ -21,5 +21,6 @@ namespace Klimatkollen.Models
         public ThirdCategory ThirdCategory { get; set; }
         public int categoryId { get; set; }
         public Category Category { get; set; }
+        public string PhotoPath { get; set; }
     }
 }
