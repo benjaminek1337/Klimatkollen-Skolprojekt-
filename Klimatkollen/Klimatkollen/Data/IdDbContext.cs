@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Klimatkollen.Data
 {
-    public class IdDbContext : IdentityDbContext
+    public class IdDbContext : ApplicationDbContext
     {
         public IdDbContext(DbContextOptions<IdDbContext> options) : base(options)
         {
