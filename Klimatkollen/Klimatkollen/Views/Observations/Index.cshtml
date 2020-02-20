@@ -83,9 +83,20 @@
                                     @if (!item.Observation.maincategoryId.Equals(2))
                                     {
                                         //Om kategori inte är djur så visas stad också
-                                        <span class="filterItem" data="@item.Observation.Place"> @item.Observation.Place, </span>
+                                        if (!string.IsNullOrEmpty(item.Observation.Place))
+                                        {
+                                            <span class="filterItem" data="@item.Observation.Place"> @item.Observation.Place, </span>
+
+                                        }
                                     }
-                                    <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
+                                    @if (!string.IsNullOrEmpty(item.Observation.AdministrativeArea))
+                                    {
+                                        <span class="filterItem" data="@item.Observation.AdministrativeArea"> @item.Observation.AdministrativeArea</span>
+                                    }
+                                    else
+                                    {
+                                        <span> Okänd</span>
+                                    }
 
 
                                     <br />
@@ -102,7 +113,7 @@
                                             {
 
                                                 <h6 style="display:inline-block;">Päls:</h6>
-                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>                                             
+                                                <span class="filterItem" data="@x.ThirdCategory.Type">@Html.DisplayFor(z => x.ThirdCategory.Type)</span>
                                             }
                                         }
 
@@ -121,7 +132,7 @@
                                                 <span>@Html.DisplayFor(modelItem => x.Value)</span>
                                                 <span style="display:inline-block;">@x.ThirdCategory.Unit</span>
                                             }
-                                            <span style="visibility: hidden" class="filterItem" data="@x.ThirdCategory.Category.Type">@Html.DisplayFor(modelItem => x.ThirdCategory.Category.Type)</span>
+                                            <span style="visibility: hidden" class="filterItem" data="@x.Category.Type">@Html.DisplayFor(modelItem => x.Category.Type)</span>
                                         }
                                         <br />
                                     }
@@ -144,7 +155,6 @@
 
                                     <h6 style="display:inline-block;">Datum:</h6>
                                     <span> @item.Observation.Date.ToShortDateString()</span>
-                                    @*<span class="filterItem" data="@item.Observation.Date"> @item.Observation.Date</span>*@
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Year"> @item.Observation.Date.Year</span>
                                     <span class="filterItem" style="visibility:hidden" data="@item.Observation.Date.Month"> @item.Observation.Date.Month</span>
                                     <br />
@@ -154,16 +164,19 @@
                                         <span class="filterItem" data="@item.Observation.Comment"> @item.Observation.Comment</span>
                                         <br />
                                     }
-                                    <h6 style="display:inline-block;">Utförd av:</h6>
-                                    <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
-                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
-                                    <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
-                                    <br />
-                                    <br />
+                                    @if (!string.IsNullOrEmpty(item.Observation.Person.FirstName))
+                                    {
+                                        <h6 style="display:inline-block;">Utförd av:</h6>
+                                        <span class="filterItem" data="@item.Observation.Person.FirstName"> @item.Observation.Person.FirstName</span>
+                                        <span class="filterItem" style="visibility:hidden" data="@item.Observation.Person.Lastname">@item.Observation.Person.Lastname</span>
+                                        <span class="filterItem" style="visibility:hidden" data="@item.Observation.Country"> @item.Observation.Country</span>
+                                        <br />
+                                        <br />
+                                    }
                                     @if (item.Measurement.PhotoPath != null)
                                     {
                                         <h6 style="display:inline-block">Bild:</h6>
-                                        <br/>
+                                        <br />
                                         var photoPath = "~/pictures/" + (item.Measurement.PhotoPath ?? "noimage.jpg");
                                         <img class="card-img-top" style="height:auto; width:auto; max-height:350px; max-width:100%" src="@photoPath" asp-append-version="true" />
                                     }
