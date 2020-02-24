@@ -52,7 +52,7 @@ namespace Klimatkollen
             })
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<IdDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
             services.Configure<IdentityOptions>(options =>
