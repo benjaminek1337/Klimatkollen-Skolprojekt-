@@ -39,8 +39,8 @@ namespace Klimatkollen
             services.AddTransient<IRepository, MockRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddDbContext<IdDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityDb")));
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Skolan")));
+           // services.AddDbContext<IdDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityDb")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Password.RequiredLength = 8;
